@@ -8,7 +8,7 @@ pub fn reconnect() -> String {
     let mut db = Connection { url: "localhost" };
     {
         let temp = String::from("192.168.1.1");
-        db.url = &temp;
+        db.url = Box::leak(temp.into_boxed_str());
     }
     db.url.to_string()
 }
