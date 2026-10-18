@@ -13,7 +13,7 @@ jobs:
           components: clippy, rustfmt
       - name: Test the katas this PR changes
         run: |
-          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '^katas/' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
+          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^katas/[^/]+/[^/]+/(src/|tests/|Cargo\.toml$)' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
           [ -z "$dirs" ] && { echo "no kata changed"; exit 0; }
           for d in $dirs; do
             echo "::group::$d"
