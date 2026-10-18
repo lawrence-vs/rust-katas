@@ -6,7 +6,7 @@ Each item passes or fails. Report every item, with a one-line reason for each fa
 
 ## 1. Tests unchanged, and passing
 - [ ] No file under `katas/*/*/tests/` changed, and neither did `Cargo.toml`.
-      Check: `git diff --name-only origin/main...HEAD -- 'katas/*/*/tests/' 'katas/*/*/Cargo.toml'` prints nothing.
+      Check: `git diff --name-only origin/main...HEAD -- 'katas/*/*/tests/*' 'katas/*/*/Cargo.toml'` prints nothing.
 - [ ] Only one kata changed. Check: `git diff --name-only origin/main...HEAD -- katas/ | cut -d/ -f1-3 | sort -u` prints one directory.
 - [ ] `cargo test` passes in that kata (CI's "katas" job is green).
 
