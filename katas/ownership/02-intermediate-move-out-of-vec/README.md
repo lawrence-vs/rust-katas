@@ -5,7 +5,7 @@
 **Vault:** your note on moves.
 
 ## Task
-Make `cargo test` pass. There are two good fixes; pick one, then explain the other.
+Make `cargo test` pass. CI also runs `cargo clippy --all-targets -- -D warnings`, so run that too. There are two good fixes; pick one, then explain the other.
 
 ## Before you fix it
 1. Read "cannot move out of type `[String]`, a non-copy slice". Why would `&[i32]` compile?
