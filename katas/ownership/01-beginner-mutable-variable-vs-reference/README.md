@@ -13,4 +13,4 @@ Make `cargo test` pass. Don't change the test.
 
 ## Answer in the PR
 1. What is the difference between `let mut p = &x;` and `let p = &mut x;`?
-2. The test passes `&mut x`. Why did that compile against a `&i32` parameter before your fix?
+2. The test passes `&mut x`. Would the old `&i32` parameter have accepted that? Why, given that nothing could be written through it?
