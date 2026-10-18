@@ -13,7 +13,7 @@ katas/<topic>/<NN>-<level>-<slug>/
 
 1. Read the kata's README and run `cargo test` inside it. Read the compiler's error before touching code.
 2. Fix it on a branch, answer the README's questions in the PR description in your own words.
-3. Open a PR. CI tests only the katas the PR changes; Junior reviews it as a Rust API code review (idioms, ownership, [API Guidelines](https://rust-lang.github.io/api-guidelines/)).
+3. Open a PR. CI runs `cargo fmt --check`, `cargo clippy -D warnings` and `cargo test` on only the katas the PR changes; Junior then reviews it against [REVIEW.md](REVIEW.md) (idioms, ownership, [API Guidelines](https://rust-lang.github.io/api-guidelines/)).
 4. Write what you learned as a permanent note in the vault and link the kata from its `code:` property.
 
 Levels: `beginner` (one rule), `intermediate` (two rules interacting), `advanced` (design: which fix is right and why).
