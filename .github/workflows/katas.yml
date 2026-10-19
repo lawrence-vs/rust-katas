@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.93
         with:
           components: clippy, rustfmt
       - name: Test the katas this PR changes
@@ -18,7 +18,64 @@ jobs:
           for d in $dirs; do
             echo "::group::$d"
             cargo fmt --manifest-path "$d/Cargo.toml" --check
-            cargo clippy --manifest-path "$d/Cargo.toml" --all-targets -- -D warnings
-            cargo test --manifest-path "$d/Cargo.toml"
+            if git cat-file -e "origin/${{ github.base_ref }}:$d/Cargo.toml" 2>/dev/null; then
+              cargo clippy --manifest-path "$d/Cargo.toml" --all-targets -- -D warnings
+              cargo test --manifest-path "$d/Cargo.toml"
+            elif grep -q '^miri = true' "$d/Cargo.toml"; then
+              echo "new Miri kata: the miri job checks it fails"
+            else
+              # A new kata must fail on purpose, with the error its README names.
+              want=$(sed -n 's/^\*\*Fails with:\*\* `\(.*\)`.*/\1/p' "$d/README.md")
+              [ -n "$want" ] || { echo "::error::$d/README.md has no **Fails with:** line"; exit 1; }
+              if cargo test --manifest-path "$d/Cargo.toml" > out.txt 2>&1; then
+                cat out.txt; echo "::error::$d passes, but a new kata must fail"; exit 1
+              fi
+              grep -qF -- "$want" out.txt || { cat out.txt; echo "::error::$d failed without '$want'"; exit 1; }
+              echo "fails as intended with '$want'"
+            fi
+            echo "::endgroup::"
+          done
+
+  miri:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri
+      - name: Miri on the unsafe katas this PR changes
+        run: |
+          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^katas/[^/]+/[^/]+/(src/|tests/|Cargo\.toml$)' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
+          for d in $dirs; do
+            grep -q '^miri = true' "$d/Cargo.toml" || continue
+            echo "::group::$d"
+            if git cat-file -e "origin/${{ github.base_ref }}:$d/Cargo.toml" 2>/dev/null; then
+              cargo +nightly miri test --manifest-path "$d/Cargo.toml"
+            else
+              want=$(sed -n 's/^\*\*Fails with:\*\* `\(.*\)`.*/\1/p' "$d/README.md")
+              [ -n "$want" ] || { echo "::error::$d/README.md has no **Fails with:** line"; exit 1; }
+              if cargo +nightly miri test --manifest-path "$d/Cargo.toml" > out.txt 2>&1; then
+                cat out.txt; echo "::error::$d passes Miri, but a new kata must fail"; exit 1
+              fi
+              grep -qF -- "$want" out.txt || { cat out.txt; echo "::error::$d failed Miri without '$want'"; exit 1; }
+              echo "fails Miri as intended with '$want'"
+            fi
+            echo "::endgroup::"
+          done
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit
+      - name: RustSec advisories for every kata lockfile
+        run: |
+          for lock in katas/*/*/Cargo.lock; do
+            echo "::group::$lock"
+            cargo audit --file "$lock"
             echo "::endgroup::"
           done
