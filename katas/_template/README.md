@@ -2,10 +2,11 @@
 
 **Concept:** one sentence.
 **Source:** book, chapter, highlight link (`https://readwise.io/open/<id>`) or Claude session note.
+**Fails with:** `E0000` (the error code, or the failing test's name, CI checks for it).
 **Vault:** the permanent note this kata backs, e.g. `Assignment Moves The Value`.
 
 ## Task
-What to make pass, and the one thing not to do (e.g. no `.clone()`).
+What to make pass, and the one thing not to do (e.g. no `.clone()` unless this README names it).
 
 ## Before you fix it
 1. Read the compiler error. Which rule does it name?

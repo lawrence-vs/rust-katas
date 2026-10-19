@@ -6,17 +6,24 @@ Small Rust bugs to fix, one concept each, from what I'm reading. Every kata **fa
 
 ```
 katas/<topic>/<NN>-<level>-<slug>/
-  README.md      concept, source, task, questions to answer
-  src/lib.rs     the bug
+  README.md      concept, source, the error it fails with, task, questions to answer
+  src/lib.rs     the bug, with `/// CLUE:` hints (hover with `K` in Neovim)
   tests/kata.rs  passes only when the bug is fixed
 ```
 
-1. Read the kata's README and run `cargo test` inside it. Read the compiler's error before touching code.
+1. Read the kata's README and run `cargo watch -q -c -x check -x test` inside it. Read the compiler's error before touching code. Only rust-analyzer, the docs and the clues help; no AI autocomplete.
 2. Fix it on a branch, answer the README's questions in the PR description in your own words.
 3. Open a PR. CI runs `cargo fmt --check`, `cargo clippy -D warnings` and `cargo test` on only the katas the PR changes; Junior then reviews it against [REVIEW.md](REVIEW.md) (idioms, ownership, [API Guidelines](https://rust-lang.github.io/api-guidelines/)).
 4. Write what you learned as a permanent note in the vault and link the kata from its `code:` property.
 
-Levels: `beginner` (one rule), `intermediate` (two rules interacting), `advanced` (design: which fix is right and why).
+| Level | What it tests |
+|---|---|
+| `beginner` | one rule |
+| `intermediate` | two rules interacting |
+| `advanced` | design: which fix is right and why |
+| `expert` | unsafe, Miri, FFI and async internals: code the compiler accepts but that is still wrong |
+
+A new kata's PR must fail on purpose: CI checks that `cargo test` (or `cargo miri test` for katas with `miri = true` under `[package.metadata.kata]`) fails with the README's **Fails with:** text. CI also runs `cargo audit` on every kata's `Cargo.lock`.
 
 Katas are made with the `code-kata` skill from a concept, a Readwise highlight or a Claude session; `katas/_template/` is the shape.
 
