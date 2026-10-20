@@ -1,0 +1,9 @@
+[package]
+name = "kata-unsafe-30"
+version = "0.1.0"
+edition = "2024"
+
+[package.metadata.kata]
+miri = true
+
+[dependencies]
