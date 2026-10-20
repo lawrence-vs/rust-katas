@@ -2,6 +2,8 @@
 
 Small Rust bugs to fix, one concept each, from what I'm reading. Every kata **fails on purpose** until it's fixed: it doesn't compile, or its test fails.
 
+Start with the [learning map](MAP.md): every kata in suggested order, with what each one needs first.
+
 ## How a kata works
 
 ```
