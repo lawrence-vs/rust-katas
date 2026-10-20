@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ticker;
+
+service Ticker {
+  rpc Watch (WatchRequest) returns (stream Tick);
+}
+
+message WatchRequest {
+  string symbol = 1;
+}
+
+message Tick {
+  string price = 1;
+}
