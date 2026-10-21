@@ -1,0 +1,143 @@
+# Learning map
+
+Every kata in suggested order. Top to bottom is beginner → expert; an arrow means "do this one first". Colour is the track.
+
+```mermaid
+flowchart TD
+  subgraph L1 [Beginner]
+    k01["01 mutable variable vs mutable reference"]
+    k07["07 unwrap in a library"]
+    k10["10 newtypes, not primitives"]
+    k13["13 a missing trait bound"]
+    k16["16 a std MutexGuard across await"]
+  end
+  subgraph L2 [Intermediate]
+    k02["02 moving out of a Vec"]
+    k04["04 borrow, don't take"]
+    k05["05 take, don't clone"]
+    k08["08 question mark needs a From"]
+    k11["11 bool flags to an enum"]
+    k14["14 impl Trait vs dyn Trait"]
+    k17["17 spawn, then send results back"]
+    k19["19 one pool, made at startup"]
+    k21["21 a bounded queue for untrusted input"]
+    k22["22 a timeout on every network await"]
+  end
+  subgraph L3 [Advanced]
+    k03["03 a struct outliving its reference"]
+    k06["06 one lifetime too many"]
+    k09["09 Option loses the why"]
+    k12["12 typestate: consume self"]
+    k15["15 inject, don't reach for a global"]
+    k18["18 a lock held over a slow await"]
+    k20["20 a sync driver on the async runtime"]
+    k23["23 an untrusted length prefix"]
+    k24["24 split reads from writes"]
+    k25["25 a lagging client"]
+    k26["26 generate, don't hand-write"]
+    k27["27 a deadline on a stream"]
+  end
+  subgraph L4 [Expert]
+    k28["28 unsafe to dodge the borrow checker"]
+    k29["29 a safe API over raw pointers"]
+    k30["30 a dangling CString across FFI"]
+    k31["31 capstone: a concurrent cache"]
+  end
+
+  k01 --> k02
+  k02 --> k04
+  k02 --> k05
+  k01 --> k03
+  k03 --> k06
+  k07 --> k08
+  k08 --> k09
+  k10 --> k11
+  k11 --> k12
+  k13 --> k14
+  k14 --> k15
+  k13 --> k16
+  k16 --> k17
+  k16 --> k18
+  k17 --> k18
+  k17 --> k19
+  k19 --> k20
+  k17 --> k21
+  k17 --> k22
+  k09 --> k23
+  k17 --> k24
+  k24 --> k25
+  k21 --> k25
+  k17 --> k26
+  k26 --> k27
+  k22 --> k27
+  k02 --> k28
+  k03 --> k28
+  k28 --> k29
+  k28 --> k30
+  k18 --> k31
+  k21 --> k31
+
+  classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
+  classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
+  classDef errors fill:#fcf3cf,stroke:#b7950b,color:#000
+  classDef apidesign fill:#d5f5e3,stroke:#1e8449,color:#000
+  classDef traits fill:#d1f2eb,stroke:#117a65,color:#000
+  classDef async fill:#d6eaf8,stroke:#2471a3,color:#000
+  classDef db fill:#e8daef,stroke:#7d3c98,color:#000
+  classDef security fill:#ebedef,stroke:#2c3e50,color:#000
+  classDef websockets fill:#e0f7fa,stroke:#00838f,color:#000
+  classDef grpc fill:#fce4ec,stroke:#ad1457,color:#000
+  classDef unsafe fill:#424242,stroke:#000,color:#fff
+  classDef capstone fill:#ffd700,stroke:#7a5c00,stroke-width:3px,color:#000
+
+  class k01,k02,k04,k05 ownership
+  class k03,k06 lifetimes
+  class k07,k08,k09 errors
+  class k10,k11,k12 apidesign
+  class k13,k14,k15 traits
+  class k16,k17,k18 async
+  class k19,k20 db
+  class k21,k22,k23 security
+  class k24,k25 websockets
+  class k26,k27 grpc
+  class k28,k29,k30 unsafe
+  class k31 capstone
+```
+
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · capstone gold.
+
+| Kata | Level | Concept | Needs first |
+|---|---|---|---|
+| [01 ownership: mutable variable vs mutable reference](katas/ownership/01-beginner-mutable-variable-vs-reference) | beginner | `let mut p = &x` lets you repoint `p`; only `&mut x` lets you change `x` through it. | — |
+| [07 errors: unwrap in a library](katas/errors/07-beginner-unwrap-in-library) | beginner | A library returns the error instead of panicking; `unwrap` belongs in tests and `main`. | — |
+| [10 api-design: newtypes, not primitives](katas/api-design/10-beginner-newtypes) | beginner | A one-field newtype per meaning lets the compiler catch swapped `u64` arguments. | — |
+| [13 traits: a missing trait bound](katas/traits/13-beginner-missing-trait-bound) | beginner | A generic `T` can do nothing until a bound says so; `>` needs `T: PartialOrd`. | — |
+| [16 async: a std MutexGuard across `.await`](katas/async/16-beginner-std-guard-across-await) | beginner | A std `MutexGuard` across `.await` makes the future non-`Send`: lock, change, drop, then await. | 13 |
+| [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
+| [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
+| [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |
+| [08 errors: `?` needs a From](katas/errors/08-intermediate-question-mark-needs-from) | intermediate | `?` converts the error with `From::from`, so two error types meet only through a conversion. | 07 |
+| [11 api-design: bool flags to an enum](katas/api-design/11-intermediate-bool-flags-to-enum) | intermediate | An enum makes the impossible combinations of three bools unrepresentable. | 10 |
+| [14 traits: `impl Trait` vs `dyn Trait`](katas/traits/14-intermediate-impl-trait-vs-dyn) | intermediate | `impl Trait` is one concrete type; a type chosen at runtime needs `Box<dyn Trait>`. | 13 |
+| [17 async: spawn, then send results back](katas/async/17-intermediate-spawn-and-send-results-back) | intermediate | `tokio::spawn` needs a `'static` future: move owned data in, get results back through `JoinHandle` or `mpsc`. | 16 |
+| [19 db: one pool, made at startup](katas/db/19-intermediate-one-pool-at-startup) | intermediate | Build the pool once and pass `&SqlitePool`; don't connect per call. | 17 |
+| [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
+| [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
+| [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
+| [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
+| [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
+| [12 api-design: typestate: consume self](katas/api-design/12-advanced-typestate) | advanced | A method that takes `self` and returns a new type makes the old state unusable. | 11 |
+| [15 traits: inject, don't reach for a global](katas/traits/15-advanced-inject-dont-reach-out) | advanced | Pass the clock in behind a trait instead of reading it, so tests can fix the time. | 14 |
+| [18 async: a lock held over a slow await](katas/async/18-advanced-lock-over-slow-await) | advanced | Lock for the lookup and the insert, never for the I/O. | 16, 17 |
+| [20 db: a sync driver on the async runtime](katas/db/20-advanced-sync-driver-spawn-blocking) | advanced | A synchronous driver blocks its tokio worker; `spawn_blocking` moves the call off it. | 19 |
+| [23 security: an untrusted length prefix](katas/security/23-advanced-untrusted-length-prefix) | advanced | A length read off the wire is an attacker's number: check it before allocating, return an error, don't panic. | 09 |
+| [24 websockets: split reads from writes](katas/websockets/24-advanced-split-reads-from-writes) | advanced | A WebSocket is two streams; `split` lets reads and writes run in separate tasks. | 17 |
+| [25 websockets: a lagging client](katas/websockets/25-advanced-lagging-client) | advanced | `broadcast` reports `Lagged(n)` for a slow receiver; treating it as `Closed` silently drops the client. | 24, 21 |
+| [26 grpc: generate, don't hand-write](katas/grpc/26-advanced-generate-dont-hand-write) | advanced | Generate protobuf and gRPC stubs from the `.proto` at build time so they can't drift. | 17 |
+| [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
+| [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
+| [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
+| [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
+| [31 capstone: a concurrent cache](katas/capstone/31-expert-concurrent-cache) | expert | A shared cache stays bounded, never locks over I/O, and loads each key once (single-flight). | 18, 21 |
+
+A new kata adds one node, its arrows, its `class` line entry and one row here.
