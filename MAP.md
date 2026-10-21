@@ -28,6 +28,7 @@ flowchart TD
     k21["21 a bounded queue for untrusted input"]
     k22["22 a timeout on every network await"]
     k37["37 a closure bound stricter than the body needs"]
+    k38["38 rc-refcell-borrow-panic"]
     k39["39 an RAII guard, not a manual release"]
     k40["40 an associated type, not a generic parameter"]
     k41["41 Rc across threads"]
@@ -103,6 +104,8 @@ flowchart TD
   k42 --> k44
   k02 --> k28
   k03 --> k28
+  k02 --> k38
+  k38 --> k41
   k28 --> k29
   k28 --> k30
   k18 --> k31
@@ -134,6 +137,7 @@ flowchart TD
   classDef drop fill:#e3e8f0,stroke:#37474f,color:#000
   classDef closures fill:#e8e6f0,stroke:#5e50a1,color:#000
   classDef testing fill:#ffe0d6,stroke:#ff5722,color:#000
+  classDef smartpointers fill:#e8eaf6,stroke:#3949ab,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -159,9 +163,10 @@ flowchart TD
   class k34 collections
   class k33 enums
   class k32 strings
+  class k38 smartpointers
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · smart-pointers navy · closures lavender · testing coral · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -186,6 +191,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
 | [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
 | [37 closures: a closure bound stricter than the body needs](katas/closures/37-intermediate-fnonce-too-strict) | intermediate | A function that calls a closure multiple times but bounds it as `Fn` rejects callers that need `FnMut`; the fix is the least restrictive bound the body needs. | 13 |
+| [38 smart-pointers: rc-refcell-borrow-panic](katas/smart-pointers/38-intermediate-rc-refcell-borrow-panic) | intermediate | A shared mutable graph needs `Rc<RefCell<_>>` to compile, but `RefCell` enforces borrowing at runtime; scope the borrow to avoid panic. | 02 |
 | [39 drop: an RAII guard, not a manual release](katas/drop/39-intermediate-raii-guard) | intermediate | Cleanup lives in `Drop`, so a guard gives back what it took on every way out: early return, `?` or panic. | 08 |
 | [40 generics: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | intermediate | A trait whose implementor picks one output takes `type Item`, not `<T>`: callers write `F::Item` and drop `PhantomData`. | 13, 14 |
 | [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
