@@ -47,6 +47,7 @@ flowchart TD
     k29["29 a safe API over raw pointers"]
     k30["30 a dangling CString across FFI"]
     k31["31 capstone: a concurrent cache"]
+    k45["45 capstone: a mini order book"]
   end
 
   k01 --> k02
@@ -87,6 +88,8 @@ flowchart TD
   k28 --> k30
   k18 --> k31
   k21 --> k31
+  k42 --> k45
+  k34 --> k45
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -117,7 +120,7 @@ flowchart TD
   class k24,k25 websockets
   class k26,k27 grpc
   class k28,k29,k30 unsafe
-  class k31 capstone
+  class k31,k45 capstone
   class k42 money
   class k35 iterators
   class k34 collections
@@ -165,5 +168,6 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
 | [31 capstone: a concurrent cache](katas/capstone/31-expert-concurrent-cache) | expert | A shared cache stays bounded, never locks over I/O, and loads each key once (single-flight). | 18, 21 |
+| [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.
