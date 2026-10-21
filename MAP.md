@@ -41,6 +41,7 @@ flowchart TD
     k25["25 a lagging client"]
     k26["26 generate, don't hand-write"]
     k27["27 a deadline on a stream"]
+    k44["44 macro_rules!, not copy-paste"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -82,6 +83,8 @@ flowchart TD
   k22 --> k27
   k07 --> k42
   k10 --> k42
+  k10 --> k44
+  k42 --> k44
   k02 --> k28
   k03 --> k28
   k28 --> k29
@@ -108,6 +111,7 @@ flowchart TD
   classDef collections fill:#e8eaf6,stroke:#3949ab,color:#000
   classDef enums fill:#f0f4c3,stroke:#827717,color:#000
   classDef strings fill:#fff8e1,stroke:#ff6f00,color:#000
+  classDef macros fill:#ede7f6,stroke:#4527a0,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -122,13 +126,14 @@ flowchart TD
   class k28,k29,k30 unsafe
   class k31,k45 capstone
   class k42 money
+  class k44 macros
   class k35 iterators
   class k34 collections
   class k33 enums
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -164,6 +169,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [25 websockets: a lagging client](katas/websockets/25-advanced-lagging-client) | advanced | `broadcast` reports `Lagged(n)` for a slow receiver; treating it as `Closed` silently drops the client. | 24, 21 |
 | [26 grpc: generate, don't hand-write](katas/grpc/26-advanced-generate-dont-hand-write) | advanced | Generate protobuf and gRPC stubs from the `.proto` at build time so they can't drift. | 17 |
 | [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
+| [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
