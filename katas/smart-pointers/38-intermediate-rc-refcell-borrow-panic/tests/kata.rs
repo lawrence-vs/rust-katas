@@ -11,10 +11,10 @@ fn single_node_increments() {
 fn shared_target_gets_incremented_twice() {
     // a -> b <- c (b is shared)
     let b = Node::new(2, 100);
-    let a = Node::new(1, 1);
-    let c = Node::new(3, 1);
-    Node::add_edge(&a, &b);
-    Node::add_edge(&c, &b);
+    let mut a = Node::new(1, 1);
+    let mut c = Node::new(3, 1);
+    Node::add_edge(&mut a, &b);
+    Node::add_edge(&mut c, &b);
 
     // Each path increments b once; total +2
     a.increment_all();
@@ -27,10 +27,10 @@ fn shared_target_gets_incremented_twice() {
 fn sum_all_counts_shared_node_once_per_path() {
     // a -> b <- c
     let b = Node::new(2, 10);
-    let a = Node::new(1, 1);
-    let c = Node::new(3, 2);
-    Node::add_edge(&a, &b);
-    Node::add_edge(&c, &b);
+    let mut a = Node::new(1, 1);
+    let mut c = Node::new(3, 2);
+    Node::add_edge(&mut a, &b);
+    Node::add_edge(&mut c, &b);
 
     // a sees 1 + 10 = 11; c sees 2 + 10 = 12
     assert_eq!(a.sum_all(), 11);
@@ -40,10 +40,10 @@ fn sum_all_counts_shared_node_once_per_path() {
 #[test]
 fn cycle_detected_by_runtime_borrow_check() {
     // a -> b -> a (cycle)
-    let a = Node::new(1, 1);
-    let b = Node::new(2, 2);
-    Node::add_edge(&a, &b);
-    Node::add_edge(&b, &a);
+    let mut a = Node::new(1, 1);
+    let mut b = Node::new(2, 2);
+    Node::add_edge(&mut a, &b);
+    Node::add_edge(&mut b, &a);
 
     // This must NOT deadlock or double-borrow; it must complete.
     a.increment_all();

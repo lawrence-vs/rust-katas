@@ -8,7 +8,7 @@ use std::rc::Rc;
 pub struct Node {
     pub id: u32,
     pub value: RefCell<i32>,
-    pub edges: RefCell<Vec<Rc<Node>>>,
+    pub edges: Vec<Rc<Node>>,
 }
 
 impl Node {
@@ -16,14 +16,14 @@ impl Node {
         Rc::new(Node {
             id,
             value: RefCell::new(value),
-            edges: RefCell::new(Vec::new()),
+            edges: Vec::new(),
         })
     }
 
     /// Adds a directed edge from this node to `target`.
     /// CLUE: What does `Rc<Node>` let you do that `&Node` doesn't?
-    pub fn add_edge(this: &Rc<Self>, target: &Rc<Self>) {
-        this.edges.borrow_mut().push(Rc::clone(target));
+    pub fn add_edge(this: &mut Rc<Self>, target: &Rc<Self>) {
+        Rc::get_mut(this).unwrap().edges.push(Rc::clone(target));
     }
 
     /// Increments `value` on every node reachable from this one (including self).
@@ -32,7 +32,7 @@ impl Node {
     pub fn increment_all(&self) {
         let mut value = self.value.borrow_mut();
         *value += 1;
-        for edge in self.edges.borrow().iter() {
+        for edge in &self.edges {
             edge.increment_all();
         }
     }
@@ -42,7 +42,7 @@ impl Node {
     pub fn sum_all(&self) -> i32 {
         let my_value = *self.value.borrow();
         let mut total = my_value;
-        for edge in self.edges.borrow().iter() {
+        for edge in &self.edges {
             total += edge.sum_all();
         }
         total
