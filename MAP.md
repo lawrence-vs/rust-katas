@@ -14,6 +14,7 @@ flowchart TD
     k33["33 a status string to an enum"]
     k34["34 entry, not contains_key"]
     k35["35 iterate, don't index"]
+    k36["36 test the edges"]
   end
   subgraph L2 [Intermediate]
     k02["02 moving out of a Vec"]
@@ -65,6 +66,8 @@ flowchart TD
   k01 --> k35
   k03 --> k06
   k07 --> k08
+  k07 --> k36
+  k35 --> k36
   k08 --> k09
   k08 --> k39
   k39 --> k29
@@ -130,6 +133,7 @@ flowchart TD
   classDef generics fill:#e1f5fe,stroke:#01579b,color:#000
   classDef drop fill:#e3e8f0,stroke:#37474f,color:#000
   classDef closures fill:#e8e6f0,stroke:#5e50a1,color:#000
+  classDef testing fill:#ffe0d6,stroke:#ff5722,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -151,12 +155,13 @@ flowchart TD
   class k39 drop
   class k37 closures
   class k35 iterators
+  class k36 testing
   class k34 collections
   class k33 enums
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -169,6 +174,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [33 enums: a status string to an enum](katas/enums/33-beginner-status-string-to-enum) | beginner | Parse a status string once into an enum, then `match` every variant: a typo or a new status becomes a compile error. | — |
 | [34 collections: entry, not contains_key](katas/collections/34-beginner-entry-not-contains) | beginner | One `entry` lookup instead of `contains_key`/`get_mut` then `insert`: no second hash, no borrow fight. | 01 |
 | [35 iterators: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | beginner | An index loop makes you write the bounds; `iter().filter().map().sum()` has none to get wrong. | 01 |
+| [36 testing: test the edges](katas/testing/36-beginner-test-the-edges) | beginner | Edges (empty, overflow, rounding) go in a table of cases; `#[should_panic(expected = "...")]` checks the panic is the promised one, not any panic. | 07, 35 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
 | [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |
