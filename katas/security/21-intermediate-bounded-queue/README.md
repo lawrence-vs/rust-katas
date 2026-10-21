@@ -16,3 +16,23 @@ Make `cargo test` pass without changing the test. `accept` must not wait.
 1. Describe the attack the old code allowed, with numbers.
 2. Why reject instead of waiting when the queue is full? When would waiting be right?
 3. What should the network task do with a `Rejected`?
+
+## Think further
+1. `capacity` counts messages, not bytes. The test sends 1 KiB messages; an attacker sends eight 16 MiB ones. What bounds memory now, and what else would you have to limit?
+2. Every client shares one queue. One noisy client keeps it full. What do the quiet clients see, and how could you make it fair?
+3. What does `ingest(0)` do? Should a caller be able to ask for that?
+4. The worker panics and drops `rx`. What does `accept` return now, and is `Rejected` the right thing to tell the client in that case?
+
+## In the wild
+- [tokio `mpsc`](https://docs.rs/tokio/1.53.2/tokio/sync/mpsc/index.html): the module docs on bounded vs unbounded channels and what an unbounded one costs.
+- [tokio `Semaphore`](https://docs.rs/tokio/1.53.2/tokio/sync/struct.Semaphore.html): bounds how much work is in flight, not how long a queue is.
+- [tower `load_shed`](https://docs.rs/tower/latest/tower/load_shed/index.html): a middleware that rejects requests when the service behind it isn't ready.
+- [tower `ConcurrencyLimitLayer`](https://docs.rs/tower/latest/tower/limit/concurrency/struct.ConcurrencyLimitLayer.html): the same limit as a layer you can put on an axum or tonic service.
+- [axum `DefaultBodyLimit`](https://docs.rs/axum/latest/axum/extract/struct.DefaultBodyLimit.html): a byte limit per request body. Count limits and byte limits are different defences.
+- Exchange-style: an exchange API doc: over the limit, a client gets an error back right away; it is not queued.
+
+In a review, check:
+- `unbounded_channel`, or a `Vec`/`VecDeque` that grows, fed straight from network input.
+- A capacity counted in items when each item can be any size.
+- A capacity with no stated reason, or one hard-coded in several places.
+- Rejections with no metric or log, so nobody sees the service shedding load.
