@@ -2,16 +2,16 @@
 
 **Concept:** A shared mutable graph needs `Rc<RefCell<_>>` to compile, but `RefCell` enforces borrowing at runtime—two overlapping mutable borrows panic. Scope the borrow (drop the guard) before the recursive call to avoid the panic.
 **Source:** Programming Rust, 2nd ed. (Blandy, Orendorff, Tindall), ch. 4 Structs and ch. 9 Interior Mutability, https://www.oreilly.com/library/view/programming-rust-2nd/9781492052586/ch04.html, https://www.oreilly.com/library/view/programming-rust-2nd/9781492052586/ch09.html
-**Fails with:** `thread 'main' panicked at src/lib.rs:XX: already borrowed: BorrowMutError`
+**Fails with:** `thread 'cycle_detected_by_runtime_borrow_check' panicked at src/lib.rs:26:27: called \`Option::unwrap()\` on a \`None\` value`
 **Vault:** your note on Rc and RefCell
 
 ## Task
-Make `cargo test` pass without changing the test. Use only `std` (`Rc`, `RefCell`). No `unsafe`, no `Weak`, no crates. The fix is to narrow the `borrow_mut()` / `borrow()` scope so the guard is dropped before recursing.
+Make `cargo test` pass without changing the test. Use only `std` (`Rc`, `RefCell`). No `unsafe`, no `Weak`, no crates. The fix is to wrap `edges` in `RefCell`, then narrow the `borrow_mut()` / `borrow()` scope so the guard is dropped before recursing, and add visited tracking to handle cycles.
 
 ## Before you fix it
 1. Run `cargo test`. Which test panics, and at which line in `src/lib.rs`?
-2. The panic says `already borrowed`. Which two borrows overlap?
-3. Predict the fix in one sentence: where does the first borrow end?
+2. The panic says `called Option::unwrap() on a None value`. What does `Rc::get_mut` return when the `Rc` has multiple strong references?
+3. What type must `edges` be changed to so that `add_edge` can mutate the vector through a shared reference?
 
 ## Answer in the PR
 1. Why does a shared mutable graph need both `Rc` and `RefCell`? What does each one provide?
