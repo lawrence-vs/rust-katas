@@ -70,6 +70,7 @@ Kata links go live as each kata merges.
 | enums | [33 beginner: a status string to an enum](katas/enums/33-beginner-status-string-to-enum) | Programming Rust (Blandy et al.), ch. 10 Enums and Patterns |
 | collections | [34 beginner: entry, not contains_key](katas/collections/34-beginner-entry-not-contains) | Programming Rust (Blandy et al.), ch. 16 Collections, "Entries" |
 | iterators | [35 beginner: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | Programming Rust (Blandy et al.), ch. 15 Iterators |
+| generics | [40 intermediate: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | Rust for Rustaceans (Gjengset), ch. 2 Types, "Generic Traits" |
 | threads | [41 intermediate: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | Programming Rust (Blandy et al.), ch. 19 Concurrency; std `thread::scope` docs |
 | money | [42 intermediate: no float money](katas/money/42-intermediate-no-float-money) | The Rust Reference, arithmetic overflow; `u64::checked_add` docs |
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |
