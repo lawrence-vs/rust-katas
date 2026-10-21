@@ -10,6 +10,7 @@ flowchart TD
     k10["10 newtypes, not primitives"]
     k13["13 a missing trait bound"]
     k16["16 a std MutexGuard across await"]
+    k33["33 a status string to an enum"]
     k34["34 entry, not contains_key"]
     k35["35 iterate, don't index"]
   end
@@ -57,6 +58,7 @@ flowchart TD
   k07 --> k08
   k08 --> k09
   k10 --> k11
+  k33 --> k11
   k11 --> k12
   k13 --> k14
   k14 --> k15
@@ -99,6 +101,7 @@ flowchart TD
   classDef money fill:#f1f8e9,stroke:#558b2f,color:#000
   classDef iterators fill:#efebe9,stroke:#6d4c41,color:#000
   classDef collections fill:#e8eaf6,stroke:#3949ab,color:#000
+  classDef enums fill:#f0f4c3,stroke:#827717,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -115,9 +118,10 @@ flowchart TD
   class k42 money
   class k35 iterators
   class k34 collections
+  class k33 enums
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -126,13 +130,14 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [10 api-design: newtypes, not primitives](katas/api-design/10-beginner-newtypes) | beginner | A one-field newtype per meaning lets the compiler catch swapped `u64` arguments. | — |
 | [13 traits: a missing trait bound](katas/traits/13-beginner-missing-trait-bound) | beginner | A generic `T` can do nothing until a bound says so; `>` needs `T: PartialOrd`. | — |
 | [16 async: a std MutexGuard across `.await`](katas/async/16-beginner-std-guard-across-await) | beginner | A std `MutexGuard` across `.await` makes the future non-`Send`: lock, change, drop, then await. | 13 |
+| [33 enums: a status string to an enum](katas/enums/33-beginner-status-string-to-enum) | beginner | Parse a status string once into an enum, then `match` every variant: a typo or a new status becomes a compile error. | — |
 | [34 collections: entry, not contains_key](katas/collections/34-beginner-entry-not-contains) | beginner | One `entry` lookup instead of `contains_key`/`get_mut` then `insert`: no second hash, no borrow fight. | 01 |
 | [35 iterators: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | beginner | An index loop makes you write the bounds; `iter().filter().map().sum()` has none to get wrong. | 01 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
 | [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |
 | [08 errors: `?` needs a From](katas/errors/08-intermediate-question-mark-needs-from) | intermediate | `?` converts the error with `From::from`, so two error types meet only through a conversion. | 07 |
-| [11 api-design: bool flags to an enum](katas/api-design/11-intermediate-bool-flags-to-enum) | intermediate | An enum makes the impossible combinations of three bools unrepresentable. | 10 |
+| [11 api-design: bool flags to an enum](katas/api-design/11-intermediate-bool-flags-to-enum) | intermediate | An enum makes the impossible combinations of three bools unrepresentable. | 10, 33 |
 | [14 traits: `impl Trait` vs `dyn Trait`](katas/traits/14-intermediate-impl-trait-vs-dyn) | intermediate | `impl Trait` is one concrete type; a type chosen at runtime needs `Box<dyn Trait>`. | 13 |
 | [17 async: spawn, then send results back](katas/async/17-intermediate-spawn-and-send-results-back) | intermediate | `tokio::spawn` needs a `'static` future: move owned data in, get results back through `JoinHandle` or `mpsc`. | 16 |
 | [19 db: one pool, made at startup](katas/db/19-intermediate-one-pool-at-startup) | intermediate | Build the pool once and pass `&SqlitePool`; don't connect per call. | 17 |
