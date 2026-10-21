@@ -22,6 +22,7 @@ flowchart TD
     k19["19 one pool, made at startup"]
     k21["21 a bounded queue for untrusted input"]
     k22["22 a timeout on every network await"]
+    k42["42 no float money"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -70,6 +71,8 @@ flowchart TD
   k17 --> k26
   k26 --> k27
   k22 --> k27
+  k07 --> k42
+  k10 --> k42
   k02 --> k28
   k03 --> k28
   k28 --> k29
@@ -89,6 +92,7 @@ flowchart TD
   classDef grpc fill:#fce4ec,stroke:#ad1457,color:#000
   classDef unsafe fill:#424242,stroke:#000,color:#fff
   classDef capstone fill:#ffd700,stroke:#7a5c00,stroke-width:3px,color:#000
+  classDef money fill:#f1f8e9,stroke:#558b2f,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -102,9 +106,10 @@ flowchart TD
   class k26,k27 grpc
   class k28,k29,k30 unsafe
   class k31 capstone
+  class k42 money
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -123,6 +128,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [19 db: one pool, made at startup](katas/db/19-intermediate-one-pool-at-startup) | intermediate | Build the pool once and pass `&SqlitePool`; don't connect per call. | 17 |
 | [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
 | [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
+| [42 money: no float money](katas/money/42-intermediate-no-float-money) | intermediate | Money is whole minor units with `checked_*` arithmetic: floats drift, and an overflow is an error. | 07, 10 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
