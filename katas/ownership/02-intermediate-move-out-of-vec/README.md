@@ -22,8 +22,8 @@ Make `cargo test` pass. CI also runs `cargo clippy --all-targets -- -D warnings`
 
 ## In the wild
 - [`Vec::swap_remove`](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.swap_remove): the std way to move a value out of a place while filling the hole.
-- [`tonic::Request`](https://docs.rs/tonic/latest/tonic/struct.Request.html): `get_ref` borrows the message, `into_inner` consumes the request to move it out. It is the same choice the kata asks about.
-- [`http::HeaderMap::get`](https://docs.rs/http/latest/http/header/struct.HeaderMap.html#method.get) (used by axum): returns a reference into the map instead of an owned copy.
+- [`tonic::Request`](https://docs.rs/tonic/0.14.6/tonic/struct.Request.html): `get_ref` borrows the message, `into_inner` consumes the request to move it out. It is the same choice the kata asks about.
+- [`http::HeaderMap::get`](https://docs.rs/http/1.5.0/http/header/struct.HeaderMap.html#method.get) (used by axum): returns a reference into the map instead of an owned copy.
 - [`VecDeque::pop_front`](https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.pop_front) vs [`front`](https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.front): owned vs borrowed access to the head of a queue.
 - Exchange-style: a FIFO queue of orders at one price level. Matching pops the head order (moves it out), while a market-data snapshot only peeks (borrows). Mixing the two up either clones every order on every tick or fights the borrow checker during matching.
 

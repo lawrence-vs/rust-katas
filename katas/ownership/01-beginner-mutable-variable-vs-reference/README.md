@@ -22,8 +22,8 @@ Make `cargo test` pass. Don't change the test.
 
 ## In the wild
 - [`std::io::Read::read`](https://doc.rust-lang.org/std/io/trait.Read.html#method.read): the caller's buffer is written through a parameter. The signature alone tells you the function writes into memory the caller owns.
-- [`sqlx::Transaction`](https://docs.rs/sqlx/latest/sqlx/struct.Transaction.html): queries run with `&mut *tx`. Every query borrows the transaction exclusively, so two queries can't interleave on it.
-- [`tokio::sync::MutexGuard`](https://docs.rs/tokio/latest/tokio/sync/struct.MutexGuard.html): `*guard = v` writes through the guard. The lock is what grants the right to write, not the binding being `mut`.
+- [`sqlx::Transaction`](https://docs.rs/sqlx/0.9.0/sqlx/struct.Transaction.html): queries run with `&mut *tx`. Every query borrows the transaction exclusively, so two queries can't interleave on it.
+- [`tokio::sync::MutexGuard`](https://docs.rs/tokio/1.54.0/tokio/sync/struct.MutexGuard.html): `*guard = v` writes through the guard. The lock is what grants the right to write, not the binding being `mut`.
 - [`std::cell`](https://doc.rust-lang.org/std/cell/index.html): interior mutability, i.e. writes behind a shared reference. This is the legitimate exception to the rule, and the thing to question in a review.
 - Exchange-style: an account balance or order-book level updated by a fill. The method that applies the fill should say in its signature that it mutates, so the borrow checker stops a reader from seeing a half-applied fill.
 

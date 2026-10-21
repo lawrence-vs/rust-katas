@@ -24,8 +24,8 @@ Make `cargo test` pass without changing the test. No `.clone()`, no `to_vec()`.
 
 ## In the wild
 - [`str::contains`](https://doc.rust-lang.org/std/primitive.str.html#method.contains): a read-only query on text that every caller can invoke without giving up their `String`.
-- [`sqlx::query`](https://docs.rs/sqlx/latest/sqlx/fn.query.html): the SQL text is passed as a borrow, so a `const` string and a built `String` both work and neither is consumed.
-- [`http::HeaderMap::get`](https://docs.rs/http/latest/http/header/struct.HeaderMap.html#method.get): lookups hand back a view into the map, so the request stays usable afterwards.
+- [`sqlx::query`](https://docs.rs/sqlx/0.9.0/sqlx/fn.query.html): the SQL text is passed as a borrow, so a `const` string and a built `String` both work and neither is consumed.
+- [`http::HeaderMap::get`](https://docs.rs/http/1.5.0/http/header/struct.HeaderMap.html#method.get): lookups hand back a view into the map, so the request stays usable afterwards.
 - [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html): the opposite case. The closure must own what it captures, so the by-value signature is the honest one.
 - Exchange-style: a risk check that totals exposure across a list of open orders. It runs on every incoming order, so taking the list by value would force a copy of the whole book per check.
 
