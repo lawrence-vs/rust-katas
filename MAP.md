@@ -26,6 +26,7 @@ flowchart TD
     k19["19 one pool, made at startup"]
     k21["21 a bounded queue for untrusted input"]
     k22["22 a timeout on every network await"]
+    k41["41 Rc across threads"]
     k42["42 no float money"]
   end
   subgraph L3 [Advanced]
@@ -84,6 +85,8 @@ flowchart TD
   k22 --> k27
   k07 --> k42
   k10 --> k42
+  k02 --> k41
+  k41 --> k43
   k17 --> k43
   k10 --> k44
   k42 --> k44
@@ -115,6 +118,7 @@ flowchart TD
   classDef strings fill:#fff8e1,stroke:#ff6f00,color:#000
   classDef macros fill:#ede7f6,stroke:#4527a0,color:#000
   classDef atomics fill:#fbe9e7,stroke:#bf360c,color:#000
+  classDef threads fill:#e0f7e9,stroke:#00a86b,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -131,13 +135,14 @@ flowchart TD
   class k42 money
   class k44 macros
   class k43 atomics
+  class k41 threads
   class k35 iterators
   class k34 collections
   class k33 enums
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -160,6 +165,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [19 db: one pool, made at startup](katas/db/19-intermediate-one-pool-at-startup) | intermediate | Build the pool once and pass `&SqlitePool`; don't connect per call. | 17 |
 | [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
 | [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
+| [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
 | [42 money: no float money](katas/money/42-intermediate-no-float-money) | intermediate | Money is whole minor units with `checked_*` arithmetic: floats drift, and an overflow is an error. | 07, 10 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
@@ -173,7 +179,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [25 websockets: a lagging client](katas/websockets/25-advanced-lagging-client) | advanced | `broadcast` reports `Lagged(n)` for a slow receiver; treating it as `Closed` silently drops the client. | 24, 21 |
 | [26 grpc: generate, don't hand-write](katas/grpc/26-advanced-generate-dont-hand-write) | advanced | Generate protobuf and gRPC stubs from the `.proto` at build time so they can't drift. | 17 |
 | [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
-| [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17 |
+| [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17, 41 |
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
