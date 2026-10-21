@@ -66,4 +66,5 @@ Kata links go live as each kata merges.
 | unsafe | [29 expert: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | The Rustonomicon, meet safe and unsafe |
 | unsafe | [30 expert: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | The Rustonomicon, FFI |
 | capstone | [31 expert: capstone: a concurrent cache](katas/capstone/31-expert-concurrent-cache) | rust-workshop-labs (staged labs with observations) |
+| iterators | [35 beginner: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | Programming Rust (Blandy et al.), ch. 15 Iterators |
 | money | [42 intermediate: no float money](katas/money/42-intermediate-no-float-money) | The Rust Reference, arithmetic overflow; `u64::checked_add` docs |
