@@ -10,6 +10,7 @@ flowchart TD
     k10["10 newtypes, not primitives"]
     k13["13 a missing trait bound"]
     k16["16 a std MutexGuard across await"]
+    k35["35 iterate, don't index"]
   end
   subgraph L2 [Intermediate]
     k02["02 moving out of a Vec"]
@@ -49,6 +50,7 @@ flowchart TD
   k02 --> k04
   k02 --> k05
   k01 --> k03
+  k01 --> k35
   k03 --> k06
   k07 --> k08
   k08 --> k09
@@ -93,6 +95,7 @@ flowchart TD
   classDef unsafe fill:#424242,stroke:#000,color:#fff
   classDef capstone fill:#ffd700,stroke:#7a5c00,stroke-width:3px,color:#000
   classDef money fill:#f1f8e9,stroke:#558b2f,color:#000
+  classDef iterators fill:#efebe9,stroke:#6d4c41,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -107,9 +110,10 @@ flowchart TD
   class k28,k29,k30 unsafe
   class k31 capstone
   class k42 money
+  class k35 iterators
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -118,6 +122,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [10 api-design: newtypes, not primitives](katas/api-design/10-beginner-newtypes) | beginner | A one-field newtype per meaning lets the compiler catch swapped `u64` arguments. | — |
 | [13 traits: a missing trait bound](katas/traits/13-beginner-missing-trait-bound) | beginner | A generic `T` can do nothing until a bound says so; `>` needs `T: PartialOrd`. | — |
 | [16 async: a std MutexGuard across `.await`](katas/async/16-beginner-std-guard-across-await) | beginner | A std `MutexGuard` across `.await` makes the future non-`Send`: lock, change, drop, then await. | 13 |
+| [35 iterators: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | beginner | An index loop makes you write the bounds; `iter().filter().map().sum()` has none to get wrong. | 01 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
 | [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |
