@@ -2,7 +2,7 @@
 
 **Concept:** Everything at once: a matching engine keeps each side's price levels in a sorted map (`BTreeMap`), each level as a FIFO queue (`VecDeque`), prices as whole ticks (never a float), fills an incoming order across as many levels as it crosses, and rests the remainder. A cancel removes the order and any level it leaves empty.
 **Source:** own design (Kraken-style exchange prep); std `BTreeMap`, https://doc.rust-lang.org/std/collections/struct.BTreeMap.html, and `VecDeque`, https://doc.rust-lang.org/std/collections/struct.VecDeque.html
-**Fails with:** `'stage1_prices_are_whole_ticks' panicked`
+**Fails with:** `stage1_prices_are_whole_ticks ... FAILED`
 **Vault:** your MOC note linking the money, collections and capstone track notes
 
 ## Task
