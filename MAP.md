@@ -26,6 +26,7 @@ flowchart TD
     k19["19 one pool, made at startup"]
     k21["21 a bounded queue for untrusted input"]
     k22["22 a timeout on every network await"]
+    k40["40 an associated type, not a generic parameter"]
     k41["41 Rc across threads"]
     k42["42 no float money"]
   end
@@ -85,6 +86,8 @@ flowchart TD
   k22 --> k27
   k07 --> k42
   k10 --> k42
+  k13 --> k40
+  k14 --> k40
   k02 --> k41
   k41 --> k43
   k17 --> k43
@@ -119,6 +122,7 @@ flowchart TD
   classDef macros fill:#ede7f6,stroke:#4527a0,color:#000
   classDef atomics fill:#fbe9e7,stroke:#bf360c,color:#000
   classDef threads fill:#e0f7e9,stroke:#00a86b,color:#000
+  classDef generics fill:#e1f5fe,stroke:#01579b,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -136,13 +140,14 @@ flowchart TD
   class k44 macros
   class k43 atomics
   class k41 threads
+  class k40 generics
   class k35 iterators
   class k34 collections
   class k33 enums
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -165,6 +170,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [19 db: one pool, made at startup](katas/db/19-intermediate-one-pool-at-startup) | intermediate | Build the pool once and pass `&SqlitePool`; don't connect per call. | 17 |
 | [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
 | [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
+| [40 generics: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | intermediate | A trait whose implementor picks one output takes `type Item`, not `<T>`: callers write `F::Item` and drop `PhantomData`. | 13, 14 |
 | [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
 | [42 money: no float money](katas/money/42-intermediate-no-float-money) | intermediate | Money is whole minor units with `checked_*` arithmetic: floats drift, and an overflow is an error. | 07, 10 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
