@@ -71,4 +71,5 @@ Kata links go live as each kata merges.
 | collections | [34 beginner: entry, not contains_key](katas/collections/34-beginner-entry-not-contains) | Programming Rust (Blandy et al.), ch. 16 Collections, "Entries" |
 | iterators | [35 beginner: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | Programming Rust (Blandy et al.), ch. 15 Iterators |
 | money | [42 intermediate: no float money](katas/money/42-intermediate-no-float-money) | The Rust Reference, arithmetic overflow; `u64::checked_add` docs |
+| macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
 | capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (Kraken-style exchange prep); std `BTreeMap` docs |
