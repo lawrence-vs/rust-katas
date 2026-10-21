@@ -26,7 +26,7 @@ flowchart TD
     k19["19 one pool, made at startup"]
     k21["21 a bounded queue for untrusted input"]
     k22["22 a timeout on every network await"]
-    k37["37 fnonce-too-strict"]
+    k37["37 a closure bound stricter than the body needs"]
     k39["39 an RAII guard, not a manual release"]
     k40["40 an associated type, not a generic parameter"]
     k41["41 Rc across threads"]
@@ -179,7 +179,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [19 db: one pool, made at startup](katas/db/19-intermediate-one-pool-at-startup) | intermediate | Build the pool once and pass `&SqlitePool`; don't connect per call. | 17 |
 | [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
 | [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
-| [37 closures: fnonce-too-strict](katas/closures/37-intermediate-fnonce-too-strict) | intermediate | A function that calls a closure multiple times but bounds it as `Fn` rejects callers that need `FnMut`; the fix is the least restrictive bound the body needs. | 13 |
+| [37 closures: a closure bound stricter than the body needs](katas/closures/37-intermediate-fnonce-too-strict) | intermediate | A function that calls a closure multiple times but bounds it as `Fn` rejects callers that need `FnMut`; the fix is the least restrictive bound the body needs. | 13 |
 | [39 drop: an RAII guard, not a manual release](katas/drop/39-intermediate-raii-guard) | intermediate | Cleanup lives in `Drop`, so a guard gives back what it took on every way out: early return, `?` or panic. | 08 |
 | [40 generics: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | intermediate | A trait whose implementor picks one output takes `type Item`, not `<T>`: callers write `F::Item` and drop `PhantomData`. | 13, 14 |
 | [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
