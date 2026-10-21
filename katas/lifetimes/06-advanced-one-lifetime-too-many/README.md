@@ -17,13 +17,17 @@ Make `cargo test` pass without changing the test or `until_char`'s signature. No
 2. With one lifetime, the compiler picked the shorter of the two borrows. Why is that the only sound choice?
 
 ## Think further
-1. Make `until_char` return the text after the first `c` instead. Does anything about the borrows change?
-2. Call `StrSplit::new` with a haystack read from a socket buffer and a delimiter that is a `const`. Which of the two lives longer, and does the caller ever see the difference?
-3. Collect every item of a `StrSplit` into a `Vec<&str>`, then drop the delimiter. Should the `Vec` still be usable? Say why in terms of what each item points into.
+1. `until_char`'s signature has no lifetimes written. Use the [elision rules](https://doc.rust-lang.org/reference/lifetime-elision.html) to write them out. Which input does the output borrow from?
+2. The haystack lives for the whole program, but each delimiter is a `String` built inside a loop. After your fix, which split items can you keep once the loop ends?
+3. Edge cases: what does `next` yield for `"a b "` split on `" "`, and for `"abc"` split on `""`? Run it, then decide what the type should promise.
 
 ## In the wild
-- [`std::str::Split<'a, P>`](https://doc.rust-lang.org/std/str/struct.Split.html): which parameter carries the haystack's lifetime, and where does the pattern live? **Review check:** when a struct holds several references, does each one have a lifetime that matches its real source?
-- [`str::split_once`](https://doc.rust-lang.org/std/primitive.str.html#method.split_once): the signature takes a pattern and returns slices. Which input do the results borrow from? **Review check:** is the returned lifetime tied to only the argument the data comes from?
-- [`std::str::pattern::Pattern`](https://doc.rust-lang.org/std/str/pattern/trait.Pattern.html): `&str`, `char` and closures all act as delimiters. What does that cost and buy a caller? **Review check:** does a public signature force callers to build a temporary only to satisfy a type?
-- [`bytes::Bytes`](https://docs.rs/bytes/latest/bytes/struct.Bytes.html): slices of a network buffer without a lifetime parameter. What keeps the buffer alive? **Review check:** is a long-lived value holding a view into a buffer that is meant to be reused?
-- [Exchange-style systems, serde: borrowing data](https://serde.rs/lifetimes.html): a parser borrowing field values from a message buffer and a separate lookup table of symbols. **Review check:** does the parsed message's lifetime follow the buffer only, or does it also get shortened by an unrelated input?
+- [serde: understanding deserializer lifetimes](https://serde.rs/lifetimes.html): `'de` names the input buffer by itself, so a struct can borrow `&'de str` from the JSON it was parsed from.
+- [`sqlx::Executor`](https://docs.rs/sqlx/0.9.0/sqlx/trait.Executor.html): methods such as `fetch` take `'e`, `'q` and `'c`, with the bounds `'q: 'e` and `'c: 'e`. Name what each lifetime is tied to.
+- [The Book, ch. 10.3](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html): `longest`, where one lifetime on both inputs is the right claim. Compare it with `StrSplit`.
+- Exchange-style: a matcher takes the order book and an incoming order and returns fills that point at resting orders in the book. With one lifetime, the fills are also tied to the incoming order, so they can't be kept once that order is dropped.
+
+In a review, check:
+- For every lifetime parameter, which input does it name? Watch for two references sharing one `'a` when they come from different places.
+- Lifetimes that do nothing (clippy's `needless_lifetimes` and `extra_unused_lifetimes`, see the [lint list](https://clippy.rust-lang.org/master/index.html)).
+- A `.to_string()` or `'static` at a call site that exists only to satisfy one shared lifetime.
