@@ -10,6 +10,7 @@ flowchart TD
     k10["10 newtypes, not primitives"]
     k13["13 a missing trait bound"]
     k16["16 a std MutexGuard across await"]
+    k32["32 str, not String"]
     k33["33 a status string to an enum"]
     k34["34 entry, not contains_key"]
     k35["35 iterate, don't index"]
@@ -52,6 +53,7 @@ flowchart TD
   k02 --> k04
   k02 --> k05
   k01 --> k03
+  k01 --> k32
   k01 --> k34
   k01 --> k35
   k03 --> k06
@@ -102,6 +104,7 @@ flowchart TD
   classDef iterators fill:#efebe9,stroke:#6d4c41,color:#000
   classDef collections fill:#e8eaf6,stroke:#3949ab,color:#000
   classDef enums fill:#f0f4c3,stroke:#827717,color:#000
+  classDef strings fill:#fff8e1,stroke:#ff6f00,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -119,9 +122,10 @@ flowchart TD
   class k35 iterators
   class k34 collections
   class k33 enums
+  class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -130,6 +134,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [10 api-design: newtypes, not primitives](katas/api-design/10-beginner-newtypes) | beginner | A one-field newtype per meaning lets the compiler catch swapped `u64` arguments. | — |
 | [13 traits: a missing trait bound](katas/traits/13-beginner-missing-trait-bound) | beginner | A generic `T` can do nothing until a bound says so; `>` needs `T: PartialOrd`. | — |
 | [16 async: a std MutexGuard across `.await`](katas/async/16-beginner-std-guard-across-await) | beginner | A std `MutexGuard` across `.await` makes the future non-`Send`: lock, change, drop, then await. | 13 |
+| [32 strings: `&str`, not `String`](katas/strings/32-beginner-str-not-string) | beginner | Borrow text as `&str`; UTF-8 chars are 1–4 bytes, so count and cut with `chars()`/`char_indices()`, not `len()` and byte ranges. | 01 |
 | [33 enums: a status string to an enum](katas/enums/33-beginner-status-string-to-enum) | beginner | Parse a status string once into an enum, then `match` every variant: a typo or a new status becomes a compile error. | — |
 | [34 collections: entry, not contains_key](katas/collections/34-beginner-entry-not-contains) | beginner | One `entry` lookup instead of `contains_key`/`get_mut` then `insert`: no second hash, no borrow fight. | 01 |
 | [35 iterators: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | beginner | An index loop makes you write the bounds; `iter().filter().map().sum()` has none to get wrong. | 01 |
