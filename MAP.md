@@ -52,6 +52,7 @@ flowchart TD
     k43["43 Relaxed is not enough"]
     k44["44 macro_rules!, not copy-paste"]
     k50["50 an idempotent transfer"]
+    k52["52 an order book sequence gap"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -118,6 +119,8 @@ flowchart TD
   k12 --> k50
   k33 --> k50
   k47 --> k50
+  k25 --> k52
+  k50 --> k52
   k41 --> k51
   k42 --> k51
 
@@ -157,7 +160,7 @@ flowchart TD
   class k16,k17,k18 async
   class k19,k20 db
   class k21,k22,k23 security
-  class k24,k25 websockets
+  class k24,k25,k52 websockets
   class k26,k27 grpc
   class k28,k29,k30 unsafe
   class k31,k45 capstone
@@ -225,6 +228,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17, 41 |
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
+| [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
