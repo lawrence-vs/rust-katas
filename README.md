@@ -77,6 +77,7 @@ Kata links go live as each kata merges.
 | threads | [41 intermediate: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | Programming Rust (Blandy et al.), ch. 19 Concurrency; std `thread::scope` docs |
 | money | [42 intermediate: no float money](katas/money/42-intermediate-no-float-money) | The Rust Reference, arithmetic overflow; `u64::checked_add` docs |
 | money | [46 intermediate: quote with a spread](katas/money/46-intermediate-quote-with-spread) | std `u128::div_ceil` and `TryFrom` docs; own design (exchange quoting) |
+| quotes | [47 intermediate: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | std `u64::checked_add` and `abs_diff` docs; own design (exchange RFQ quoting) |
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |
 | macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
 | capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (an exchange-style exchange prep); std `BTreeMap` docs |

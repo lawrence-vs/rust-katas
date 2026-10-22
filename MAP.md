@@ -33,6 +33,7 @@ flowchart TD
     k41["41 Rc across threads"]
     k42["42 no float money"]
     k46["46 quote with a spread"]
+    k47["47 a stale quote accepted"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -110,6 +111,7 @@ flowchart TD
   k21 --> k31
   k42 --> k45
   k42 --> k46
+  k46 --> k47
   k34 --> k45
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
@@ -125,6 +127,7 @@ flowchart TD
   classDef unsafe fill:#424242,stroke:#000,color:#fff
   classDef capstone fill:#ffd700,stroke:#7a5c00,stroke-width:3px,color:#000
   classDef money fill:#f1f8e9,stroke:#558b2f,color:#000
+  classDef quotes fill:#ffccbc,stroke:#4e342e,color:#000
   classDef iterators fill:#efebe9,stroke:#6d4c41,color:#000
   classDef collections fill:#e8eaf6,stroke:#3949ab,color:#000
   classDef enums fill:#f0f4c3,stroke:#827717,color:#000
@@ -150,6 +153,7 @@ flowchart TD
   class k28,k29,k30 unsafe
   class k31,k45 capstone
   class k42,k46 money
+  class k47 quotes
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -163,7 +167,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -193,6 +197,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
 | [42 money: no float money](katas/money/42-intermediate-no-float-money) | intermediate | Money is whole minor units with `checked_*` arithmetic: floats drift, and an overflow is an error. | 07, 10 |
 | [46 money: quote with a spread](katas/money/46-intermediate-quote-with-spread) | intermediate | Integer quote with the spread off mid, one division in u128, rounded in the house's favour: a buy up, a sell down; overflow is an error. | 42 |
+| [47 quotes: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | intermediate | A quote carries its deadline and reference mid; accept rejects it when expired (checked first) or when the market drifted past tolerance, with no overflow. | 46 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
