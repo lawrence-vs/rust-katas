@@ -31,7 +31,7 @@ katas/<topic>/<NN>-<level>-<slug>/
 | `advanced` | design: which fix is right and why |
 | `expert` | unsafe, Miri, FFI and async internals: code the compiler accepts but that is still wrong |
 
-A new kata's PR must fail on purpose: CI checks that `cargo test` (or `cargo miri test` for katas with `miri = true` under `[package.metadata.kata]`) fails with the README's **Fails with:** text. CI also runs `cargo audit` on every kata's `Cargo.lock`.
+A new kata's PR must fail on purpose: CI checks that `cargo test` (or `cargo miri test` for katas with `miri = true` under `[package.metadata.kata]`) fails with the README's **Fails with:** text. CI also runs `cargo audit` on every kata's `Cargo.lock`, and runs gitleaks over the PR's commits: katas may contain bad code but never anything secret-shaped, so a kata that needs a token-like string uses an obviously fake one, and its PR explains the narrow allowlist entry.
 
 Katas are made with the `code-kata` skill from a concept, a Readwise highlight or a Claude session; `katas/_template/` is the shape.
 
