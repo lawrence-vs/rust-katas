@@ -32,6 +32,7 @@ flowchart TD
     k40["40 an associated type, not a generic parameter"]
     k41["41 Rc across threads"]
     k42["42 no float money"]
+    k46["46 quote with a spread"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -108,6 +109,7 @@ flowchart TD
   k18 --> k31
   k21 --> k31
   k42 --> k45
+  k42 --> k46
   k34 --> k45
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
@@ -147,7 +149,7 @@ flowchart TD
   class k26,k27 grpc
   class k28,k29,k30 unsafe
   class k31,k45 capstone
-  class k42 money
+  class k42,k46 money
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -190,6 +192,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [40 generics: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | intermediate | A trait whose implementor picks one output takes `type Item`, not `<T>`: callers write `F::Item` and drop `PhantomData`. | 13, 14 |
 | [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
 | [42 money: no float money](katas/money/42-intermediate-no-float-money) | intermediate | Money is whole minor units with `checked_*` arithmetic: floats drift, and an overflow is an error. | 07, 10 |
+| [46 money: quote with a spread](katas/money/46-intermediate-quote-with-spread) | intermediate | Integer quote with the spread off mid, one division in u128, rounded in the house's favour: a buy up, a sell down; overflow is an error. | 42 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
