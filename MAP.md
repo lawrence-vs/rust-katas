@@ -35,6 +35,7 @@ flowchart TD
     k46["46 quote with a spread"]
     k47["47 a stale quote accepted"]
     k51["51 a credit line overspent"]
+    k53["53 a balance that never goes negative"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -123,6 +124,9 @@ flowchart TD
   k50 --> k52
   k41 --> k51
   k42 --> k51
+  k36 --> k53
+  k10 --> k53
+  k42 --> k53
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -175,7 +179,7 @@ flowchart TD
   class k39 drop
   class k37 closures
   class k35 iterators
-  class k36 testing
+  class k36,k53 testing
   class k34 collections
   class k33 enums
   class k32 strings
@@ -213,6 +217,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [46 money: quote with a spread](katas/money/46-intermediate-quote-with-spread) | intermediate | Integer quote with the spread off mid, one division in u128, rounded in the house's favour: a buy up, a sell down; overflow is an error. | 42 |
 | [47 quotes: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | intermediate | A quote carries its deadline and reference mid; accept rejects it when expired (checked first) or when the market drifted past tolerance, with no overflow. | 46 |
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
+| [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
