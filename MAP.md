@@ -37,6 +37,7 @@ flowchart TD
     k51["51 a credit line overspent"]
     k53["53 a balance that never goes negative"]
     k56["56 rayon inside async"]
+    k57["57 untrusted JSON into checked newtypes"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -130,6 +131,9 @@ flowchart TD
   k42 --> k53
   k17 --> k56
   k41 --> k56
+  k10 --> k57
+  k42 --> k57
+  k53 --> k57
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -159,6 +163,7 @@ flowchart TD
   classDef statemachines fill:#b39ddb,stroke:#311b92,color:#000
   classDef credit fill:#a5d6a7,stroke:#1b5e20,color:#000
   classDef rayon fill:#fff3e0,stroke:#e65100,color:#000
+  classDef serde fill:#f5e6c8,stroke:#8d6e63,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -177,6 +182,7 @@ flowchart TD
   class k50 statemachines
   class k51 credit
   class k56 rayon
+  class k57 serde
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -190,7 +196,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -224,6 +230,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
 | [56 rayon: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | intermediate | `par_iter` blocks its caller until rayon finishes; from async code hand the work to `spawn_blocking` or `rayon::spawn` + `oneshot` and await it. | 17, 41 |
+| [57 serde: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | intermediate | Strict wire type with deny_unknown_fields, then try_from into newtypes: a negative, zero, fractional or misspelt order is an error naming the field, never an Order. | 10, 42, 53 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |

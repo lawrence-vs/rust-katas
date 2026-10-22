@@ -89,6 +89,7 @@ Kata links go live as each kata merges.
 | websockets | [52 advanced: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | std `BTreeMap` docs; own design (exchange market-data feed handler) |
 | testing | [53 intermediate: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | proptest book; std `TryFrom` docs; own design (exchange account balances) |
 | rayon | [56 intermediate: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | tokio docs, CPU-bound tasks; rayon `spawn` docs; Alice Ryhl, "Async: What is blocking?" |
+| serde | [57 intermediate: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | serde container attributes (deny_unknown_fields, try_from); API Guidelines C-VALIDATE; own design (exchange order requests) |
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |
 | macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
 | capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (exchange-style); std `BTreeMap` docs |
