@@ -4,6 +4,12 @@ Small Rust bugs to fix, one concept each, from what I'm reading. Every kata **fa
 
 Start with the [learning map](MAP.md): every kata in suggested order, with what each one needs first.
 
+## How this repo is built
+
+The katas are written by AI, the solutions by me. My agent pipeline (Claude: a planning model writes the plan, a coding model builds the kata, a separate model audits it against [REVIEW.md](REVIEW.md), and CI proves the kata fails for the reason it teaches) opens one PR per kata; I review and merge. Each kata cites the book or doc it comes from, so I can check it against the source.
+
+Solving is mine: a `solve/<kata>` branch, no AI autocomplete, and the README's questions answered in my own words in the PR. Those PRs are the record of what I've learned.
+
 ## How a kata works
 
 ```
@@ -83,4 +89,4 @@ Kata links go live as each kata merges.
 | websockets | [52 advanced: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | std `BTreeMap` docs; own design (exchange market-data feed handler) |
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |
 | macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
-| capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (Kraken-style exchange prep); std `BTreeMap` docs |
+| capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (exchange-style); std `BTreeMap` docs |
