@@ -50,6 +50,7 @@ flowchart TD
     k27["27 a deadline on a stream"]
     k43["43 Relaxed is not enough"]
     k44["44 macro_rules!, not copy-paste"]
+    k50["50 an idempotent transfer"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -113,6 +114,9 @@ flowchart TD
   k42 --> k46
   k46 --> k47
   k34 --> k45
+  k12 --> k50
+  k33 --> k50
+  k47 --> k50
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -139,6 +143,7 @@ flowchart TD
   classDef drop fill:#e3e8f0,stroke:#37474f,color:#000
   classDef closures fill:#e8e6f0,stroke:#5e50a1,color:#000
   classDef testing fill:#ffe0d6,stroke:#ff5722,color:#000
+  classDef statemachines fill:#b39ddb,stroke:#311b92,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -154,6 +159,7 @@ flowchart TD
   class k31,k45 capstone
   class k42,k46 money
   class k47 quotes
+  class k50 statemachines
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -167,7 +173,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -212,6 +218,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
 | [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17, 41 |
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
+| [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
