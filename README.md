@@ -116,6 +116,7 @@ Kata links go live as each kata merges.
 | state-machines | [50 advanced: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | IETF Idempotency-Key header draft; std `HashMap::entry` docs; own design (exchange withdrawals) |
 | credit | [51 intermediate: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | Rust Atomics and Locks (Mara Bos), ch. 2 Compare-and-Exchange; loom docs |
 | websockets | [52 advanced: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | std `BTreeMap` docs; own design (exchange market-data feed handler) |
+| db | [61 advanced: a transactional outbox](katas/db/61-advanced-transactional-outbox) | sqlx `Transaction` docs; microservices.io transactional outbox and idempotent consumer; own design (exchange order events) |
 | testing | [53 intermediate: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | proptest book; std `TryFrom` docs; own design (exchange account balances) |
 | state-machines | [62 advanced: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | proptest book (prop_shuffle); thiserror docs; own design (exchange order-update consumer) |
 | collections | [74 intermediate: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | std collections docs, "When Should You Use Which Collection?"; std HashMap::with_capacity docs |
