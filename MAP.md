@@ -61,6 +61,7 @@ flowchart TD
     k44["44 macro_rules!, not copy-paste"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
+    k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
   end
@@ -132,6 +133,9 @@ flowchart TD
   k47 --> k50
   k25 --> k52
   k50 --> k52
+  k19 --> k61
+  k50 --> k61
+  k09 --> k61
   k50 --> k62
   k52 --> k62
   k53 --> k62
@@ -197,7 +201,7 @@ flowchart TD
   class k10,k11,k12 apidesign
   class k13,k14,k15 traits
   class k16,k17,k18 async
-  class k19,k20 db
+  class k19,k20,k61 db
   class k21,k22,k23 security
   class k24,k25,k52 websockets
   class k26,k27 grpc
@@ -280,6 +284,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
+| [61 db: a transactional outbox](katas/db/61-advanced-transactional-outbox) | advanced | One transaction writes the state change, a dedupe row and an outbox row; a separate publisher drains it, so a crash loses nothing and a redelivery changes nothing (at-least-once). | 19, 50, 09 |
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
