@@ -107,6 +107,7 @@ Kata links go live as each kata merges.
 | iterators | [35 beginner: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | Programming Rust (Blandy et al.), ch. 15 Iterators |
 | testing | [36 beginner: test the edges](katas/testing/36-beginner-test-the-edges) | Rust for Rustaceans (Gjengset), ch. 6 Testing |
 | closures | [37 intermediate: a closure bound stricter than the body needs](katas/closures/37-intermediate-fnonce-too-strict) | Programming Rust (Blandy et al.), ch. 14 Closures |
+| smart-pointers | [38 intermediate: a RefCell borrow held across recursion](katas/smart-pointers/38-intermediate-rc-refcell-borrow-panic) | Programming Rust (Blandy et al.), ch. 4 "Rc and Arc: Shared Ownership" and ch. 9 "Interior Mutability" |
 | drop | [39 intermediate: an RAII guard, not a manual release](katas/drop/39-intermediate-raii-guard) | Programming Rust (Blandy et al.), ch. 13 Utility Traits, "Drop" |
 | generics | [40 intermediate: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | Rust for Rustaceans (Gjengset), ch. 2 Types, "Generic Traits" |
 | threads | [41 intermediate: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | Programming Rust (Blandy et al.), ch. 19 Concurrency; std `thread::scope` docs |
