@@ -34,7 +34,9 @@ fn parse_cents(s: &str) -> Option<u64> {
 
 fn main() {
     let ok = r#"{"client_order_id":"abc-1","qty":3}"#;
-    println!("ok: {:?}", serde_json::from_str::<OrderRequest>(ok));
+    if let Ok(req) = serde_json::from_str::<OrderRequest>(ok) {
+        println!("ok: {} qty {}", req.client_order_id, req.qty);
+    }
 
     // Think further 6 and 4: the limits the field needs go in the type or right after it parses.
     let extra = r#"{"client_order_id":"abc-2","qty":3,"venue":"x"}"#;
