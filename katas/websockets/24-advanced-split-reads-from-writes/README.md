@@ -28,7 +28,7 @@ Make `cargo test` pass without changing the test or `serve`'s signature.
 - [`StreamExt::split`](https://docs.rs/futures-util/0.3.34/futures_util/stream/trait.StreamExt.html#method.split): the two halves share a lock; `reunite` puts them back.
 - [`tokio::select!`, cancellation safety](https://docs.rs/tokio/1.53.2/tokio/macro.select.html#cancellation-safety): what is lost when a branch's future is dropped.
 - [RFC 6455 §5.5 control frames](https://datatracker.ietf.org/doc/html/rfc6455#section-5.5) and [§7 closing the connection](https://datatracker.ietf.org/doc/html/rfc6455#section-7): Ping/Pong and the close handshake that both halves must respect.
-- Exchange-style: a market-data socket where the client mostly listens. Kraken has the client [ping](https://docs.kraken.com/exchange/api-reference/spot-websocket-v2/ping) and the server send a [heartbeat](https://docs.kraken.com/exchange/api-reference/spot-websocket-v2/heartbeat), so both sides can tell a quiet feed from a dead one.
+- Exchange-style: a market-data socket where the client mostly listens. The client pings and the server sends a heartbeat, so both sides can tell a quiet feed from a dead one.
 
 In a review, check:
 - A loop that awaits `ws.next()` and only then writes: a listen-only client never gets anything.

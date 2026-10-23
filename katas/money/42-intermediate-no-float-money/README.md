@@ -30,7 +30,7 @@ Make `cargo test` pass without changing the test. No `f32` or `f64` anywhere in 
 - [`std::time::Duration`](https://doc.rust-lang.org/std/time/struct.Duration.html): std's own fixed-point type, whole seconds plus nanoseconds as integers, with `checked_add`/`checked_sub` returning `Option`.
 - [`rust_decimal::Decimal`](https://docs.rs/rust_decimal/latest/rust_decimal/struct.Decimal.html): a 96-bit integer plus a decimal scale, with `checked_add`/`checked_mul`, for when amounts need more than one fixed scale.
 - [Stripe currencies](https://docs.stripe.com/currencies): every API amount is an integer in the currency's smallest unit.
-- Exchange-style: [Kraken's REST API](https://docs.kraken.com/api/) takes order `price` and `volume` as decimal strings (`'50000'`, `'1.0'`), not JSON numbers, so a client never has to round-trip them through a float.
+- Exchange-style: REST APIs often take order `price` and `volume` as decimal strings (`'50000'`, `'1.0'`), not JSON numbers, so a client never has to round-trip them through a float.
 
 In a review, check:
 - `f32`/`f64` anywhere on a price, balance or fee path, including `as f64` casts "just for the division".
