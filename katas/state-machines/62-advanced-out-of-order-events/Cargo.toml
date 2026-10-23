@@ -1,0 +1,10 @@
+[package]
+name = "kata-state-machines-62"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+thiserror = "=2.0.21"
+
+[dev-dependencies]
+proptest = { version = "=1.12.0", default-features = false, features = ["std"] }
