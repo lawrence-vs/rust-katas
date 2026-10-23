@@ -40,6 +40,7 @@ flowchart TD
     k57["57 untrusted JSON into checked newtypes"]
     k69["69 stream, don't slurp"]
     k70["70 a decimal string, parsed without a float"]
+    k71["71 Read and Write, not a path"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -140,6 +141,9 @@ flowchart TD
   k35 --> k69
   k32 --> k70
   k42 --> k70
+  k08 --> k71
+  k13 --> k71
+  k69 --> k71
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -190,7 +194,7 @@ flowchart TD
   class k51 credit
   class k56 rayon
   class k57 serde
-  class k69 io
+  class k69,k71 io
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -241,6 +245,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [57 serde: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | intermediate | Strict wire type with deny_unknown_fields, then try_from into newtypes: a negative, zero, fractional or misspelt order is an error naming the field, never an Order. | 10, 42, 53 |
 | [69 io: stream, don't slurp](katas/io/69-intermediate-stream-dont-slurp) | intermediate | Pass the reader to csv and fold record by record; never read the file into a String or collect the rows. | 08, 35 |
 | [70 money: a decimal string, parsed without a float](katas/money/70-intermediate-parse-decimal-string) | intermediate | Parse a price string straight into whole minor units: digits and one '.', at most 4 places, checked_* to combine, a typed error per bad input; never through f64. | 32, 42 |
+| [71 io: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | intermediate | Take `R: Read` and `W: Write` by value and return write errors, so tests pass `&[u8]` and `Vec<u8>` while `main` passes a `File` and locked stdout. | 08, 13, 69 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
