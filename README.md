@@ -121,6 +121,7 @@ Kata links go live as each kata merges.
 | websockets | [52 advanced: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | std `BTreeMap` docs; own design (exchange market-data feed handler) |
 | db | [61 advanced: a transactional outbox](katas/db/61-advanced-transactional-outbox) | sqlx `Transaction` docs; microservices.io transactional outbox and idempotent consumer; own design (exchange order events) |
 | testing | [53 intermediate: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | proptest book; std `TryFrom` docs; own design (exchange account balances) |
+| traits | [63 advanced: a generic method behind `dyn`](katas/traits/63-advanced-object-safety) | Rust for Rustaceans (Gjengset), ch. 3 Designing Interfaces, "Object Safety" |
 | latency | [55 advanced: a config snapshot, not a read per quote](katas/latency/55-advanced-config-snapshot) | Rust Atomics and Locks (Mara Bos), ch. 1 Basics of Rust Concurrency; std `Arc` and `RwLock` docs; own design (exchange quoting) |
 | capstone | [60 expert: capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | tokio `spawn_blocking`, mpsc and graceful shutdown docs; serde container attributes; rayon docs; own design (exchange market-data take-home) |
 | state-machines | [62 advanced: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | proptest book (prop_shuffle); thiserror docs; own design (exchange order-update consumer) |
