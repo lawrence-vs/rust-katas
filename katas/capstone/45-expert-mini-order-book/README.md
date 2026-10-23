@@ -39,7 +39,7 @@ Work in order. After each stage, write down your **Observation** (what the test 
 - [`BTreeMap::first_key_value`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html#method.first_key_value), [`last_entry`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html#method.last_entry) and [`OccupiedEntry::remove`](https://doc.rust-lang.org/std/collections/btree_map/struct.OccupiedEntry.html#method.remove): the best level, and removing it when it empties, without looking it up twice.
 - [`VecDeque`](https://doc.rust-lang.org/std/collections/struct.VecDeque.html): `push_back` to rest, `front_mut`/`pop_front` to match, which is time priority within a level.
 - [`f64::total_cmp`](https://doc.rust-lang.org/std/primitive.f64.html#method.total_cmp): the reason `f64` isn't `Ord` (NaN), and why wrapping it to get an ordering still leaves you with float prices.
-- Exchange-style: [Kraken's WebSocket v2 `book` channel](https://docs.kraken.com/api/docs/websocket-v2/book) publishes price levels (price, total qty) per side, plus a checksum the client computes over its own copy of the top levels. That only works if both sides agree on every price exactly.
+- Exchange-style: a typical WebSocket `book` channel publishes price levels (price, total qty) per side, plus a checksum the client computes over its own copy of the top levels. That only works if both sides agree on every price exactly.
 
 In a review, check:
 - Floats anywhere on the price path, including `as f64` just to compare or sort.

@@ -29,7 +29,7 @@ Make `cargo test` pass without changing the test. Skip ahead and count what was 
 - [`BroadcastStream`](https://docs.rs/tokio-stream/latest/tokio_stream/wrappers/struct.BroadcastStream.html): the same choice once a receiver is wrapped as a `Stream`; lag comes through as an error item.
 - [tokio `watch`](https://docs.rs/tokio/1.53.2/tokio/sync/watch/index.html): for when only the latest value matters (a ticker), so there is no backlog to fall behind on.
 - [tungstenite `WebSocketConfig::max_write_buffer_size`](https://docs.rs/tungstenite/0.30.0/tungstenite/protocol/struct.WebSocketConfig.html): the default is unbounded. A slow socket is a third buffer.
-- Exchange-style: [Kraken's v2 book channel](https://docs.kraken.com/exchange/api-reference/spot-websocket-v2/book) sends a snapshot, then updates with a checksum, so a client that missed updates can tell its book is wrong.
+- Exchange-style: a book channel sends a snapshot, then updates with a checksum, so a client that missed updates can tell its book is wrong.
 
 In a review, check:
 - `while let Ok(..) = rx.recv().await` on a `broadcast::Receiver`: `Lagged` silently ends the loop.

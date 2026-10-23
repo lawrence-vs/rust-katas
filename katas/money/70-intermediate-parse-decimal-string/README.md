@@ -29,7 +29,7 @@ Make `cargo test` pass without changing `tests/` or `Cargo.toml`, and keep the p
 
 ## In the wild
 - [`rust_decimal::Decimal::from_str_exact`](https://docs.rs/rust_decimal/latest/rust_decimal/struct.Decimal.html#method.from_str_exact): parses a decimal string and errors rather than rounding.
-- Kraken and Binance REST APIs send price and quantity as decimal strings.
+- Exchange REST APIs commonly send price and quantity as decimal strings.
 - The std [`from_str_radix`](https://doc.rust-lang.org/std/primitive.u64.html#method.from_str_radix) docs on the sign.
 
 In a review, check:

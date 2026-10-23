@@ -29,7 +29,7 @@ Make `cargo test` pass without changing the test. `accept` must not wait.
 - [tower `load_shed`](https://docs.rs/tower/latest/tower/load_shed/index.html): a middleware that rejects requests when the service behind it isn't ready.
 - [tower `ConcurrencyLimitLayer`](https://docs.rs/tower/latest/tower/limit/concurrency/struct.ConcurrencyLimitLayer.html): the same limit as a layer you can put on an axum or tonic service.
 - [axum `DefaultBodyLimit`](https://docs.rs/axum/latest/axum/extract/struct.DefaultBodyLimit.html): a byte limit per request body. Count limits and byte limits are different defences.
-- Exchange-style: [Kraken spot API rate limits](https://docs.kraken.com/exchange/guides/general/ratelimits): over the limit, a client gets an error back right away; it is not queued.
+- Exchange-style: API rate limits: over the limit, a client gets an error back right away; it is not queued.
 
 In a review, check:
 - `unbounded_channel`, or a `Vec`/`VecDeque` that grows, fed straight from network input.
