@@ -71,6 +71,7 @@ flowchart TD
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
     k54["54 a Merkle sum tree"]
+    k63["63 a generic method behind dyn"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -101,6 +102,7 @@ flowchart TD
   k11 --> k12
   k13 --> k14
   k14 --> k15
+  k14 --> k63
   k13 --> k16
   k13 --> k37
   k02 --> k38
@@ -232,7 +234,7 @@ flowchart TD
   class k03,k06 lifetimes
   class k07,k08,k09,k72 errors
   class k10,k11,k12 apidesign
-  class k13,k14,k15 traits
+  class k13,k14,k15,k63 traits
   class k16,k17,k18,k58 async
   class k19,k20,k61 db
   class k21,k22,k23 security
@@ -326,6 +328,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [49 batching: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | advanced | One provider call per pair per flush; a short fill goes oldest order first and the remainder goes back to the front of the queue, with no overflow. | 34, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
+| [63 traits: a generic method behind `dyn`](katas/traits/63-advanced-object-safety) | advanced | A vtable has one slot per method, so a generic method can't sit behind `dyn`: fence it with `where Self: Sized` or move it to an extension trait. | 14 |
 | [55 latency: a config snapshot, not a read per quote](katas/latency/55-advanced-config-snapshot) | advanced | Load config once into an `Arc` snapshot; quotes clone the `Arc` and never touch the store, `reload` swaps it in one step, and a failed reload keeps the last good config. | 15, 18, 41 |
 | [61 db: a transactional outbox](katas/db/61-advanced-transactional-outbox) | advanced | One transaction writes the state change, a dedupe row and an outbox row; a separate publisher drains it, so a crash loses nothing and a redelivery changes nothing (at-least-once). | 19, 50, 09 |
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
