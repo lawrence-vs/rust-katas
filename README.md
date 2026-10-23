@@ -24,6 +24,35 @@ katas/<topic>/<NN>-<level>-<slug>/
 3. Open a PR. CI runs `cargo fmt --check`, `cargo clippy -D warnings` and `cargo test` on only the katas the PR changes; Junior then reviews it against [REVIEW.md](REVIEW.md) (idioms, ownership, [API Guidelines](https://rust-lang.github.io/api-guidelines/)).
 4. Write what you learned as a permanent note in the vault and link the kata from its `code:` property.
 
+### Start a kata (from nothing to coding)
+
+A kata only exists on `main` once its Junior PR is merged; `git pull` brings it in.
+
+```sh
+cd ~/Local/Workspace/Programming/rust-katas
+git switch main && git pull --ff-only
+git switch -c solve/NN-slug                  # e.g. solve/07-unwrap-in-library
+cd katas/<topic>/NN-level-slug               # e.g. katas/errors/07-beginner-unwrap-in-library
+cargo watch -q -c -x check -x test           # read README.md and the first error, then code
+```
+
+Fix, then check and open the PR:
+
+```sh
+cargo fmt && cargo clippy -- -D warnings && cargo test
+git add -A . && git commit -m "Solve kata NN: <what you fixed>"
+git push -u origin solve/NN-slug
+gh pr create --fill                          # README's questions answered in the body
+```
+
+Shortcut: `source kata.sh` once (add it to your shell rc), then `kata 07` switches to `solve/07-<slug>` (creating it if needed), `cd`s into the kata and starts `cargo watch`.
+
+Pace (80/20):
+- 80% solo: read the README, fix it, green tests, short PR answers. No AI. About 15 minutes each.
+- 20% with Claude: only when the tests pass but you can't say why, or two fixes both look right (usually `advanced`). Paste your fix and ask "why not X?"; Claude reviews, doesn't write.
+- Skip the vault note unless the kata surprised you.
+- Batch the `beginner` and `intermediate` katas; save `advanced` and `expert` for dialog.
+
 | Level | What it tests |
 |---|---|
 | `beginner` | one rule |
