@@ -37,6 +37,7 @@ flowchart TD
     k47["47 a stale quote accepted"]
     k51["51 a credit line overspent"]
     k53["53 a balance that never goes negative"]
+    k59["59 a shared Mutex inside par_iter"]
     k74["74 sparse ids: a map, not a Vec"]
     k56["56 rayon inside async"]
     k57["57 untrusted JSON into checked newtypes"]
@@ -168,6 +169,8 @@ flowchart TD
   k23 --> k54
   k17 --> k56
   k41 --> k56
+  k35 --> k59
+  k41 --> k59
   k10 --> k57
   k42 --> k57
   k53 --> k57
@@ -243,7 +246,7 @@ flowchart TD
   class k49 batching
   class k50,k62 statemachines
   class k51 credit
-  class k56 rayon
+  class k56,k59 rayon
   class k57 serde
   class k69,k71 io
   class k73 concurrency
@@ -297,6 +300,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [47 quotes: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | intermediate | A quote carries its deadline and reference mid; accept rejects it when expired (checked first) or when the market drifted past tolerance, with no overflow. | 46 |
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
+| [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
 | [56 rayon: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | intermediate | `par_iter` blocks its caller until rayon finishes; from async code hand the work to `spawn_blocking` or `rayon::spawn` + `oneshot` and await it. | 17, 41 |
 | [57 serde: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | intermediate | Strict wire type with deny_unknown_fields, then try_from into newtypes: a negative, zero, fractional or misspelt order is an error naming the field, never an Order. | 10, 42, 53 |
