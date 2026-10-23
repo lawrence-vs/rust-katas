@@ -72,6 +72,7 @@ flowchart TD
     k30["30 a dangling CString across FFI"]
     k31["31 capstone: a concurrent cache"]
     k45["45 capstone: a mini order book"]
+    k60["60 capstone: an async feed with parallel depth"]
   end
 
   k01 --> k02
@@ -129,6 +130,10 @@ flowchart TD
   k42 --> k46
   k46 --> k47
   k34 --> k45
+  k20 --> k60
+  k21 --> k60
+  k52 --> k60
+  k10 --> k60
   k12 --> k50
   k33 --> k50
   k47 --> k50
@@ -210,7 +215,7 @@ flowchart TD
   class k24,k25,k52 websockets
   class k26,k27 grpc
   class k28,k29,k30 unsafe
-  class k31,k45 capstone
+  class k31,k45,k60 capstone
   class k42,k46,k70 money
   class k47 quotes
   class k50,k62 statemachines
@@ -297,5 +302,6 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
 | [31 capstone: a concurrent cache](katas/capstone/31-expert-concurrent-cache) | expert | A shared cache stays bounded, never locks over I/O, and loads each key once (single-flight). | 18, 21 |
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
+| [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.
