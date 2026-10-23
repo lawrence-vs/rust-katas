@@ -218,7 +218,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
