@@ -1,6 +1,6 @@
 # Reviewing a kata fix
 
-A kata fix PR changes one kata's `src/` (and nothing else under `katas/`) and answers that kata's README questions in the PR description. Review it as a Rust API code review: idioms, ownership, the [API Guidelines](https://rust-lang.github.io/api-guidelines/).
+A kata fix PR changes one kata's `src/` (plus a `DESIGN.md` when that kata's README asks for one, and nothing else under `katas/`) and answers that kata's README questions in the PR description. Review it as a Rust API code review: idioms, ownership, the [API Guidelines](https://rust-lang.github.io/api-guidelines/).
 
 Each item passes or fails. Report every item, with a one-line reason for each fail.
 
