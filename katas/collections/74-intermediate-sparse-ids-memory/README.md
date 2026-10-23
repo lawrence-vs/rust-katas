@@ -9,7 +9,7 @@
 Make `cargo test` pass without changing `tests/` or `Cargo.toml`. Keep the public API of `Ledger`. In `src/`: no `unwrap`, `expect`, `panic!` or `#[allow]`.
 
 ## Before you fix it
-1. Run `cargo test`. Read the peak bytes in the failure message.
+1. Run `cargo test`. Read the peak bytes in the failure message. A second test also fails, with "grew after with_capacity".
 2. Compute `size_of::<Option<i64>>()`. Multiply by the largest id the test uses.
 3. Five of the seven tests pass on the starting code. Why do they, and why do the other two not?
 
