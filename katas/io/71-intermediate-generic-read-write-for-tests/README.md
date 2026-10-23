@@ -2,7 +2,7 @@
 
 **Concept:** Take `R: Read` and `W: Write` by value and return write errors, so tests pass `&[u8]` and `Vec<u8>` while `main` passes a `File` and locked stdout.
 **Source:** Rust API Guidelines, [C-RW-VALUE](https://rust-lang.github.io/api-guidelines/interoperability.html#c-rw-value); the std::io docs for [`Read`](https://doc.rust-lang.org/std/io/trait.Read.html), [`Write`](https://doc.rust-lang.org/std/io/trait.Write.html) and [`Stdout::lock`](https://doc.rust-lang.org/std/io/struct.Stdout.html#method.lock)
-**Fails with:** `error[E0061]: this function takes 1 argument but 2 arguments were supplied`
+**Fails with:** `E0061`
 **Vault:** your note on injecting IO instead of opening it
 
 ## Task
