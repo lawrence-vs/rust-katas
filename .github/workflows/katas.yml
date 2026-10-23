@@ -25,7 +25,7 @@ jobs:
               echo "new Miri kata: the miri job checks it fails"
             else
               # A new kata must fail on purpose, with the error its README names.
-              want=$(sed -n 's/^\*\*Fails with:\*\* `\(.*\)`.*/\1/p' "$d/README.md")
+              want=$(sed -n 's/^\*\*Fails with:\*\* `\([^`]*\)`.*/\1/p' "$d/README.md")
               [ -n "$want" ] || { echo "::error::$d/README.md has no **Fails with:** line"; exit 1; }
               if cargo test --manifest-path "$d/Cargo.toml" > out.txt 2>&1; then
                 cat out.txt; echo "::error::$d passes, but a new kata must fail"; exit 1
@@ -54,7 +54,7 @@ jobs:
             if git cat-file -e "origin/${{ github.base_ref }}:$d/Cargo.toml" 2>/dev/null; then
               cargo +nightly miri test --manifest-path "$d/Cargo.toml"
             else
-              want=$(sed -n 's/^\*\*Fails with:\*\* `\(.*\)`.*/\1/p' "$d/README.md")
+              want=$(sed -n 's/^\*\*Fails with:\*\* `\([^`]*\)`.*/\1/p' "$d/README.md")
               [ -n "$want" ] || { echo "::error::$d/README.md has no **Fails with:** line"; exit 1; }
               if cargo +nightly miri test --manifest-path "$d/Cargo.toml" > out.txt 2>&1; then
                 cat out.txt; echo "::error::$d passes Miri, but a new kata must fail"; exit 1
