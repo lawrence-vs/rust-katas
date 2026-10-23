@@ -2,7 +2,7 @@
 
 **Concept:** A `Vec` indexed by an id costs memory for every id up to the largest one you have seen, not for the ids you use. When ids are sparse, a map costs memory per entry instead, and `with_capacity` lets it do that up front, once.
 **Source:** std `collections` docs, "When Should You Use Which Collection?", https://doc.rust-lang.org/std/collections/index.html#when-should-you-use-which-collection; std `HashMap::with_capacity` docs
-**Fails with:** `over the memory budget` (also `grew after with_capacity`)
+**Fails with:** `over the memory budget`
 **Vault:** your note on choosing a collection
 
 ## Task
