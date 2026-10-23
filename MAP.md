@@ -60,6 +60,7 @@ flowchart TD
     k44["44 macro_rules!, not copy-paste"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
+    k73["73 shard by key, keep order"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -148,6 +149,9 @@ flowchart TD
   k08 --> k72
   k69 --> k72
   k71 --> k72
+  k17 --> k73
+  k21 --> k73
+  k41 --> k73
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -179,6 +183,7 @@ flowchart TD
   classDef rayon fill:#fff3e0,stroke:#e65100,color:#000
   classDef serde fill:#f5e6c8,stroke:#8d6e63,color:#000
   classDef io fill:#c5cae9,stroke:#1a237e,color:#000
+  classDef concurrency fill:#b2dfdb,stroke:#004d40,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -199,6 +204,7 @@ flowchart TD
   class k56 rayon
   class k57 serde
   class k69,k71 io
+  class k73 concurrency
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -267,6 +273,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
+| [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
