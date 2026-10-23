@@ -132,6 +132,7 @@ Kata links go live as each kata merges.
 | async | [58 advanced: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | Tokio topics, graceful shutdown; tokio `JoinSet` and `watch` docs |
 | por | [54 advanced: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | RustCrypto sha2 docs; std u64::checked_add docs; own design (exchange proof of liabilities) |
 | rayon | [56 intermediate: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | tokio docs, CPU-bound tasks; rayon `spawn` docs; Alice Ryhl, "Async: What is blocking?" |
+| rayon | [59 intermediate: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | rayon docs (ParallelIterator, collect, reduce); own design (exchange mark-to-market) |
 | serde | [57 intermediate: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | serde container attributes (deny_unknown_fields, try_from); API Guidelines C-VALIDATE; own design (exchange order requests) |
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |
 | macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
