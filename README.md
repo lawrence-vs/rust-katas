@@ -129,6 +129,7 @@ Kata links go live as each kata merges.
 | io | [71 intermediate: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | Rust API Guidelines, C-RW-VALUE; std::io docs |
 | errors | [72 intermediate: a bad-row policy](katas/errors/72-intermediate-bad-row-policy) | The Rust Book ch. 9; csv `Error` docs; own design (trade file import) |
 | async | [58 advanced: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | Tokio topics, graceful shutdown; tokio `JoinSet` and `watch` docs |
+| por | [54 advanced: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | RustCrypto sha2 docs; std u64::checked_add docs; own design (exchange proof of liabilities) |
 | rayon | [56 intermediate: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | tokio docs, CPU-bound tasks; rayon `spawn` docs; Alice Ryhl, "Async: What is blocking?" |
 | serde | [57 intermediate: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | serde container attributes (deny_unknown_fields, try_from); API Guidelines C-VALIDATE; own design (exchange order requests) |
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |

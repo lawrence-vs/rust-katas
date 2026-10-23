@@ -68,6 +68,7 @@ flowchart TD
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
+    k54["54 a Merkle sum tree"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -158,6 +159,9 @@ flowchart TD
   k36 --> k53
   k10 --> k53
   k42 --> k53
+  k42 --> k54
+  k09 --> k54
+  k23 --> k54
   k17 --> k56
   k41 --> k56
   k10 --> k57
@@ -214,6 +218,7 @@ flowchart TD
   classDef smartpointers fill:#bcaaa4,stroke:#3e2723,color:#000
   classDef routing fill:#90caf9,stroke:#0d47a1,color:#000
   classDef batching fill:#fff3e0,stroke:#e65100,color:#000
+  classDef por fill:#fff9c4,stroke:#f57f17,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -237,6 +242,7 @@ flowchart TD
   class k57 serde
   class k69,k71 io
   class k73 concurrency
+  class k54 por
   class k44 macros
   class k43 atomics
   class k41 threads
@@ -251,7 +257,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -314,6 +320,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [58 async: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | advanced | A pool owns its tasks: shutdown signals them, lets in-flight work finish, joins within a grace period, aborts and counts stragglers, and hands back queued jobs that never started. | 17, 18, 22 |
+| [54 por: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | advanced | Sums are checked and hashed into every node; each client rebuilds their own leaf and folds a checked path to the published root. | 09, 23, 42 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
