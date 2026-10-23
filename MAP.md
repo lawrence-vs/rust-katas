@@ -60,6 +60,7 @@ flowchart TD
     k27["27 a deadline on a stream"]
     k43["43 Relaxed is not enough"]
     k44["44 macro_rules!, not copy-paste"]
+    k48["48 a multi-hop route"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
     k58["58 graceful shutdown: signal, drain, join"]
@@ -132,6 +133,7 @@ flowchart TD
   k42 --> k45
   k42 --> k46
   k46 --> k47
+  k46 --> k48
   k34 --> k45
   k20 --> k60
   k21 --> k60
@@ -207,6 +209,7 @@ flowchart TD
   classDef io fill:#c5cae9,stroke:#1a237e,color:#000
   classDef concurrency fill:#b2dfdb,stroke:#004d40,color:#000
   classDef smartpointers fill:#bcaaa4,stroke:#3e2723,color:#000
+  classDef routing fill:#90caf9,stroke:#0d47a1,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -222,6 +225,7 @@ flowchart TD
   class k31,k45,k60 capstone
   class k42,k46,k70 money
   class k47 quotes
+  class k48 routing
   class k50,k62 statemachines
   class k51 credit
   class k56 rayon
@@ -242,7 +246,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -297,6 +301,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
 | [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17, 41 |
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
+| [48 routing: a multi-hop route](katas/routing/48-advanced-multi-hop-route) | advanced | Price a route one hop at a time in whole atoms: round each fill down, charge each fee up on it, check each minimum on what arrives; take the route that pays the client most, ties to direct. | 46 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
 | [61 db: a transactional outbox](katas/db/61-advanced-transactional-outbox) | advanced | One transaction writes the state change, a dedupe row and an outbox row; a separate publisher drains it, so a crash loses nothing and a redelivery changes nothing (at-least-once). | 19, 50, 09 |
