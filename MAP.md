@@ -28,6 +28,7 @@ flowchart TD
     k21["21 a bounded queue for untrusted input"]
     k22["22 a timeout on every network await"]
     k37["37 a closure bound stricter than the body needs"]
+    k38["38 a RefCell borrow held across recursion"]
     k39["39 an RAII guard, not a manual release"]
     k40["40 an associated type, not a generic parameter"]
     k41["41 Rc across threads"]
@@ -97,6 +98,8 @@ flowchart TD
   k14 --> k15
   k13 --> k16
   k13 --> k37
+  k02 --> k38
+  k39 --> k38
   k16 --> k17
   k16 --> k18
   k17 --> k18
@@ -203,6 +206,7 @@ flowchart TD
   classDef serde fill:#f5e6c8,stroke:#8d6e63,color:#000
   classDef io fill:#c5cae9,stroke:#1a237e,color:#000
   classDef concurrency fill:#b2dfdb,stroke:#004d40,color:#000
+  classDef smartpointers fill:#bcaaa4,stroke:#3e2723,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -230,6 +234,7 @@ flowchart TD
   class k40 generics
   class k39 drop
   class k37 closures
+  class k38 smartpointers
   class k35 iterators
   class k36,k53 testing
   class k34,k74 collections
@@ -237,7 +242,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -262,6 +267,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [21 security: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | intermediate | An unbounded channel fed from the network is a memory DoS; bound it and `try_send`. | 17 |
 | [22 security: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | intermediate | Every await on the network needs a deadline; `tokio::time::timeout` puts one on any future. | 17 |
 | [37 closures: a closure bound stricter than the body needs](katas/closures/37-intermediate-fnonce-too-strict) | intermediate | A function that calls a closure multiple times but bounds it as `Fn` rejects callers that need `FnMut`; the fix is the least restrictive bound the body needs. | 13 |
+| [38 smart-pointers: a RefCell borrow held across recursion](katas/smart-pointers/38-intermediate-rc-refcell-borrow-panic) | intermediate | `Rc` shares a node, `RefCell` checks borrows at runtime: drop the guard before recursing or calling back, and keep a visited set so cycles end. | 02, 39 |
 | [39 drop: an RAII guard, not a manual release](katas/drop/39-intermediate-raii-guard) | intermediate | Cleanup lives in `Drop`, so a guard gives back what it took on every way out: early return, `?` or panic. | 08 |
 | [40 generics: an associated type, not a generic parameter](katas/generics/40-intermediate-associated-type) | intermediate | A trait whose implementor picks one output takes `type Item`, not `<T>`: callers write `F::Item` and drop `PhantomData`. | 13, 14 |
 | [41 threads: Rc across threads](katas/threads/41-intermediate-rc-across-threads) | intermediate | `spawn` needs `Send + 'static`: an escaping thread gets an `Arc`; threads joined before return borrow inside `thread::scope`. | 02 |
