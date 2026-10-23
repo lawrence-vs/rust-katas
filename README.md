@@ -114,8 +114,8 @@ Kata links go live as each kata merges.
 | money | [42 intermediate: no float money](katas/money/42-intermediate-no-float-money) | The Rust Reference, arithmetic overflow; `u64::checked_add` docs |
 | money | [46 intermediate: quote with a spread](katas/money/46-intermediate-quote-with-spread) | std `u128::div_ceil` and `TryFrom` docs; own design (exchange quoting) |
 | quotes | [47 intermediate: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | std `u64::checked_add` and `abs_diff` docs; own design (exchange RFQ quoting) |
-| batching | [49 advanced: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | std VecDeque and BTreeMap docs; own design (exchange liquidity-provider hedging) |
 | routing | [48 advanced: a multi-hop route](katas/routing/48-advanced-multi-hop-route) | std u128::div_ceil and TryFrom docs; own design (exchange smart order routing) |
+| batching | [49 advanced: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | std VecDeque and BTreeMap docs; own design (exchange liquidity-provider hedging) |
 | state-machines | [50 advanced: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | IETF Idempotency-Key header draft; std `HashMap::entry` docs; own design (exchange withdrawals) |
 | credit | [51 intermediate: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | Rust Atomics and Locks (Mara Bos), ch. 2 Compare-and-Exchange; loom docs |
 | websockets | [52 advanced: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | std `BTreeMap` docs; own design (exchange market-data feed handler) |

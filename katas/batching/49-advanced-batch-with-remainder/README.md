@@ -2,7 +2,7 @@
 
 **Concept:** One provider call per pair per flush, for the pair's total. A short fill goes to the oldest orders first. What wasn't filled goes back to the front of the pair's queue, so no client's lots disappear.
 **Source:** std [`VecDeque`](https://doc.rust-lang.org/std/collections/struct.VecDeque.html), [`BTreeMap::entry`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html#method.entry), `u64::checked_add` docs; own design (an exchange hedging client orders with a liquidity provider); katas 34, 42, 45.
-**Fails with:** `` `one provider call per pair` ``
+**Fails with:** `one provider call per pair`
 **Vault:** your note on batching and partial fills
 
 ## Task
