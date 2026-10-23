@@ -61,6 +61,7 @@ flowchart TD
     k44["44 macro_rules!, not copy-paste"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
+    k58["58 graceful shutdown: signal, drain, join"]
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
@@ -162,6 +163,9 @@ flowchart TD
   k17 --> k73
   k21 --> k73
   k41 --> k73
+  k17 --> k58
+  k18 --> k58
+  k22 --> k58
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -200,7 +204,7 @@ flowchart TD
   class k07,k08,k09,k72 errors
   class k10,k11,k12 apidesign
   class k13,k14,k15 traits
-  class k16,k17,k18 async
+  class k16,k17,k18,k58 async
   class k19,k20,k61 db
   class k21,k22,k23 security
   class k24,k25,k52 websockets
@@ -287,6 +291,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [61 db: a transactional outbox](katas/db/61-advanced-transactional-outbox) | advanced | One transaction writes the state change, a dedupe row and an outbox row; a separate publisher drains it, so a crash loses nothing and a redelivery changes nothing (at-least-once). | 19, 50, 09 |
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
+| [58 async: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | advanced | A pool owns its tasks: shutdown signals them, lets in-flight work finish, joins within a grace period, aborts and counts stragglers, and hands back queued jobs that never started. | 17, 18, 22 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
