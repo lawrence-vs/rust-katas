@@ -24,7 +24,7 @@ fn main() {
     println!("x after bump: {x}");
 
     // `let mut p = &x` only re-points p; writing through p needs a &mut reference.
-    let mut p = &mut x;
+    let p = &mut x;
     *p += 1;
     println!("x after writing through p: {x}");
 
