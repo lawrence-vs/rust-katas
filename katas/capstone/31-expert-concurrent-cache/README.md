@@ -36,7 +36,7 @@ Work in order. After each stage, write down your **Observation** (what the test 
 - tokio [`Mutex`, "Which kind of mutex should you use?"](https://docs.rs/tokio/1.53.2/tokio/sync/struct.Mutex.html#which-kind-of-mutex-should-you-use) and the tutorial's [Shared state](https://tokio.rs/tokio/tutorial/shared-state) chapter: a lock that only guards data should be held for a few instructions, not across I/O (katas 16 and 18).
 - [moka `future::Cache::get_with`](https://docs.rs/moka/0.12.16/moka/future/struct.Cache.html#method.get_with): a production async cache that combines a size bound with coalescing concurrent loads of one key. It is the library version of this kata.
 - Go's [`singleflight`](https://pkg.go.dev/golang.org/x/sync/singleflight) names the same idea: "a duplicate function call suppression mechanism".
-- Exchange-style: gateways cache instrument metadata such as an exchange API doc (tick size, lot decimals) and per-account fee tiers in front of a database. After a deploy or at market open, every connection asks for the same few keys at once.
+- Exchange-style: gateways cache instrument metadata such as tradable asset pairs (tick size, lot decimals) and per-account fee tiers in front of a database. After a deploy or at market open, every connection asks for the same few keys at once.
 
 In a review, check:
 - A `lock().await` guard still alive across a database, HTTP or `load().await` call.

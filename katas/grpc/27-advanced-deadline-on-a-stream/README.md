@@ -29,7 +29,7 @@ Make `cargo test` pass without changing the test, `proto/`, `build.rs` or `Cargo
 - [gRPC retry guide](https://grpc.io/docs/guides/retry/): retry policy and budgets.
 - [tonic `Endpoint::timeout`](https://docs.rs/tonic/0.14.6/tonic/transport/struct.Endpoint.html#method.timeout): its docs say it doesn't tell the server.
 - [gRPC keepalive](https://grpc.io/docs/guides/keepalive/): detects a dead connection, but not a live server that has gone quiet.
-- Exchange-style: market-data feeds send heartbeats so a client can tell a quiet market from a dead feed, e.g. the an exchange API doc.
+- Exchange-style: market-data feeds send heartbeats so a client can tell a quiet market from a dead feed, e.g. a WebSocket heartbeat message.
 
 In a review, check:
 - `while let Some(..) = stream.next().await` on a long-lived stream with no deadline and no heartbeat.
