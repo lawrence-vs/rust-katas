@@ -24,7 +24,9 @@ impl OrderState {
     // Think further 2: a repeat cancel returns Ok, so a retry after a timeout is safe.
     fn cancel(self, reason: &str) -> Result<OrderState, Error> {
         match self {
-            OrderState::New => Ok(OrderState::Cancelled { reason: reason.to_string() }),
+            OrderState::New => Ok(OrderState::Cancelled {
+                reason: reason.to_string(),
+            }),
             OrderState::Cancelled { .. } => Ok(self),
             OrderState::Shipped { .. } => Err(Error::InvalidTransition),
         }
@@ -50,7 +52,9 @@ fn main() {
     }
 
     // Think further 3: a shipped order carries its tracking number, and a cancelled one its reason.
-    let shipped = OrderState::Shipped { tracking: "ZA123".to_string() };
+    let shipped = OrderState::Shipped {
+        tracking: "ZA123".to_string(),
+    };
     println!("cancel shipped: {:?}", shipped.clone().cancel("too late"));
 
     let p: Poll<u32> = Poll::Ready(7);

@@ -40,7 +40,10 @@ fn main() {
 
     // Think further 6 and 4: the limits the field needs go in the type or right after it parses.
     let extra = r#"{"client_order_id":"abc-2","qty":3,"venue":"x"}"#;
-    println!("unknown field: {:?}", serde_json::from_str::<OrderRequest>(extra).is_err());
+    println!(
+        "unknown field: {:?}",
+        serde_json::from_str::<OrderRequest>(extra).is_err()
+    );
 
     println!("19.99 -> {:?}", parse_cents("19.99"));
     println!("0.10 -> {:?}", parse_cents("0.10"));

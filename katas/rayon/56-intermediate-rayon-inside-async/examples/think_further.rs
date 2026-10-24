@@ -16,7 +16,8 @@ use rayon::prelude::*;
 async fn main() {
     // Think further 1 and 5: the CPU work hops to a blocking thread, so the async runtime keeps serving others.
     let levels: Vec<u64> = (1..=10_000).collect();
-    let total = tokio::task::spawn_blocking(move || levels.par_iter().map(|q| q * 2).sum::<u64>()).await;
+    let total =
+        tokio::task::spawn_blocking(move || levels.par_iter().map(|q| q * 2).sum::<u64>()).await;
     match total {
         Ok(sum) => println!("depth total: {sum}"),
         Err(err) => println!("worker failed: {err}"),

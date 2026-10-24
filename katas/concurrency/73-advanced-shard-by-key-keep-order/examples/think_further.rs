@@ -26,7 +26,14 @@ fn shard_of(key: &str) -> usize {
 
 fn main() {
     // The same key always lands on the same shard, so one worker sees that key's events in order.
-    let events = [("alice", 1), ("bob", 1), ("alice", 2), ("carol", 1), ("alice", 3), ("bob", 2)];
+    let events = [
+        ("alice", 1),
+        ("bob", 1),
+        ("alice", 2),
+        ("carol", 1),
+        ("alice", 3),
+        ("bob", 2),
+    ];
 
     let mut senders = Vec::new();
     let mut workers = Vec::new();

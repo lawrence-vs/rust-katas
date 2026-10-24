@@ -22,7 +22,8 @@ fn write_report(out: &mut impl Write, rows: &[(&str, i64)]) -> io::Result<()> {
 
 // Think further 4: checked_add, so a sum that overflows is an error, not a wrong total.
 fn total(rows: &[(&str, i64)]) -> Option<i64> {
-    rows.iter().try_fold(0i64, |acc, (_, amount)| acc.checked_add(*amount))
+    rows.iter()
+        .try_fold(0i64, |acc, (_, amount)| acc.checked_add(*amount))
 }
 
 fn main() -> io::Result<()> {

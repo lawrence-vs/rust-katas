@@ -36,22 +36,55 @@ fn first_sell_index(fills: &[Fill]) -> Option<usize> {
 
 fn main() {
     let fills = [
-        Fill { side: Side::Buy, qty: 5 },
-        Fill { side: Side::Sell, qty: 2 },
-        Fill { side: Side::Buy, qty: 3 },
+        Fill {
+            side: Side::Buy,
+            qty: 5,
+        },
+        Fill {
+            side: Side::Sell,
+            qty: 2,
+        },
+        Fill {
+            side: Side::Buy,
+            qty: 3,
+        },
     ];
 
-    let total: u64 = fills.iter().filter(|f| f.side == Side::Buy).map(|f| f.qty).sum();
+    let total: u64 = fills
+        .iter()
+        .filter(|f| f.side == Side::Buy)
+        .map(|f| f.qty)
+        .sum();
     println!("bought: {total}");
     println!("checked: {:?}", bought_qty_checked(&fills));
-    println!("overflow: {:?}", bought_qty_checked(&[Fill { side: Side::Buy, qty: u64::MAX }, Fill { side: Side::Buy, qty: 1 }]));
+    println!(
+        "overflow: {:?}",
+        bought_qty_checked(&[
+            Fill {
+                side: Side::Buy,
+                qty: u64::MAX
+            },
+            Fill {
+                side: Side::Buy,
+                qty: 1
+            }
+        ])
+    );
     println!("first sell at index: {:?}", first_sell_index(&fills));
 
     // Think further 3: windows(2) gives each fill with the one after it, with no index arithmetic.
-    let changes: Vec<i64> = fills.windows(2).map(|w| w[1].qty as i64 - w[0].qty as i64).collect();
+    let changes: Vec<i64> = fills
+        .windows(2)
+        .map(|w| w[1].qty as i64 - w[0].qty as i64)
+        .collect();
     println!("changes between fills: {changes:?}");
 
     // Think further 4: taking IntoIterator lets a caller pass a Vec, a VecDeque, or any iterator of fills.
-    let from_vec: u64 = fills.to_vec().iter().filter(|f| f.side == Side::Buy).map(|f| f.qty).sum();
+    let from_vec: u64 = fills
+        .to_vec()
+        .iter()
+        .filter(|f| f.side == Side::Buy)
+        .map(|f| f.qty)
+        .sum();
     println!("from an owned Vec: {from_vec}");
 }

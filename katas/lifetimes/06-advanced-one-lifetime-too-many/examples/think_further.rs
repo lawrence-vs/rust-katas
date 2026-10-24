@@ -28,6 +28,12 @@ fn main() {
     println!("kept after the delimiter was dropped: {kept:?}");
 
     // Think further 3: the edge cases the type should promise.
-    println!("'a b ' split on ' ': {:?}", "a b ".split(' ').collect::<Vec<_>>());
-    println!("'abc' split on '': {:?}", "abc".split("").collect::<Vec<_>>());
+    println!(
+        "'a b ' split on ' ': {:?}",
+        "a b ".split(' ').collect::<Vec<_>>()
+    );
+    println!(
+        "'abc' split on '': {:?}",
+        "abc".split("").collect::<Vec<_>>()
+    );
 }

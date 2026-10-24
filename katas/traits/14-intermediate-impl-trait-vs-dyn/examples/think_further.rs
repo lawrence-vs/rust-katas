@@ -31,7 +31,11 @@ impl Shape for Square {
 fn parse_shape(s: &str) -> Result<Box<dyn Shape>, String> {
     let mut parts = s.split_whitespace();
     let kind = parts.next().ok_or("empty")?;
-    let size: f64 = parts.next().ok_or("no size")?.parse().map_err(|_| "bad size".to_string())?;
+    let size: f64 = parts
+        .next()
+        .ok_or("no size")?
+        .parse()
+        .map_err(|_| "bad size".to_string())?;
     match kind {
         "circle" => Ok(Box::new(Circle(size))),
         "square" => Ok(Box::new(Square(size))),
@@ -57,7 +61,9 @@ fn main() {
     // Think further 3: a thread that borrows the shapes needs them Send and Sync; dyn Shape alone promises neither.
     let shapes: Vec<Box<dyn Shape + Send + Sync>> = vec![Box::new(Square(2.0))];
     let total: f64 = std::thread::scope(|s| {
-        s.spawn(|| shapes.iter().map(|sh| sh.area()).sum()).join().unwrap_or(0.0)
+        s.spawn(|| shapes.iter().map(|sh| sh.area()).sum())
+            .join()
+            .unwrap_or(0.0)
     });
     println!("total area in another thread: {total:.2}");
 }

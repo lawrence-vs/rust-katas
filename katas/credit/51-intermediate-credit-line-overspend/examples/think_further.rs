@@ -41,7 +41,10 @@ impl Line {
             return Err(CreditError::OverLimit);
         }
         self.committed += amount;
-        Ok(Reservation { line_id: self.id, amount })
+        Ok(Reservation {
+            line_id: self.id,
+            amount,
+        })
     }
 
     // Think further 2: a reservation from another line is refused, not released here.
@@ -60,8 +63,16 @@ impl Line {
 }
 
 fn main() {
-    let mut line = Line { id: 1, limit: 1_000, committed: 0 };
-    let mut other = Line { id: 2, limit: 500, committed: 0 };
+    let mut line = Line {
+        id: 1,
+        limit: 1_000,
+        committed: 0,
+    };
+    let mut other = Line {
+        id: 2,
+        limit: 500,
+        committed: 0,
+    };
 
     let r = line.reserve(600).expect("fits the limit");
     println!("reserve 600 again: {:?}", line.reserve(600));

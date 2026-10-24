@@ -36,7 +36,11 @@ fn place(price: Cents, qty: u64) -> String {
 
 fn main() {
     // In the wild: the newtype has the same size as the number it wraps.
-    println!("AccountId is {} bytes, u64 is {}", size_of::<AccountId>(), size_of::<u64>());
+    println!(
+        "AccountId is {} bytes, u64 is {}",
+        size_of::<AccountId>(),
+        size_of::<u64>()
+    );
 
     // In the wild: NonZero makes Option free: the zero value is the None.
     println!(

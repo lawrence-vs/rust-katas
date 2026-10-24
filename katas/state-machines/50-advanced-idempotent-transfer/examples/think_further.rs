@@ -37,12 +37,17 @@ struct Transfers {
 impl Transfers {
     // Think further 3 and in the wild: the same key returns the stored state, so a retry never sends twice.
     fn request(&mut self, key: &str) -> State {
-        self.by_key.entry(key.to_string()).or_insert(State::Requested).clone()
+        self.by_key
+            .entry(key.to_string())
+            .or_insert(State::Requested)
+            .clone()
     }
 }
 
 fn main() {
-    let mut t = Transfers { by_key: HashMap::new() };
+    let mut t = Transfers {
+        by_key: HashMap::new(),
+    };
 
     let first = t.request("tx-1");
     println!("first request: {first:?}");

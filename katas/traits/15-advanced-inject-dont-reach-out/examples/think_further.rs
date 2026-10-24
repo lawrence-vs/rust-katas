@@ -24,7 +24,11 @@ impl Clock for FixedClock {
 }
 
 fn greeting(clock: &impl Clock) -> &'static str {
-    if clock.hour() < 12 { "good morning" } else { "good afternoon" }
+    if clock.hour() < 12 {
+        "good morning"
+    } else {
+        "good afternoon"
+    }
 }
 
 // Think further 2: a session expiry needs time to move, so the test clock advances on request.
@@ -46,12 +50,20 @@ fn main() {
     println!("{}", greeting(&FixedClock(9)));
     println!("{}", greeting(&FixedClock(15)));
 
-    let mut clock = TestClock { now: Duration::ZERO };
+    let mut clock = TestClock {
+        now: Duration::ZERO,
+    };
     let issued = clock.now;
     clock.advance(Duration::from_secs(29 * 60));
-    println!("at 29 min expired: {}", clock.expired(issued, Duration::from_secs(30 * 60)));
+    println!(
+        "at 29 min expired: {}",
+        clock.expired(issued, Duration::from_secs(30 * 60))
+    );
     clock.advance(Duration::from_secs(60));
-    println!("at 30 min expired: {}", clock.expired(issued, Duration::from_secs(30 * 60)));
+    println!(
+        "at 30 min expired: {}",
+        clock.expired(issued, Duration::from_secs(30 * 60))
+    );
 
     // Think further 3: Instant is monotonic, so durations use it, not SystemTime.
     let started = Instant::now();

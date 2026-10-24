@@ -42,5 +42,8 @@ async fn main() {
     })
     .join();
     println!("poisoned: {}", poisoned.is_poisoned());
-    println!("value still readable: {}", *poisoned.lock().unwrap_or_else(|e| e.into_inner()));
+    println!(
+        "value still readable: {}",
+        *poisoned.lock().unwrap_or_else(|e| e.into_inner())
+    );
 }

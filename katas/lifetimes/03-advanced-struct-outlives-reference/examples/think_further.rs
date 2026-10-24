@@ -22,18 +22,28 @@ impl<'a> Connection<'a> {
 
     // Think further 1: returning the connection ties its URL's lifetime to the caller's input.
     fn reconnect(&self) -> Connection<'_> {
-        Connection { url: Cow::Borrowed(&self.url) }
+        Connection {
+            url: Cow::Borrowed(&self.url),
+        }
     }
 }
 
 fn main() {
     // A literal is borrowed; no allocation.
     let literal = Connection::new("db://localhost");
-    println!("literal: {} (owned? {})", literal.url, matches!(literal.url, Cow::Owned(_)));
+    println!(
+        "literal: {} (owned? {})",
+        literal.url,
+        matches!(literal.url, Cow::Owned(_))
+    );
 
     // A runtime-built URL is owned by the Connection.
     let built = Connection::new(format!("db://{}", "replica"));
-    println!("built: {} (owned? {})", built.url, matches!(built.url, Cow::Owned(_)));
+    println!(
+        "built: {} (owned? {})",
+        built.url,
+        matches!(built.url, Cow::Owned(_))
+    );
 
     // Think further 2: a scoped thread may borrow the connection; a plain spawn may not.
     std::thread::scope(|s| {

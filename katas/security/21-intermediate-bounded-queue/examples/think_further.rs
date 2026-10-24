@@ -39,7 +39,10 @@ async fn main() {
     println!("first: {:?}", accept(&tx, vec![1; 10]));
     println!("second: {:?}", accept(&tx, vec![2; 10]));
     println!("third, queue full: {:?}", accept(&tx, vec![3; 10]));
-    println!("oversized: {:?}", accept(&tx, vec![4; MAX_MESSAGE_BYTES + 1]));
+    println!(
+        "oversized: {:?}",
+        accept(&tx, vec![4; MAX_MESSAGE_BYTES + 1])
+    );
 
     // Draining the queue frees room; the next message is accepted.
     rx.recv().await;

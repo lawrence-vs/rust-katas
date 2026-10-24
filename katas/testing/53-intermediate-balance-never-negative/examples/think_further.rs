@@ -29,7 +29,10 @@ impl Balance {
     }
 
     fn withdraw(self, cents: u64) -> Result<Balance, BalanceError> {
-        self.0.checked_sub(cents).map(Balance).ok_or(BalanceError::Insufficient)
+        self.0
+            .checked_sub(cents)
+            .map(Balance)
+            .ok_or(BalanceError::Insufficient)
     }
 }
 

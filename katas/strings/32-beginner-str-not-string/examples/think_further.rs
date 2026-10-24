@@ -35,8 +35,15 @@ fn normalise(input: &str) -> Cow<'_, str> {
 fn main() {
     // Think further 1: one visible letter, two chars: "e" plus a combining accent.
     let accented = "e\u{301}";
-    println!("bytes {}, chars {}", accented.len(), accented.chars().count());
-    println!("truncate to 1 char: {:?}", accented.chars().take(1).collect::<String>());
+    println!(
+        "bytes {}, chars {}",
+        accented.len(),
+        accented.chars().count()
+    );
+    println!(
+        "truncate to 1 char: {:?}",
+        accented.chars().take(1).collect::<String>()
+    );
 
     println!("cut 'héllo' at 2 bytes: {:?}", cut_at_bytes("héllo", 2));
 

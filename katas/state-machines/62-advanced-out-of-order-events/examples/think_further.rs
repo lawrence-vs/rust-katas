@@ -47,7 +47,10 @@ impl Order {
 }
 
 fn main() {
-    let mut order = Order { version: 0, pending: BTreeMap::new() };
+    let mut order = Order {
+        version: 0,
+        pending: BTreeMap::new(),
+    };
     println!("v2 first: {:?}", order.receive(2, "partial fill"));
     println!("v1 fills the gap: {:?}", order.receive(1, "new"));
     println!("v2 again: {:?}", order.receive(2, "partial fill"));

@@ -28,7 +28,11 @@ fn check_fresh(issued_ms: u64, now_ms: u64, max_age_ms: u64) -> Result<(), Quote
 
 // Think further 1: asymmetric last look rejects only when the market moved against the house.
 fn accept_at_price(quoted: u64, market: u64, client_buys: bool) -> bool {
-    if client_buys { market <= quoted } else { market >= quoted }
+    if client_buys {
+        market <= quoted
+    } else {
+        market >= quoted
+    }
 }
 
 fn main() {

@@ -16,7 +16,9 @@ fn main() {
     let mut good = 0;
     let mut bad: Vec<(usize, String)> = Vec::new();
 
-    let mut reader = csv::ReaderBuilder::new().has_headers(false).from_reader(data.as_bytes());
+    let mut reader = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_reader(data.as_bytes());
     for (i, record) in reader.records().enumerate() {
         let line = i + 1;
         match record {
