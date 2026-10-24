@@ -25,7 +25,9 @@ struct Pool {
 
 impl Pool {
     fn new() -> Self {
-        Pool { conn: Arc::new(Mutex::new(Connection { rows: Vec::new() })) }
+        Pool {
+            conn: Arc::new(Mutex::new(Connection { rows: Vec::new() })),
+        }
     }
 
     // Think further 2: while one caller holds the connection, every other add_user waits.

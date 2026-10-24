@@ -17,7 +17,10 @@ fn main() {
     // Think further 1: a Vec indexed by id must hold every slot up to the largest id.
     let largest_id: u64 = u32::MAX as u64;
     let vec_bytes = (largest_id + 1) * size_of::<Option<i64>>() as u64;
-    println!("Vec<Option<i64>> up to id u32::MAX would need about {} GiB", vec_bytes / (1 << 30));
+    println!(
+        "Vec<Option<i64>> up to id u32::MAX would need about {} GiB",
+        vec_bytes / (1 << 30)
+    );
 
     // In the wild: with_capacity reserves room once, so inserts don't rehash.
     let mut accounts: HashMap<u32, i64> = HashMap::with_capacity(4);
@@ -25,7 +28,10 @@ fn main() {
     for id in [7u32, 1_000_000, u32::MAX] {
         accounts.insert(id, 100);
     }
-    println!("capacity before {before}, after 3 sparse inserts {}", accounts.capacity());
+    println!(
+        "capacity before {before}, after 3 sparse inserts {}",
+        accounts.capacity()
+    );
 
     // Think further 4: shrink_to_fit gives memory back after a burst of closes.
     accounts.remove(&7);

@@ -26,7 +26,11 @@ fn equip(inventory: &mut Vec<Item>, index: usize) -> Option<Item> {
 }
 
 fn main() {
-    let mut inventory = vec![Item("sword".into()), Item("bow".into()), Item("shield".into())];
+    let mut inventory = vec![
+        Item("sword".into()),
+        Item("bow".into()),
+        Item("shield".into()),
+    ];
     println!("first: {:?}", first_item(&inventory).map(|item| &item.0));
 
     // remove keeps order but shifts every later item; swap_remove is O(1) but reorders.

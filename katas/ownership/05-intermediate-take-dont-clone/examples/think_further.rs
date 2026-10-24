@@ -25,11 +25,15 @@ fn finish_consuming(job: Job) -> Option<String> {
 }
 
 fn main() {
-    let mut job = Job { output: Some("report".to_string()) };
+    let mut job = Job {
+        output: Some("report".to_string()),
+    };
     println!("first finish: {:?}", job.finish());
     println!("second finish: {:?}", job.finish());
 
-    let job = Job { output: Some("report 2".to_string()) };
+    let job = Job {
+        output: Some("report 2".to_string()),
+    };
     println!("consuming finish: {:?}", finish_consuming(job));
 
     // Think further 3: a plain String has no "nothing left" value, so mem::take gives an empty one.

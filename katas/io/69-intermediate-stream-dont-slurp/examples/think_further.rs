@@ -15,13 +15,19 @@ fn main() {
     let data = "ada,36\ngrace,41\nlinus,28\n";
 
     // Think further 3: one reused ByteRecord, so each row doesn't allocate a new String.
-    let mut reader = csv::ReaderBuilder::new().has_headers(false).from_reader(data.as_bytes());
+    let mut reader = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_reader(data.as_bytes());
     let mut record = csv::ByteRecord::new();
     let mut total_age = 0u64;
     let mut rows = 0;
     while reader.read_byte_record(&mut record).unwrap_or(false) {
         rows += 1;
-        if let Some(age) = record.get(1).and_then(|f| std::str::from_utf8(f).ok()).and_then(|s| s.parse::<u64>().ok()) {
+        if let Some(age) = record
+            .get(1)
+            .and_then(|f| std::str::from_utf8(f).ok())
+            .and_then(|s| s.parse::<u64>().ok())
+        {
             total_age += age;
         }
     }

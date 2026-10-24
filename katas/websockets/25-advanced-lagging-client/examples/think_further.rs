@@ -39,7 +39,9 @@ async fn main() {
     loop {
         match fast.try_recv() {
             Ok(delta) => seen.push(delta),
-            Err(broadcast::error::TryRecvError::Lagged(missed)) => println!("fast lagged, missed {missed}"),
+            Err(broadcast::error::TryRecvError::Lagged(missed)) => {
+                println!("fast lagged, missed {missed}")
+            }
             Err(_) => break,
         }
     }
@@ -47,5 +49,8 @@ async fn main() {
 
     // Think further 4: telling the client it missed n messages is a message of its own on the wire.
     drop(tx);
-    println!("closed: {}", matches!(slow.recv().await, Err(RecvError::Closed)));
+    println!(
+        "closed: {}",
+        matches!(slow.recv().await, Err(RecvError::Closed))
+    );
 }

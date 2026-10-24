@@ -15,7 +15,10 @@ use tokio::time::timeout;
 
 // Think further 1: a timeout on each read stops a peer that drips bytes forever only if the read is bounded too.
 // Think further 2: a line with no newline grows without a bound; cap it, as kata 23 does for frames.
-async fn read_line_with_deadline<R: AsyncBufReadExt + Unpin>(reader: &mut R, limit: Duration) -> Result<String, String> {
+async fn read_line_with_deadline<R: AsyncBufReadExt + Unpin>(
+    reader: &mut R,
+    limit: Duration,
+) -> Result<String, String> {
     let mut line = String::new();
     timeout(limit, reader.read_line(&mut line))
         .await
@@ -30,13 +33,22 @@ async fn main() {
     let (mut client, server) = tokio::io::duplex(64);
     let mut reader = BufReader::new(server);
     client.write_all(b"hello\n").await.ok();
-    println!("prompt: {:?}", read_line_with_deadline(&mut reader, Duration::from_millis(100)).await);
+    println!(
+        "prompt: {:?}",
+        read_line_with_deadline(&mut reader, Duration::from_millis(100)).await
+    );
 
     // A peer that never finishes its line.
     client.write_all(b"partial").await.ok();
-    println!("silent: {:?}", read_line_with_deadline(&mut reader, Duration::from_millis(50)).await);
+    println!(
+        "silent: {:?}",
+        read_line_with_deadline(&mut reader, Duration::from_millis(50)).await
+    );
 
     // Think further 3: after a timeout, the bytes already read stay in the BufReader; the next read continues.
     client.write_all(b" rest\n").await.ok();
-    println!("continued: {:?}", read_line_with_deadline(&mut reader, Duration::from_millis(100)).await);
+    println!(
+        "continued: {:?}",
+        read_line_with_deadline(&mut reader, Duration::from_millis(100)).await
+    );
 }

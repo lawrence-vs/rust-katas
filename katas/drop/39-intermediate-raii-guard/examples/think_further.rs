@@ -42,7 +42,9 @@ fn submit(gateway: &Gateway, fail: bool) -> Result<(), &'static str> {
 }
 
 fn main() {
-    let gateway = Gateway { in_flight: Cell::new(0) };
+    let gateway = Gateway {
+        in_flight: Cell::new(0),
+    };
 
     println!("ok: {:?}", submit(&gateway, false));
     println!("rejected: {:?}", submit(&gateway, true));

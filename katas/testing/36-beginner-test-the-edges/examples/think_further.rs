@@ -28,12 +28,19 @@ fn main() {
     ];
     for (name, input, expected) in cases {
         let got = mean_price(input);
-        println!("{}: {} ({got:?})", name, if got == expected { "pass" } else { "FAIL" });
+        println!(
+            "{}: {} ({got:?})",
+            name,
+            if got == expected { "pass" } else { "FAIL" }
+        );
     }
 
     // Think further 3: a property to state instead of rows: the mean lies between the smallest and largest price.
     let prices = [10u64, 20, 30];
     let mean = mean_price(&prices).unwrap_or(0);
-    let (lo, hi) = (prices.iter().min().copied().unwrap_or(0), prices.iter().max().copied().unwrap_or(0));
+    let (lo, hi) = (
+        prices.iter().min().copied().unwrap_or(0),
+        prices.iter().max().copied().unwrap_or(0),
+    );
     println!("property holds: {}", lo <= mean && mean <= hi);
 }

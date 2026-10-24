@@ -29,7 +29,11 @@ fn main() {
     // Think further 1: a shared Vec is read-only. A correction needs its own copy or a lock.
     let mut corrected = (*fills).clone();
     corrected.push(5);
-    println!("original {} fills, corrected {}", fills.len(), corrected.len());
+    println!(
+        "original {} fills, corrected {}",
+        fills.len(),
+        corrected.len()
+    );
 
     println!("strong count: {}", Arc::strong_count(&fills));
 }

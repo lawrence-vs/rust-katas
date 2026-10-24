@@ -32,7 +32,10 @@ impl Book {
             return Apply::Stale;
         }
         if first > self.last_update + 1 {
-            return Apply::Gap { expected: self.last_update + 1, got: first };
+            return Apply::Gap {
+                expected: self.last_update + 1,
+                got: first,
+            };
         }
         for (price, qty) in levels {
             if *qty == 0 {
@@ -47,12 +50,18 @@ impl Book {
 
     // Think further 4: a crossed book is a sign of lost state, so check it after every apply.
     fn crossed(&self, best_ask: u64) -> bool {
-        self.bids.keys().next_back().is_some_and(|best_bid| *best_bid >= best_ask)
+        self.bids
+            .keys()
+            .next_back()
+            .is_some_and(|best_bid| *best_bid >= best_ask)
     }
 }
 
 fn main() {
-    let mut book = Book { last_update: 100, bids: BTreeMap::new() };
+    let mut book = Book {
+        last_update: 100,
+        bids: BTreeMap::new(),
+    };
 
     println!("stale: {:?}", book.apply(95, 100, &[(50, 1)]));
     println!("contiguous: {:?}", book.apply(101, 102, &[(50, 5)]));

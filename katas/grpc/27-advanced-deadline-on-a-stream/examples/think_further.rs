@@ -21,7 +21,11 @@ enum StreamError {
 }
 
 // Think further 1: each read waits only for what is left of the overall deadline.
-fn take_until_deadline(rx: &mpsc::Receiver<u32>, want: usize, budget: Duration) -> Result<Vec<u32>, StreamError> {
+fn take_until_deadline(
+    rx: &mpsc::Receiver<u32>,
+    want: usize,
+    budget: Duration,
+) -> Result<Vec<u32>, StreamError> {
     let deadline = Instant::now() + budget;
     let mut got = Vec::new();
     while got.len() < want {
@@ -49,7 +53,10 @@ fn main() {
         }
     });
 
-    println!("{:?}", take_until_deadline(&rx, 5, Duration::from_millis(300)));
+    println!(
+        "{:?}",
+        take_until_deadline(&rx, 5, Duration::from_millis(300))
+    );
     drop(rx);
     producer.join().ok();
 }

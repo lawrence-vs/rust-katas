@@ -55,12 +55,18 @@ impl Iterator for Trades {
 }
 
 fn main() {
-    let mut trades = Trades { left: vec![101, 102, 103] };
-    let mut quotes = Quotes { left: vec![(99, 101), (100, 102)] };
+    let mut trades = Trades {
+        left: vec![101, 102, 103],
+    };
+    let mut quotes = Quotes {
+        left: vec![(99, 101), (100, 102)],
+    };
     println!("trades drained: {}", drain(&mut trades));
     println!("quotes drained: {}", drain(&mut quotes));
 
-    let mut fresh = Trades { left: vec![1, 2, 3, 4] };
+    let mut fresh = Trades {
+        left: vec![1, 2, 3, 4],
+    };
     let doubled: Vec<u64> = fresh.by_ref().take(2).map(|t| t * 2).collect();
     println!("first two doubled via Iterator: {doubled:?}");
 }

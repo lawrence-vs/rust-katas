@@ -9,8 +9,8 @@
 // Scratch file for the Think further and In the wild items. Delete before the PR.
 // Run with: cargo run --example think_further
 
-use std::collections::{BTreeMap, HashMap};
 use std::collections::hash_map::Entry;
+use std::collections::{BTreeMap, HashMap};
 
 fn main() {
     // In the wild: one lookup creates the level on first order, and counts it.

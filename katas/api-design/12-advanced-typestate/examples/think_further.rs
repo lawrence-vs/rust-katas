@@ -22,13 +22,22 @@ struct ConnectError;
 
 impl Connection<Closed> {
     fn new(id: u32) -> Self {
-        Connection { id, state: PhantomData }
+        Connection {
+            id,
+            state: PhantomData,
+        }
     }
 
     // Think further 1: a failed connect hands the closed connection back, so the caller can retry.
-    fn connect(self, reachable: bool) -> Result<Connection<Open>, (Connection<Closed>, ConnectError)> {
+    fn connect(
+        self,
+        reachable: bool,
+    ) -> Result<Connection<Open>, (Connection<Closed>, ConnectError)> {
         if reachable {
-            Ok(Connection { id: self.id, state: PhantomData })
+            Ok(Connection {
+                id: self.id,
+                state: PhantomData,
+            })
         } else {
             Err((self, ConnectError))
         }
@@ -42,7 +51,10 @@ impl Connection<Open> {
 
     // Think further 2: close consumes the connection, so it can't be used again afterward.
     fn close(self) -> Connection<Closed> {
-        Connection { id: self.id, state: PhantomData }
+        Connection {
+            id: self.id,
+            state: PhantomData,
+        }
     }
 }
 

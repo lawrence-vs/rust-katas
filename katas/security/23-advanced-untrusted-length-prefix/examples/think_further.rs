@@ -20,7 +20,10 @@ enum FrameError {
 // Think further 1 and 4: compare in u64 so 4 + len can't wrap on a 32-bit usize.
 // Think further 2: return the frame and the rest of the buffer, so the caller finds the next frame.
 fn read_frame(buf: &[u8]) -> Result<(&[u8], &[u8]), FrameError> {
-    let header: [u8; 4] = buf.get(..4).and_then(|h| h.try_into().ok()).ok_or(FrameError::Truncated)?;
+    let header: [u8; 4] = buf
+        .get(..4)
+        .and_then(|h| h.try_into().ok())
+        .ok_or(FrameError::Truncated)?;
     let len = u32::from_be_bytes(header) as u64;
     if len > MAX_FRAME as u64 {
         return Err(FrameError::TooLarge);
@@ -56,5 +59,8 @@ fn main() {
 
     // Think further 3: a length prefix that claims more than the bytes present is Truncated, not a crash.
     println!("huge claim: {:?}", read_frame(&[0xff, 0xff, 0xff, 0xff, 1]));
-    println!("exactly the limit, short body: {:?}", read_frame(&[0, 0, 4, 0, 1, 2]));
+    println!(
+        "exactly the limit, short body: {:?}",
+        read_frame(&[0, 0, 4, 0, 1, 2])
+    );
 }
