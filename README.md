@@ -128,7 +128,9 @@ Kata links go live as each kata merges.
 | latency | [55 advanced: a config snapshot, not a read per quote](katas/latency/55-advanced-config-snapshot) | Rust Atomics and Locks (Mara Bos), ch. 1 Basics of Rust Concurrency; std `Arc` and `RwLock` docs; own design (exchange quoting) |
 | capstone | [60 expert: capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | tokio `spawn_blocking`, mpsc and graceful shutdown docs; serde container attributes; rayon docs; own design (exchange market-data take-home) |
 | state-machines | [62 advanced: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | proptest book (prop_shuffle); thiserror docs; own design (exchange order-update consumer) |
+| errors | [123 beginner: unwrap_or runs its fallback even when the value is there](katas/errors/123-beginner-unwrap-or-eager-fallback) | std `Option::unwrap_or_else` and `Option::ok_or_else` docs; Mastering Rust, combinators on `Option` and `Result` |
 | collections | [74 intermediate: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | std collections docs, "When Should You Use Which Collection?"; std HashMap::with_capacity docs |
+| project-structure | [104 intermediate: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | Rust for Rustaceans (Gjengset), ch. 1, "Cargo profiles" |
 | concurrency | [73 advanced: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | tokio `mpsc::channel` docs (bounded channels); std `sync_channel` and `thread::scope` docs; Rust Atomics and Locks (Mara Bos), ch. 1 |
 | events | [96 advanced: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | Apache Kafka consumer docs (offsets, error handling); rdkafka docs |
 | money | [70 intermediate: parse a decimal string](katas/money/70-intermediate-parse-decimal-string) | The Rust Book ch. 9; std str::parse / FromStr docs; own design (exchange price feeds) |
@@ -136,6 +138,8 @@ Kata links go live as each kata merges.
 | io | [71 intermediate: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | Rust API Guidelines, C-RW-VALUE; std::io docs |
 | errors | [72 intermediate: a bad-row policy](katas/errors/72-intermediate-bad-row-policy) | The Rust Book ch. 9; csv `Error` docs; own design (trade file import) |
 | errors | [88 intermediate: thiserror in the library, anyhow in the binary](katas/errors/88-intermediate-thiserror-lib-anyhow-bin) | thiserror and anyhow docs |
+| errors | [105 intermediate: an error source chain](katas/errors/105-intermediate-error-source-chain) | Rust for Rustaceans (Gjengset), ch. 4 Error Handling; std Error::source docs |
+| errors | [124 beginner: `let _ =` swallows the error](katas/errors/124-beginner-let-underscore-swallows-err) | The Rust Book ch. 9; std `Read::read_to_string` docs |
 | async | [58 advanced: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | Tokio topics, graceful shutdown; tokio `JoinSet` and `watch` docs |
 | por | [54 advanced: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | RustCrypto sha2 docs; std u64::checked_add docs; own design (exchange proof of liabilities) |
 | rayon | [56 intermediate: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | tokio docs, CPU-bound tasks; rayon `spawn` docs; Alice Ryhl, "Async: What is blocking?" |
