@@ -1,0 +1,9 @@
+[package]
+name = "kata-db-95"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sqlx = { version = "=0.8.6", default-features = false, features = ["runtime-tokio", "sqlite"] }
+thiserror = "=2.0.21"
+tokio = { version = "=1.53.2", features = ["rt", "rt-multi-thread", "macros"] }
