@@ -15,7 +15,13 @@ impl Read for Broken {
 #[test]
 fn a_good_file_parses() {
     let got = parse_settings("# demo\nport = 8080\n\nworkers=4\n");
-    assert!(matches!(got, Ok(Settings { port: 8080, workers: 4 })));
+    assert!(matches!(
+        got,
+        Ok(Settings {
+            port: 8080,
+            workers: 4
+        })
+    ));
 }
 
 #[test]
