@@ -1,0 +1,9 @@
+[package]
+name = "kata-net-94"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "=1.53.2", features = ["rt", "macros", "io-util", "net", "time", "test-util"] }
+tokio-util = { version = "=0.7.20", features = ["codec"] }
+tokio-stream = "=0.1.19"
