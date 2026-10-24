@@ -130,6 +130,7 @@ Kata links go live as each kata merges.
 | collections | [74 intermediate: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | std collections docs, "When Should You Use Which Collection?"; std HashMap::with_capacity docs |
 | concurrency | [73 advanced: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | tokio `mpsc::channel` docs (bounded channels); std `sync_channel` and `thread::scope` docs; Rust Atomics and Locks (Mara Bos), ch. 1 |
 | money | [70 intermediate: parse a decimal string](katas/money/70-intermediate-parse-decimal-string) | The Rust Book ch. 9; std str::parse / FromStr docs; own design (exchange price feeds) |
+| money | [87 intermediate: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | rust_decimal docs (RoundingStrategy, checked_mul, FromStr); own design (fee and settlement rounding) |
 | io | [71 intermediate: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | Rust API Guidelines, C-RW-VALUE; std::io docs |
 | errors | [72 intermediate: a bad-row policy](katas/errors/72-intermediate-bad-row-policy) | The Rust Book ch. 9; csv `Error` docs; own design (trade file import) |
 | async | [58 advanced: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | Tokio topics, graceful shutdown; tokio `JoinSet` and `watch` docs |
