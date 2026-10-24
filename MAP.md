@@ -7,6 +7,7 @@ flowchart TD
   subgraph L1 [Beginner]
     k01["01 mutable variable vs mutable reference"]
     k07["07 unwrap in a library"]
+    k123["123 unwrap_or_else, not unwrap_or"]
     k10["10 newtypes, not primitives"]
     k13["13 a missing trait bound"]
     k16["16 a std MutexGuard across await"]
@@ -15,6 +16,7 @@ flowchart TD
     k34["34 entry, not contains_key"]
     k35["35 iterate, don't index"]
     k36["36 test the edges"]
+    k124["124 let underscore swallows the error"]
     k91["91 clap derive, not hand-parsed args"]
     k92["92 a secret that never reaches Debug"]
   end
@@ -41,6 +43,7 @@ flowchart TD
     k53["53 a balance that never goes negative"]
     k59["59 a shared Mutex inside par_iter"]
     k74["74 sparse ids: a map, not a Vec"]
+    k104["104 overflow checks differ by profile"]
     k56["56 rayon inside async"]
     k57["57 untrusted JSON into checked newtypes"]
     k69["69 stream, don't slurp"]
@@ -48,6 +51,7 @@ flowchart TD
     k71["71 Read and Write, not a path"]
     k72["72 a bad-row policy"]
     k88["88 thiserror in the library, anyhow in the binary"]
+    k105["105 an error source chain"]
     k87["87 rust_decimal: a named rounding per use"]
     k68["68 accidentally not Send"]
     k93["93 one task per connection"]
@@ -108,6 +112,7 @@ flowchart TD
   k01 --> k35
   k03 --> k06
   k07 --> k08
+  k07 --> k123
   k07 --> k36
   k07 --> k91
   k33 --> k91
@@ -145,6 +150,7 @@ flowchart TD
   k26 --> k27
   k22 --> k27
   k07 --> k42
+  k07 --> k124
   k10 --> k42
   k13 --> k40
   k14 --> k40
@@ -212,6 +218,8 @@ flowchart TD
   k08 --> k88
   k71 --> k88
   k72 --> k88
+  k08 --> k105
+  k71 --> k105
   k42 --> k87
   k46 --> k87
   k70 --> k87
@@ -291,10 +299,11 @@ flowchart TD
   classDef cli fill:#f3e5f5,stroke:#6a1b9a,color:#000
   classDef net fill:#d7ccc8,stroke:#3e2723,color:#000
   classDef events fill:#ffe082,stroke:#ff8f00,color:#000
+  classDef projectstructure fill:#dcedc8,stroke:#33691e,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
-  class k07,k08,k09,k72,k88 errors
+  class k07,k08,k09,k72,k88,k105,k123,k124 errors
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
   class k16,k17,k18,k58,k65,k66,k68 async
@@ -331,16 +340,19 @@ flowchart TD
   class k35 iterators
   class k36,k53 testing
   class k34,k74 collections
+  class k104 projectstructure
   class k33 enums
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · events honey · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · events honey · project-structure moss · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
 | [01 ownership: mutable variable vs mutable reference](katas/ownership/01-beginner-mutable-variable-vs-reference) | beginner | `let mut p = &x` lets you repoint `p`; only `&mut x` lets you change `x` through it. | — |
 | [07 errors: unwrap in a library](katas/errors/07-beginner-unwrap-in-library) | beginner | A library returns the error instead of panicking; `unwrap` belongs in tests and `main`. | — |
+| [123 errors: unwrap_or runs its fallback even when the value is there](katas/errors/123-beginner-unwrap-or-eager-fallback) | beginner | `unwrap_or(f())` and `ok_or(g())` build the fallback first; `unwrap_or_else` and `ok_or_else` take a closure and run it only on `None` or `Err`. | 07 |
+| [124 errors: `let _ =` swallows the error](katas/errors/124-beginner-let-underscore-swallows-err) | beginner | `let _ = call();` drops a `Result`, so a failed read or a duplicate insert looks like success; `?` returns the error. | 07 |
 | [10 api-design: newtypes, not primitives](katas/api-design/10-beginner-newtypes) | beginner | A one-field newtype per meaning lets the compiler catch swapped `u64` arguments. | — |
 | [13 traits: a missing trait bound](katas/traits/13-beginner-missing-trait-bound) | beginner | A generic `T` can do nothing until a bound says so; `>` needs `T: PartialOrd`. | — |
 | [16 async: a std MutexGuard across `.await`](katas/async/16-beginner-std-guard-across-await) | beginner | A std `MutexGuard` across `.await` makes the future non-`Send`: lock, change, drop, then await. | 13 |
@@ -374,6 +386,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
 | [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
+| [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | — |
 | [56 rayon: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | intermediate | `par_iter` blocks its caller until rayon finishes; from async code hand the work to `spawn_blocking` or `rayon::spawn` + `oneshot` and await it. | 17, 41 |
 | [57 serde: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | intermediate | Strict wire type with deny_unknown_fields, then try_from into newtypes: a negative, zero, fractional or misspelt order is an error naming the field, never an Order. | 10, 42, 53 |
 | [69 io: stream, don't slurp](katas/io/69-intermediate-stream-dont-slurp) | intermediate | Pass the reader to csv and fold record by record; never read the file into a String or collect the rows. | 08, 35 |
@@ -383,6 +396,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [93 net: one task per connection](katas/net/93-intermediate-spawn-per-connection) | intermediate | An accept loop that awaits each handler serves one client at a time; spawn a task per connection that owns its socket, and share the count through an `Arc`. | 17, 41 |
 | [94 net: framing, not one read](katas/net/94-intermediate-framing-not-one-read) | intermediate | A read is bytes, not a message: FramedRead + LinesCodec with a max length keeps leftovers across reads and splits two messages in one read. | 08, 22 |
 | [88 errors: thiserror in the library, anyhow in the binary](katas/errors/88-intermediate-thiserror-lib-anyhow-bin) | intermediate | A library returns a thiserror enum callers can match, with causes kept as source(); only the binary uses anyhow, adding context so the error shows the file and the whole cause chain. | 08, 71, 72 |
+| [105 errors: an error source chain](katas/errors/105-intermediate-error-source-chain) | intermediate | A wrapper error returns its cause from `source()` and names the stream that failed, so a caller walks the chain and `downcast_ref`s to the `io::Error`. | 08, 71 |
 | [87 money: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | intermediate | Money is a `Decimal` parsed from the string. Every rounding names its strategy (half-up for fees, half-to-even for settlement) and overflow is an error. | 42, 46, 70 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
