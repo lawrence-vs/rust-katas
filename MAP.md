@@ -16,6 +16,7 @@ flowchart TD
     k35["35 iterate, don't index"]
     k36["36 test the edges"]
     k91["91 clap derive, not hand-parsed args"]
+    k92["92 a secret that never reaches Debug"]
   end
   subgraph L2 [Intermediate]
     k02["02 moving out of a Vec"]
@@ -105,6 +106,8 @@ flowchart TD
   k07 --> k36
   k07 --> k91
   k33 --> k91
+  k07 --> k92
+  k10 --> k92
   k35 --> k36
   k08 --> k09
   k08 --> k39
@@ -276,7 +279,7 @@ flowchart TD
   class k13,k14,k15,k63 traits
   class k16,k17,k18,k58,k65,k66,k68 async
   class k19,k20,k61 db
-  class k21,k22,k23 security
+  class k21,k22,k23,k92 security
   class k24,k25,k52 websockets
   class k26,k27 grpc
   class k28,k29,k30 unsafe
@@ -325,6 +328,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [35 iterators: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | beginner | An index loop makes you write the bounds; `iter().filter().map().sum()` has none to get wrong. | 01 |
 | [36 testing: test the edges](katas/testing/36-beginner-test-the-edges) | beginner | Edges (empty, overflow, rounding) go in a table of cases; `#[should_panic(expected = "...")]` checks the panic is the promised one, not any panic. | 07, 35 |
 | [91 cli: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | beginner | Arguments as a `#[derive(Parser)]` struct with typed fields, defaults and range/enum validation; tests call `try_parse_from`, never `env::args`. | 07, 33 |
+| [92 security: a secret that never reaches Debug](katas/security/92-beginner-secrecy-no-leak) | beginner | A key in a String is one {:?} away from a log; SecretString redacts it in Debug, and expose_secret() marks the one place it's read. | 07, 10 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
 | [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |

@@ -93,6 +93,7 @@ Kata links go live as each kata merges.
 | security | [21 intermediate: a bounded queue for untrusted input](katas/security/21-intermediate-bounded-queue) | tokio `mpsc::channel` docs |
 | security | [22 intermediate: a timeout on every network await](katas/security/22-intermediate-timeout-every-network-await) | tokio `timeout` docs |
 | security | [23 advanced: an untrusted length prefix](katas/security/23-advanced-untrusted-length-prefix) | Network Programming With Rust (Chanda), parsing in networking applications |
+| security | [92 beginner: a secret that never reaches Debug](katas/security/92-beginner-secrecy-no-leak) | secrecy docs |
 | websockets | [24 advanced: split reads from writes](katas/websockets/24-advanced-split-reads-from-writes) | tokio-tungstenite docs |
 | websockets | [25 advanced: a lagging client](katas/websockets/25-advanced-lagging-client) | tokio `broadcast` docs, lagging |
 | grpc | [26 advanced: generate, don't hand-write](katas/grpc/26-advanced-generate-dont-hand-write) | tonic routeguide tutorial |
