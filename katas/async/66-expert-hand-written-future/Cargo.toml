@@ -1,0 +1,9 @@
+[package]
+name = "kata-async-66"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[dev-dependencies]
+tokio = { version = "=1.53.2", features = ["rt", "rt-multi-thread", "macros", "time", "test-util"] }
