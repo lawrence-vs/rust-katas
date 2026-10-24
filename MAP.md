@@ -50,6 +50,7 @@ flowchart TD
     k88["88 thiserror in the library, anyhow in the binary"]
     k87["87 rust_decimal: a named rounding per use"]
     k68["68 accidentally not Send"]
+    k93["93 one task per connection"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -231,6 +232,8 @@ flowchart TD
   k51 --> k67
   k16 --> k68
   k17 --> k68
+  k17 --> k93
+  k41 --> k93
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -271,6 +274,7 @@ flowchart TD
   classDef observability fill:#e0f2f1,stroke:#00695c,color:#000
   classDef resilience fill:#ce93d8,stroke:#4a148c,color:#000
   classDef cli fill:#f3e5f5,stroke:#6a1b9a,color:#000
+  classDef net fill:#d7ccc8,stroke:#3e2723,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -297,6 +301,7 @@ flowchart TD
   class k89 observability
   class k90 resilience
   class k91 cli
+  class k93 net
   class k54 por
   class k55 latency
   class k44 macros
@@ -313,7 +318,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -358,6 +363,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [70 money: a decimal string, parsed without a float](katas/money/70-intermediate-parse-decimal-string) | intermediate | Parse a price string straight into whole minor units: digits and one '.', at most 4 places, checked_* to combine, a typed error per bad input; never through f64. | 32, 42 |
 | [71 io: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | intermediate | Take `R: Read` and `W: Write` by value and return write errors, so tests pass `&[u8]` and `Vec<u8>` while `main` passes a `File` and locked stdout. | 08, 13, 69 |
 | [72 errors: a bad-row policy](katas/errors/72-intermediate-bad-row-policy) | intermediate | Per record, a bad row is skipped, counted and logged; an I/O error stops the load. Neither `?` nor `.ok()` is a policy. | 08, 69, 71 |
+| [93 net: one task per connection](katas/net/93-intermediate-spawn-per-connection) | intermediate | An accept loop that awaits each handler serves one client at a time; spawn a task per connection that owns its socket, and share the count through an `Arc`. | 17, 41 |
 | [88 errors: thiserror in the library, anyhow in the binary](katas/errors/88-intermediate-thiserror-lib-anyhow-bin) | intermediate | A library returns a thiserror enum callers can match, with causes kept as source(); only the binary uses anyhow, adding context so the error shows the file and the whole cause chain. | 08, 71, 72 |
 | [87 money: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | intermediate | Money is a `Decimal` parsed from the string. Every rounding names its strategy (half-up for fees, half-to-even for settlement) and overflow is an error. | 42, 46, 70 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
