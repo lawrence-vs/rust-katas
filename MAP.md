@@ -45,6 +45,7 @@ flowchart TD
     k70["70 a decimal string, parsed without a float"]
     k71["71 Read and Write, not a path"]
     k72["72 a bad-row policy"]
+    k88["88 thiserror in the library, anyhow in the binary"]
     k87["87 rust_decimal: a named rounding per use"]
     k68["68 accidentally not Send"]
   end
@@ -195,6 +196,9 @@ flowchart TD
   k08 --> k72
   k69 --> k72
   k71 --> k72
+  k08 --> k88
+  k71 --> k88
+  k72 --> k88
   k42 --> k87
   k46 --> k87
   k70 --> k87
@@ -254,7 +258,7 @@ flowchart TD
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
-  class k07,k08,k09,k72 errors
+  class k07,k08,k09,k72,k88 errors
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
   class k16,k17,k18,k58,k65,k66,k68 async
@@ -333,6 +337,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [70 money: a decimal string, parsed without a float](katas/money/70-intermediate-parse-decimal-string) | intermediate | Parse a price string straight into whole minor units: digits and one '.', at most 4 places, checked_* to combine, a typed error per bad input; never through f64. | 32, 42 |
 | [71 io: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | intermediate | Take `R: Read` and `W: Write` by value and return write errors, so tests pass `&[u8]` and `Vec<u8>` while `main` passes a `File` and locked stdout. | 08, 13, 69 |
 | [72 errors: a bad-row policy](katas/errors/72-intermediate-bad-row-policy) | intermediate | Per record, a bad row is skipped, counted and logged; an I/O error stops the load. Neither `?` nor `.ok()` is a policy. | 08, 69, 71 |
+| [88 errors: thiserror in the library, anyhow in the binary](katas/errors/88-intermediate-thiserror-lib-anyhow-bin) | intermediate | A library returns a thiserror enum callers can match, with causes kept as source(); only the binary uses anyhow, adding context so the error shows the file and the whole cause chain. | 08, 71, 72 |
 | [87 money: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | intermediate | Money is a `Decimal` parsed from the string. Every rounding names its strategy (half-up for fees, half-to-even for settlement) and overflow is an error. | 42, 46, 70 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
