@@ -76,6 +76,7 @@ flowchart TD
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
     k89["89 bounded metric labels, seconds"]
+    k90["90 a timeout and a bounded retry, with tower"]
     k54["54 a Merkle sum tree"]
     k63["63 a generic method behind dyn"]
     k64["64 a sealed trait and a non_exhaustive enum"]
@@ -208,6 +209,9 @@ flowchart TD
   k41 --> k73
   k33 --> k89
   k72 --> k89
+  k22 --> k90
+  k40 --> k90
+  k50 --> k90
   k17 --> k58
   k18 --> k58
   k22 --> k58
@@ -259,6 +263,7 @@ flowchart TD
   classDef por fill:#fff9c4,stroke:#f57f17,color:#000
   classDef latency fill:#c5cae9,stroke:#1a237e,color:#000
   classDef observability fill:#e0f2f1,stroke:#00695c,color:#000
+  classDef resilience fill:#ce93d8,stroke:#4a148c,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -283,6 +288,7 @@ flowchart TD
   class k69,k71 io
   class k73 concurrency
   class k89 observability
+  class k90 resilience
   class k54 por
   class k55 latency
   class k44 macros
@@ -299,7 +305,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -371,6 +377,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [89 observability: bounded labels, durations in seconds](katas/observability/89-advanced-metrics-bounded-labels) | advanced | A label value comes from a small enum, never an id; durations go in a histogram in seconds, named `_seconds`. | 33, 72 |
+| [90 resilience: a timeout and a bounded retry, with tower](katas/resilience/90-advanced-tower-timeout-retry) | advanced | Give each attempt a deadline and retry only transient errors, a bounded number of times with growing waits, using `ServiceBuilder`, `timeout` and a `retry::Policy`. | 22, 40, 50 |
 | [58 async: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | advanced | A pool owns its tasks: shutdown signals them, lets in-flight work finish, joins within a grace period, aborts and counts stragglers, and hands back queued jobs that never started. | 17, 18, 22 |
 | [54 por: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | advanced | Sums are checked and hashed into every node; each client rebuilds their own leaf and folds a checked path to the published root. | 09, 23, 42 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
