@@ -15,6 +15,7 @@ flowchart TD
     k34["34 entry, not contains_key"]
     k35["35 iterate, don't index"]
     k36["36 test the edges"]
+    k91["91 clap derive, not hand-parsed args"]
   end
   subgraph L2 [Intermediate]
     k02["02 moving out of a Vec"]
@@ -102,6 +103,8 @@ flowchart TD
   k03 --> k06
   k07 --> k08
   k07 --> k36
+  k07 --> k91
+  k33 --> k91
   k35 --> k36
   k08 --> k09
   k08 --> k39
@@ -264,6 +267,7 @@ flowchart TD
   classDef latency fill:#c5cae9,stroke:#1a237e,color:#000
   classDef observability fill:#e0f2f1,stroke:#00695c,color:#000
   classDef resilience fill:#ce93d8,stroke:#4a148c,color:#000
+  classDef cli fill:#f3e5f5,stroke:#6a1b9a,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -289,6 +293,7 @@ flowchart TD
   class k73 concurrency
   class k89 observability
   class k90 resilience
+  class k91 cli
   class k54 por
   class k55 latency
   class k44 macros
@@ -305,7 +310,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -319,6 +324,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [34 collections: entry, not contains_key](katas/collections/34-beginner-entry-not-contains) | beginner | One `entry` lookup instead of `contains_key`/`get_mut` then `insert`: no second hash, no borrow fight. | 01 |
 | [35 iterators: iterate, don't index](katas/iterators/35-beginner-iterate-dont-index) | beginner | An index loop makes you write the bounds; `iter().filter().map().sum()` has none to get wrong. | 01 |
 | [36 testing: test the edges](katas/testing/36-beginner-test-the-edges) | beginner | Edges (empty, overflow, rounding) go in a table of cases; `#[should_panic(expected = "...")]` checks the panic is the promised one, not any panic. | 07, 35 |
+| [91 cli: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | beginner | Arguments as a `#[derive(Parser)]` struct with typed fields, defaults and range/enum validation; tests call `try_parse_from`, never `env::args`. | 07, 33 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
 | [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |
