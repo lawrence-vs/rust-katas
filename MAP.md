@@ -82,6 +82,7 @@ flowchart TD
     k31["31 capstone: a concurrent cache"]
     k45["45 capstone: a mini order book"]
     k60["60 capstone: an async feed with parallel depth"]
+    k66["66 a hand-written future that never wakes"]
   end
 
   k01 --> k02
@@ -200,6 +201,8 @@ flowchart TD
   k18 --> k65
   k22 --> k65
   k58 --> k65
+  k17 --> k66
+  k41 --> k66
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -243,7 +246,7 @@ flowchart TD
   class k07,k08,k09,k72 errors
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
-  class k16,k17,k18,k58,k65 async
+  class k16,k17,k18,k58,k65,k66 async
   class k19,k20,k61 db
   class k21,k22,k23 security
   class k24,k25,k52 websockets
@@ -350,6 +353,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |
 | [31 capstone: a concurrent cache](katas/capstone/31-expert-concurrent-cache) | expert | A shared cache stays bounded, never locks over I/O, and loads each key once (single-flight). | 18, 21 |
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
+| [66 async: a hand-written future that never wakes](katas/async/66-expert-hand-written-future) | expert | `poll` returning `Pending` must store `cx.waker().clone()` (the latest one) so the event can wake it; otherwise the task hangs forever. | 17, 41 |
 | [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.
