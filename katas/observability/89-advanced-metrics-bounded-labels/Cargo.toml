@@ -1,0 +1,10 @@
+[package]
+name = "kata-observability-89"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+metrics = "=0.24.6"
+
+[dev-dependencies]
+metrics-util = { version = "=0.20.4", default-features = false, features = ["debugging"] }
