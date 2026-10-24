@@ -45,6 +45,7 @@ flowchart TD
     k70["70 a decimal string, parsed without a float"]
     k71["71 Read and Write, not a path"]
     k72["72 a bad-row policy"]
+    k87["87 rust_decimal: a named rounding per use"]
     k68["68 accidentally not Send"]
   end
   subgraph L3 [Advanced]
@@ -194,6 +195,9 @@ flowchart TD
   k08 --> k72
   k69 --> k72
   k71 --> k72
+  k42 --> k87
+  k46 --> k87
+  k70 --> k87
   k17 --> k73
   k21 --> k73
   k41 --> k73
@@ -260,7 +264,7 @@ flowchart TD
   class k26,k27 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
-  class k42,k46,k70 money
+  class k42,k46,k70,k87 money
   class k47 quotes
   class k48 routing
   class k49 batching
@@ -329,6 +333,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [70 money: a decimal string, parsed without a float](katas/money/70-intermediate-parse-decimal-string) | intermediate | Parse a price string straight into whole minor units: digits and one '.', at most 4 places, checked_* to combine, a typed error per bad input; never through f64. | 32, 42 |
 | [71 io: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | intermediate | Take `R: Read` and `W: Write` by value and return write errors, so tests pass `&[u8]` and `Vec<u8>` while `main` passes a `File` and locked stdout. | 08, 13, 69 |
 | [72 errors: a bad-row policy](katas/errors/72-intermediate-bad-row-policy) | intermediate | Per record, a bad row is skipped, counted and logged; an I/O error stops the load. Neither `?` nor `.ok()` is a policy. | 08, 69, 71 |
+| [87 money: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | intermediate | Money is a `Decimal` parsed from the string. Every rounding names its strategy (half-up for fees, half-to-even for settlement) and overflow is an error. | 42, 46, 70 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
