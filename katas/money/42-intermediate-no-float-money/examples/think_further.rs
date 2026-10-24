@@ -32,7 +32,10 @@ impl Money {
 
     // checked_add turns overflow into an error the caller must handle.
     pub fn checked_add(self, other: Money) -> Result<Money, MoneyError> {
-        self.0.checked_add(other.0).map(Money).ok_or(MoneyError::Overflow)
+        self.0
+            .checked_add(other.0)
+            .map(Money)
+            .ok_or(MoneyError::Overflow)
     }
 
     // Subtracting more than the balance is an error, so an account can't go negative.
@@ -44,7 +47,10 @@ impl Money {
     }
 
     pub fn checked_mul(self, qty: u64) -> Result<Money, MoneyError> {
-        self.0.checked_mul(qty).map(Money).ok_or(MoneyError::Overflow)
+        self.0
+            .checked_mul(qty)
+            .map(Money)
+            .ok_or(MoneyError::Overflow)
     }
 }
 
@@ -55,7 +61,9 @@ fn split_evenly(total: u64, units: u64) -> Vec<u64> {
     }
     let base = total / units;
     let remainder = total % units;
-    (0..units).map(|i| base + u64::from(i < remainder)).collect()
+    (0..units)
+        .map(|i| base + u64::from(i < remainder))
+        .collect()
 }
 
 // Think further 4: parse "1.5" into cents with integers only, never through f64.
@@ -78,11 +86,20 @@ fn parse_dollars(s: &str) -> Result<Money, MoneyError> {
 fn main() {
     // Think further 3: a balance that would go negative.
     let balance = Money::from_cents(500);
-    println!("sub 1000 from 500: {:?}", balance.checked_sub(Money::from_cents(1000)));
+    println!(
+        "sub 1000 from 500: {:?}",
+        balance.checked_sub(Money::from_cents(1000))
+    );
 
     // Overflow is an error, not a wrap or a panic.
-    println!("max + 1: {:?}", Money::from_cents(u64::MAX).checked_add(Money::from_cents(1)));
-    println!("1999 cents x 3: {:?}", Money::from_cents(1999).checked_mul(3));
+    println!(
+        "max + 1: {:?}",
+        Money::from_cents(u64::MAX).checked_add(Money::from_cents(1))
+    );
+    println!(
+        "1999 cents x 3: {:?}",
+        Money::from_cents(1999).checked_mul(3)
+    );
 
     // Think further 2: three fills of 1000 cents across 3 units.
     println!("split 1000 into 3: {:?}", split_evenly(1000, 3));
@@ -93,5 +110,8 @@ fn main() {
     }
 
     // In the wild: std's Duration uses the same checked pattern for whole seconds plus nanoseconds.
-    println!("duration overflow: {:?}", Duration::from_secs(u64::MAX).checked_add(Duration::from_secs(1)));
+    println!(
+        "duration overflow: {:?}",
+        Duration::from_secs(u64::MAX).checked_add(Duration::from_secs(1))
+    );
 }
