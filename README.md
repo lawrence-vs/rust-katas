@@ -139,3 +139,4 @@ Kata links go live as each kata merges.
 | atomics | [43 advanced: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | Rust Atomics and Locks (Mara Bos), ch. 3 Memory Ordering |
 | macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
 | capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (exchange-style); std `BTreeMap` docs |
+| threads | [67 advanced: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | Rust for Rustaceans (Gjengset), ch. 10 Concurrency (and Parallelism); std `Mutex` docs |
