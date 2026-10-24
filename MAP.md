@@ -79,6 +79,7 @@ flowchart TD
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
+    k96["96 a poison message, dead-lettered"]
     k89["89 bounded metric labels, seconds"]
     k90["90 a timeout and a bounded retry, with tower"]
     k95["95 optimistic lock: no lost update"]
@@ -242,6 +243,9 @@ flowchart TD
   k19 --> k95
   k50 --> k95
   k51 --> k95
+  k15 --> k96
+  k22 --> k96
+  k62 --> k96
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -283,6 +287,7 @@ flowchart TD
   classDef resilience fill:#ce93d8,stroke:#4a148c,color:#000
   classDef cli fill:#f3e5f5,stroke:#6a1b9a,color:#000
   classDef net fill:#d7ccc8,stroke:#3e2723,color:#000
+  classDef events fill:#ffe082,stroke:#ff8f00,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -306,6 +311,7 @@ flowchart TD
   class k57 serde
   class k69,k71 io
   class k73 concurrency
+  class k96 events
   class k89 observability
   class k90 resilience
   class k91 cli
@@ -326,7 +332,7 @@ flowchart TD
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · events honey · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -401,6 +407,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [61 db: a transactional outbox](katas/db/61-advanced-transactional-outbox) | advanced | One transaction writes the state change, a dedupe row and an outbox row; a separate publisher drains it, so a crash loses nothing and a redelivery changes nothing (at-least-once). | 19, 50, 09 |
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
+| [96 events: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | advanced | Bounded attempts per message, then publish to a dead-letter topic and commit: a poison message can't block its partition, and a failed DLQ publish doesn't commit. | 15, 22, 62 |
 | [95 db: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | advanced | A version in the UPDATE's WHERE makes read-modify-write a compare-and-set; rows_affected() == 1 or it's a conflict to retry or return. | 19, 50, 51 |
 | [89 observability: bounded labels, durations in seconds](katas/observability/89-advanced-metrics-bounded-labels) | advanced | A label value comes from a small enum, never an id; durations go in a histogram in seconds, named `_seconds`. | 33, 72 |
 | [90 resilience: a timeout and a bounded retry, with tower](katas/resilience/90-advanced-tower-timeout-retry) | advanced | Give each attempt a deadline and retry only transient errors, a bounded number of times with growing waits, using `ServiceBuilder`, `timeout` and a `retry::Policy`. | 22, 40, 50 |
