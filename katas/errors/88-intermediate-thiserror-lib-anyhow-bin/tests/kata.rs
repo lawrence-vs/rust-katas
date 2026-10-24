@@ -1,7 +1,7 @@
 use kata_errors_88::{Settings, SettingsError, load_settings, parse_settings};
 use std::io::{self, Read};
 use std::num::IntErrorKind;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 struct Broken;
@@ -74,7 +74,7 @@ fn temp_path(name: &str) -> PathBuf {
     std::env::temp_dir().join(format!("{name}-{}.conf", std::process::id()))
 }
 
-fn run(path: &PathBuf) -> std::process::Output {
+fn run(path: &Path) -> std::process::Output {
     Command::new(env!("CARGO_BIN_EXE_kata-errors-88"))
         .arg(path)
         .output()

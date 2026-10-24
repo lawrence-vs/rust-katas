@@ -2,7 +2,7 @@
 
 **Concept:** A library should return an error type callers can match on, with the cause kept as `source()`. Only the binary, which just reports, uses a type-erased error and adds context. Here the library returns `anyhow::Error`, so callers can only compare strings, and `main` prints a bare message with no file and no cause chain.
 **Source:** thiserror 2.0.21 docs (https://docs.rs/thiserror/2.0.21/thiserror/); anyhow docs, "Details" and the README's "Comparison to failure/thiserror" (https://docs.rs/anyhow)
-**Fails with:** `error[E0432]: unresolved import`
+**Fails with:** `E0432`
 **Vault:** your note on library vs application errors
 
 **Why this crate:** `thiserror` writes the `Error`/`Display`/`From` impls you would otherwise write by hand (the main alternative is `snafu`); `anyhow` is the app-level error with context (the alternative is `eyre`/`color-eyre`).
