@@ -65,6 +65,7 @@ flowchart TD
     k49["49 a batch with a remainder"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
+    k67["67 two locks taken in opposite orders"]
     k65["65 a frame lost to select!"]
     k55["55 a config snapshot, not a read per quote"]
     k58["58 graceful shutdown: signal, drain, join"]
@@ -203,6 +204,9 @@ flowchart TD
   k58 --> k65
   k17 --> k66
   k41 --> k66
+  k39 --> k67
+  k41 --> k67
+  k51 --> k67
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -267,7 +271,7 @@ flowchart TD
   class k55 latency
   class k44 macros
   class k43 atomics
-  class k41 threads
+  class k41,k67 threads
   class k40 generics
   class k39 drop
   class k37 closures
@@ -339,6 +343,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [49 batching: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | advanced | One provider call per pair per flush; a short fill goes oldest order first and the remainder goes back to the front of the queue, with no overflow. | 34, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
+| [67 threads: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | advanced | Two locks in opposite orders deadlock; one lock order, one lock, or one owner thread makes it impossible, and each operation stays one step. | 39, 41, 51 |
 | [65 async: a frame lost to select!](katas/async/65-advanced-select-cancellation-safety) | advanced | `select!` drops the losing future; a frame read must keep its half-read bytes outside it (a buffered reader over cancel-safe `read`) or survive the loop. | 18, 22 |
 | [64 api-design: a sealed trait and a non_exhaustive enum](katas/api-design/64-advanced-sealed-and-non-exhaustive) | advanced | `#[non_exhaustive]` makes other crates keep a `_` arm and a private supertrait stops foreign impls, so adding a variant or method isn't breaking. | 12, 14, 33 |
 | [63 traits: a generic method behind `dyn`](katas/traits/63-advanced-object-safety) | advanced | A vtable has one slot per method, so a generic method can't sit behind `dyn`: fence it with `where Self: Sized` or move it to an extension trait. | 14 |
