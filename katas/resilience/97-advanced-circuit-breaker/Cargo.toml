@@ -1,0 +1,10 @@
+[package]
+name = "kata-resilience-97"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+thiserror = "=2.0.21"
+
+[dev-dependencies]
+tokio = { version = "=1.54.1", features = ["rt", "macros"] }

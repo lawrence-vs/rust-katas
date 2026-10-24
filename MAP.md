@@ -79,6 +79,7 @@ flowchart TD
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k73["73 shard by key, keep order"]
+    k97["97 a circuit breaker, not a retry storm"]
     k96["96 a poison message, dead-lettered"]
     k89["89 bounded metric labels, seconds"]
     k90["90 a timeout and a bounded retry, with tower"]
@@ -222,6 +223,8 @@ flowchart TD
   k22 --> k90
   k40 --> k90
   k50 --> k90
+  k15 --> k97
+  k22 --> k97
   k17 --> k58
   k18 --> k58
   k22 --> k58
@@ -313,7 +316,7 @@ flowchart TD
   class k73 concurrency
   class k96 events
   class k89 observability
-  class k90 resilience
+  class k90,k97 resilience
   class k91 cli
   class k93,k94 net
   class k54 por
@@ -411,6 +414,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [95 db: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | advanced | A version in the UPDATE's WHERE makes read-modify-write a compare-and-set; rows_affected() == 1 or it's a conflict to retry or return. | 19, 50, 51 |
 | [89 observability: bounded labels, durations in seconds](katas/observability/89-advanced-metrics-bounded-labels) | advanced | A label value comes from a small enum, never an id; durations go in a histogram in seconds, named `_seconds`. | 33, 72 |
 | [90 resilience: a timeout and a bounded retry, with tower](katas/resilience/90-advanced-tower-timeout-retry) | advanced | Give each attempt a deadline and retry only transient errors, a bounded number of times with growing waits, using `ServiceBuilder`, `timeout` and a `retry::Policy`. | 22, 40, 50 |
+| [97 resilience: a circuit breaker, not a retry storm](katas/resilience/97-advanced-circuit-breaker) | advanced | After N consecutive failures, fail fast without calling the dependency; after a cool-down read from an injected clock, let one trial through. | 15, 22 |
 | [58 async: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | advanced | A pool owns its tasks: shutdown signals them, lets in-flight work finish, joins within a grace period, aborts and counts stragglers, and hands back queued jobs that never started. | 17, 18, 22 |
 | [54 por: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | advanced | Sums are checked and hashed into every node; each client rebuilds their own leaf and folds a checked path to the published root. | 09, 23, 42 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
