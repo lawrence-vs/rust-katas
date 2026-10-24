@@ -1,0 +1,8 @@
+[package]
+name = "kata-resilience-90"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tower = { version = "=0.5.3", features = ["retry", "timeout", "util"] }
+tokio = { version = "=1.54.1", features = ["rt", "macros", "time", "test-util"] }

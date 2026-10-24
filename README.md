@@ -143,3 +143,4 @@ Kata links go live as each kata merges.
 | macros | [44 advanced: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | Rust for Rustaceans (Gjengset), ch. 7 Macros, "Declarative Macros" |
 | capstone | [45 expert: capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | own design (exchange-style); std `BTreeMap` docs |
 | threads | [67 advanced: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | Rust for Rustaceans (Gjengset), ch. 10 Concurrency (and Parallelism); std `Mutex` docs |
+| resilience | [90 advanced: a timeout and a bounded retry, not a retry-forever loop](katas/resilience/90-advanced-tower-timeout-retry) | tower docs (ServiceBuilder, timeout, retry::Policy) |
