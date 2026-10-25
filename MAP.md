@@ -114,6 +114,7 @@ flowchart TD
     k64["64 a sealed trait and a non_exhaustive enum"]
     k162["162 a mutant your tests let live"]
     k163["163 a parser that never panics on garbage"]
+    k184["184 a dependency's type in your public API"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -308,6 +309,9 @@ flowchart TD
   k97 --> k172
   k95 --> k173
   k172 --> k173
+  k10 --> k184
+  k87 --> k184
+  k105 --> k184
   k165 --> k179
   k27 --> k179
   k173 --> k179
@@ -408,7 +412,7 @@ flowchart TD
   class k35 iterators
   class k36,k53,k161,k162,k163 testing
   class k34,k74 collections
-  class k104,k180,k181,k182,k183 projectstructure
+  class k104,k180,k181,k182,k183,k184 projectstructure
   class k167 statics
   class k171,k172,k173 cache
   class k33 enums
@@ -467,6 +471,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [181 project-structure: a mod tree where everything is pub](katas/project-structure/181-intermediate-mod-tree-and-pub-crate-privacy) | intermediate | Privacy is per module: private fields behind a checking constructor, `pub(super)` for a parent-only helper, `pub(crate)` for a crate-wide one; `unreachable_pub` flags a `pub` nobody outside can reach. | 10, 53 |
 | [182 project-structure: a pub use facade hides the module layout](katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout) | intermediate | Callers that import deep module paths break on every move; a private module tree behind a flat `pub use` facade (renamed with `as`, plus a small prelude) keeps the public paths the same through a refactor. | — |
 | [183 project-structure: Cargo features are additive](katas/project-structure/183-intermediate-cargo-features-are-additive) | intermediate | Cargo turns on the union of every crate's features, so a feature only adds: it never changes `slug` or removes `slugs_csv`; `default = []` keeps heavy crates opt-in, and `dep:` stops an optional crate from becoming a feature. | 104 |
+| [184 project-structure: another crate's type in your public API](katas/project-structure/184-advanced-external-crate-type-leaks-into-public-api) | advanced | A foreign type in a `pub` signature makes its major bump your breaking change and its crate your callers' dependency; wrap it in your own newtype, convert inside, and keep its error as `source()`. | 10, 87, 105 |
 | [56 rayon: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | intermediate | `par_iter` blocks its caller until rayon finishes; from async code hand the work to `spawn_blocking` or `rayon::spawn` + `oneshot` and await it. | 17, 41 |
 | [57 serde: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | intermediate | Strict wire type with deny_unknown_fields, then try_from into newtypes: a negative, zero, fractional or misspelt order is an error naming the field, never an Order. | 10, 42, 53 |
 | [69 io: stream, don't slurp](katas/io/69-intermediate-stream-dont-slurp) | intermediate | Pass the reader to csv and fold record by record; never read the file into a String or collect the rows. | 08, 35 |
