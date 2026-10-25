@@ -1,0 +1,13 @@
+[package]
+name = "kata-project-structure-183"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["unicode"]
+unicode = ["unicode-normalization"]
+json = ["serde_json"]
+
+[dependencies]
+serde_json = { version = "=1.0.154", optional = true }
+unicode-normalization = { version = "=0.1.26", optional = true }
