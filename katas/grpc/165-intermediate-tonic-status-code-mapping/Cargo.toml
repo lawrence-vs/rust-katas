@@ -1,0 +1,19 @@
+[package]
+name = "kata-grpc-165"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+prost = "=0.14.4"
+tonic = "=0.14.6"
+tonic-prost = "=0.14.6"
+
+[dev-dependencies]
+hyper-util = { version = "=0.1.21", features = ["tokio"] }
+tokio = { version = "=1.53.2", features = ["rt-multi-thread", "macros", "io-util"] }
+tokio-stream = "=0.1.19"
+tower = { version = "=0.5.3", features = ["util"] }
+
+[build-dependencies]
+protox = "=0.9.1"
+tonic-prost-build = "=0.14.6"
