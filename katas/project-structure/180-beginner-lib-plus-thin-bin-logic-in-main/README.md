@@ -3,7 +3,7 @@
 **Concept:** One package can build one library crate and several binary crates. Logic lives in `src/lib.rs`, where `tests/`, doctests, `examples/` and other bins can `use kata_project_structure_180::...`. `main.rs` only reads arguments, calls the library, maps the result to an exit code and prints errors to stderr.
 **Why:** Code in `main.rs` is reachable only by running the process. Integration tests can't import it, and its doc examples never run.
 **Source:** The Rust Book, ch. 7 "Packages, Crates, and Modules" and ch. 11.3 "Test Organization" (section "Integration Tests for Binary Crates"). No Readwise highlight.
-**Fails with:** `error[E0432]: unresolved import`
+**Fails with:** `E0432`
 **Vault:** your note on packages, crates and modules.
 
 ## Task
