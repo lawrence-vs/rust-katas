@@ -98,6 +98,7 @@ flowchart TD
     k96["96 a poison message, dead-lettered"]
     k170["170 a rebalance re-reads: apply once"]
     k173["173 cache-aside: a stale row written back"]
+    k177["177 a load balancer: eject, probe, recover"]
     k89["89 bounded metric labels, seconds"]
     k90["90 a timeout and a bounded retry, with tower"]
     k95["95 optimistic lock: no lost update"]
@@ -300,6 +301,8 @@ flowchart TD
   k97 --> k172
   k95 --> k173
   k172 --> k173
+  k90 --> k177
+  k97 --> k177
   k73 --> k176
   k61 --> k174
   k95 --> k174
@@ -375,7 +378,7 @@ flowchart TD
   class k73,k176 concurrency
   class k96,k170 events
   class k89 observability
-  class k90,k97 resilience
+  class k90,k97,k177 resilience
   class k91 cli
   class k93,k94 net
   class k54 por
@@ -497,6 +500,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [89 observability: bounded labels, durations in seconds](katas/observability/89-advanced-metrics-bounded-labels) | advanced | A label value comes from a small enum, never an id; durations go in a histogram in seconds, named `_seconds`. | 33, 72 |
 | [90 resilience: a timeout and a bounded retry, with tower](katas/resilience/90-advanced-tower-timeout-retry) | advanced | Give each attempt a deadline and retry only transient errors, a bounded number of times with growing waits, using `ServiceBuilder`, `timeout` and a `retry::Policy`. | 22, 40, 50 |
 | [97 resilience: a circuit breaker, not a retry storm](katas/resilience/97-advanced-circuit-breaker) | advanced | After N consecutive failures, fail fast without calling the dependency; after a cool-down read from an injected clock, let one trial through. | 15, 22 |
+| [177 resilience: a load balancer that ejects, probes and recovers](katas/resilience/177-advanced-lb-health-check-ejection-and-recovery) | advanced | Eject a backend after N failures in a row; each failed probe doubles the ejection up to a cap; a returning backend gets a trial (one request at a time, M successes) before full traffic; never eject more than a set share of the pool. | 90, 97 |
 | [58 async: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | advanced | A pool owns its tasks: shutdown signals them, lets in-flight work finish, joins within a grace period, aborts and counts stragglers, and hands back queued jobs that never started. | 17, 18, 22 |
 | [54 por: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | advanced | Sums are checked and hashed into every node; each client rebuilds their own leaf and folds a checked path to the published root. | 09, 23, 42 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |

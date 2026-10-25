@@ -153,6 +153,7 @@ Kata links go live as each kata merges.
 | threads | [67 advanced: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | Rust for Rustaceans (Gjengset), ch. 10 Concurrency (and Parallelism); std `Mutex` docs |
 | resilience | [90 advanced: a timeout and a bounded retry, not a retry-forever loop](katas/resilience/90-advanced-tower-timeout-retry) | tower docs (ServiceBuilder, timeout, retry::Policy) |
 | resilience | [97 advanced: a circuit breaker, not a retry storm](katas/resilience/97-advanced-circuit-breaker) | Release It! (Nygard), ch. 5 Stability Patterns, "Circuit Breaker"; kata 15 |
+| resilience | [177 advanced: a load balancer that ejects, probes and recovers](katas/resilience/177-advanced-lb-health-check-ejection-and-recovery) | Envoy docs (outlier detection, panic threshold); Release It! (Nygard), ch. 5; katas 90, 97 |
 | cli | [91 beginner: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | clap derive tutorial; own design (report CLI) |
 | db | [95 advanced: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | sqlx docs; Designing Data-Intensive Applications ch. 7 |
 | testing | [161 intermediate: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | proptest book (strategies, shrinking, failure persistence); docs.rs proptest `ProptestConfig` and `RngSeed` |
