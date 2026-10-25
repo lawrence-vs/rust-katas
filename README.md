@@ -155,3 +155,4 @@ Kata links go live as each kata merges.
 | db | [95 advanced: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | sqlx docs; Designing Data-Intensive Applications ch. 7 |
 | testing | [161 intermediate: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | proptest book (strategies, shrinking, failure persistence); docs.rs proptest `ProptestConfig` and `RngSeed` |
 | testing | [162 advanced: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | mutants.rs (cargo-mutants); own design (a transfer fee threshold) |
+| testing | [163 advanced: a parser that never panics on garbage](katas/testing/163-advanced-fuzz-parser-never-panics) | rust-fuzz book (cargo-fuzz); own design (a record parser) |
