@@ -1,0 +1,10 @@
+syntax = "proto3";
+package account.v1;
+
+// What clients already in production send and read. Never edit this file.
+message Account {
+  string id = 1;
+  string display_name = 2;
+  string legacy_email = 3;
+  uint64 balance_cents = 4;
+}

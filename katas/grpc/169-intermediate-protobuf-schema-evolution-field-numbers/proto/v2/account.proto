@@ -1,0 +1,11 @@
+syntax = "proto3";
+package account.v2;
+
+// v2 drops legacy_email and adds a phone number and an overdraft limit.
+message Account {
+  string id = 1;
+  string display_name = 2;
+  string phone = 3;
+  uint64 balance_cents = 4;
+  uint64 overdraft_limit_cents = 5;
+}
