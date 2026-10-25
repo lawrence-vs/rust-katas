@@ -99,6 +99,7 @@ flowchart TD
     k96["96 a poison message, dead-lettered"]
     k170["170 a rebalance re-reads: apply once"]
     k173["173 cache-aside: a stale row written back"]
+    k179["179 a cache key that ignores the tenant"]
     k177["177 a load balancer: eject, probe, recover"]
     k89["89 bounded metric labels, seconds"]
     k90["90 a timeout and a bounded retry, with tower"]
@@ -302,6 +303,9 @@ flowchart TD
   k97 --> k172
   k95 --> k173
   k172 --> k173
+  k165 --> k179
+  k27 --> k179
+  k173 --> k179
   k17 --> k178
   k58 --> k178
   k90 --> k177
@@ -366,7 +370,7 @@ flowchart TD
   class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
   class k24,k25,k52 websockets
-  class k26,k27,k165,k166,k169 grpc
+  class k26,k27,k165,k166,k169,k179 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
   class k42,k46,k70,k87,k168 money
@@ -481,6 +485,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [26 grpc: generate, don't hand-write](katas/grpc/26-advanced-generate-dont-hand-write) | advanced | Generate protobuf and gRPC stubs from the `.proto` at build time so they can't drift. | 17 |
 | [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
 | [166 grpc: a server stream that outlives its client](katas/grpc/166-advanced-tonic-server-stream-client-drop-cancels) | advanced | A server stream is a producer plus a channel: an unbounded one grows for a slow client, and the producer keeps running after the client leaves. A bounded channel pushes back, and a closed receiver (a failed send) tells the producer to stop. | 26, 27 |
+| [179 grpc: a cache key that ignores the tenant](katas/grpc/179-advanced-grpc-cache-key-ignores-tenant-and-errors) | advanced | A response cache key is an authorisation boundary: method + the full request + the metadata the reply varies on (the tenant). Cache only successful replies of an allowlist of read-only methods, forward the caller's deadline on a miss, and keep it bounded with a TTL. | 165, 27, 173 |
 | [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17, 41 |
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [48 routing: a multi-hop route](katas/routing/48-advanced-multi-hop-route) | advanced | Price a route one hop at a time in whole atoms: round each fill down, charge each fee up on it, check each minimum on what arrives; take the route that pays the client most, ties to direct. | 46 |
