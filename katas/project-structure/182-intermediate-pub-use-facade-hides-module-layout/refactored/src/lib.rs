@@ -10,7 +10,7 @@
 //! and the helper that picks operator tokens is not part of the API:
 //!
 //! ```compile_fail
-//! use kata_project_structure_182_refactored::syntax::token::operator_token;
+//! use kata_project_structure_182_refactored::operator_token;
 //! ```
 
 /// CLUE: This crate's internal names differ (`ScanError`, `scan`). Which keyword gives a re-export a different name?

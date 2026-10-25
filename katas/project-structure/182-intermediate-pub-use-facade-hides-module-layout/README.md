@@ -68,7 +68,7 @@ mod scan;
 
 ### Cargo workspaces
 Several packages in one repository that share a lockfile and one output directory. Main use: a library and its helpers, built and tested together.
-```rust
+```toml
 [workspace]
 members = ["core", "cli"]
 ```
