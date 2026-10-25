@@ -153,3 +153,4 @@ Kata links go live as each kata merges.
 | resilience | [97 advanced: a circuit breaker, not a retry storm](katas/resilience/97-advanced-circuit-breaker) | Release It! (Nygard), ch. 5 Stability Patterns, "Circuit Breaker"; kata 15 |
 | cli | [91 beginner: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | clap derive tutorial; own design (report CLI) |
 | db | [95 advanced: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | sqlx docs; Designing Data-Intensive Applications ch. 7 |
+| testing | [161 intermediate: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | proptest book (strategies, shrinking, failure persistence); docs.rs proptest `ProptestConfig` and `RngSeed` |

@@ -41,6 +41,7 @@ flowchart TD
     k47["47 a stale quote accepted"]
     k51["51 a credit line overspent"]
     k53["53 a balance that never goes negative"]
+    k161["161 a wallet invariant that table tests miss"]
     k59["59 a shared Mutex inside par_iter"]
     k74["74 sparse ids: a map, not a Vec"]
     k104["104 overflow checks differ by profile"]
@@ -192,6 +193,8 @@ flowchart TD
   k36 --> k53
   k10 --> k53
   k42 --> k53
+  k36 --> k161
+  k53 --> k161
   k15 --> k55
   k18 --> k55
   k41 --> k55
@@ -338,7 +341,7 @@ flowchart TD
   class k37 closures
   class k38 smartpointers
   class k35 iterators
-  class k36,k53 testing
+  class k36,k53,k161 testing
   class k34,k74 collections
   class k104 projectstructure
   class k33 enums
@@ -383,6 +386,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [47 quotes: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | intermediate | A quote carries its deadline and reference mid; accept rejects it when expired (checked first) or when the market drifted past tolerance, with no overflow. | 46 |
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
+| [161 testing: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | intermediate | Hand-picked cases test each operation alone; a proptest over random sequences of reserve, release and spend finds the order that breaks `total == free + reserved` and shrinks it to the shortest one. | 36, 53 |
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
 | [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
