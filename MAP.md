@@ -44,6 +44,7 @@ flowchart TD
     k161["161 a wallet invariant that table tests miss"]
     k59["59 a shared Mutex inside par_iter"]
     k164["164 a parallel reduce that disagrees with the loop"]
+    k165["165 a status code per domain error"]
     k74["74 sparse ids: a map, not a Vec"]
     k104["104 overflow checks differ by profile"]
     k56["56 rayon inside async"]
@@ -214,6 +215,8 @@ flowchart TD
   k41 --> k59
   k59 --> k164
   k42 --> k164
+  k08 --> k165
+  k26 --> k165
   k10 --> k57
   k42 --> k57
   k53 --> k57
@@ -322,7 +325,7 @@ flowchart TD
   class k19,k20,k61,k95 db
   class k21,k22,k23,k92 security
   class k24,k25,k52 websockets
-  class k26,k27 grpc
+  class k26,k27,k165 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
   class k42,k46,k70,k87 money
@@ -401,6 +404,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
 | [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [164 rayon: a parallel reduce that disagrees with the loop](katas/rayon/164-intermediate-parallel-reduce-order-differs-from-sequential) | intermediate | A fold identity that isn't neutral is added once per piece, and a non-associative combine changes with the split; compare against a sequential oracle on several thread counts, sum exact integer cents in a wider type, and collect in order before joining. | 59, 42 |
+| [165 grpc: a status code per domain error](katas/grpc/165-intermediate-tonic-status-code-mapping) | intermediate | One exhaustive From<DomainError> for Status gives each error its own code (InvalidArgument, NotFound, AlreadyExists, FailedPrecondition, Unavailable) and a safe message; detail stays in server logs, and the code tells the client whether to retry. | 08, 26 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
 | [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | — |
 | [56 rayon: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | intermediate | `par_iter` blocks its caller until rayon finishes; from async code hand the work to `spawn_blocking` or `rayon::spawn` + `oneshot` and await it. | 17, 41 |

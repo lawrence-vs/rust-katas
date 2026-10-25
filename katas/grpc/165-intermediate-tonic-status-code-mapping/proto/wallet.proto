@@ -1,0 +1,16 @@
+syntax = "proto3";
+package wallet;
+
+service Wallet {
+  rpc Reserve (ReserveRequest) returns (ReserveReply);
+}
+
+message ReserveRequest {
+  string account_id = 1;
+  string reservation_id = 2;
+  uint64 amount_cents = 3;
+}
+
+message ReserveReply {
+  uint64 free_cents = 1;
+}
