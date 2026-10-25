@@ -1,7 +1,18 @@
 //! 163 advanced: a parser that never panics on garbage
 //!
 //! Think further, from the kata README:
-//! 1. `cargo install cargo-fuzz`, then from this kata's directory run `cargo fuzz init`. It creates a `fuzz/` directory with a target file under `fuzz/fuzz_targets/`. Replace that file's contents with the target shown in the README. Run `cargo +nightly fuzz run <target>` on the starting code. How long until the first crash, and where is it saved (`fuzz/artifacts/<target>/`)?
+//! 1. `cargo install cargo-fuzz`, then from this kata's directory run `cargo fuzz init`. It creates a `fuzz/` directory with a target file under `fuzz/fuzz_targets/`. Replace that file's contents with:
+//!    ```rust
+//!    #![no_main]
+//!    #[macro_use]
+//!    extern crate libfuzzer_sys;
+//!    extern crate kata_testing_163;
+//!
+//!    fuzz_target!(|data: &[u8]| {
+//!        let _ = kata_testing_163::parse_record(data);
+//!    });
+//!    ```
+//!    Run `cargo +nightly fuzz run <target>` on the starting code. How long until the first crash, and where is it saved (`fuzz/artifacts/<target>/`)?
 //! 2. Run the same command with the crash file as a second argument to reproduce it. Then turn the input into a table case.
 //! 3. libFuzzer is coverage-guided; `hostile` is blind. What can libFuzzer reach that `hostile` can't? Why seed `fuzz/corpus/<target>/` with the examples in `examples/think_further.rs`?
 //! 4. The target writes `let _ =`, which kata 124 calls a bug. Why is it right in a fuzz target?
