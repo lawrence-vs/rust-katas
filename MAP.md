@@ -92,6 +92,7 @@ flowchart TD
     k54["54 a Merkle sum tree"]
     k63["63 a generic method behind dyn"]
     k64["64 a sealed trait and a non_exhaustive enum"]
+    k162["162 a mutant your tests let live"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -195,6 +196,8 @@ flowchart TD
   k42 --> k53
   k36 --> k161
   k53 --> k161
+  k36 --> k162
+  k161 --> k162
   k15 --> k55
   k18 --> k55
   k41 --> k55
@@ -341,7 +344,7 @@ flowchart TD
   class k37 closures
   class k38 smartpointers
   class k35 iterators
-  class k36,k53,k161 testing
+  class k36,k53,k161,k162 testing
   class k34,k74 collections
   class k104 projectstructure
   class k33 enums
@@ -387,6 +390,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
 | [161 testing: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | intermediate | Hand-picked cases test each operation alone; a proptest over random sequences of reserve, release and spend finds the order that breaks `total == free + reserved` and shrinks it to the shortest one. | 36, 53 |
+| [162 testing: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | advanced | A mutant is your code with one small change; a test that fails on it kills it. Every line can run while a `>=` to `>` change survives, so a threshold needs a case exactly on it. | 36, 161 |
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
 | [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |

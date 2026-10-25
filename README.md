@@ -154,3 +154,4 @@ Kata links go live as each kata merges.
 | cli | [91 beginner: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | clap derive tutorial; own design (report CLI) |
 | db | [95 advanced: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | sqlx docs; Designing Data-Intensive Applications ch. 7 |
 | testing | [161 intermediate: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | proptest book (strategies, shrinking, failure persistence); docs.rs proptest `ProptestConfig` and `RngSeed` |
+| testing | [162 advanced: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | mutants.rs (cargo-mutants); own design (a transfer fee threshold) |
