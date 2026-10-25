@@ -92,6 +92,7 @@ flowchart TD
     k73["73 shard by key, keep order"]
     k97["97 a circuit breaker, not a retry storm"]
     k96["96 a poison message, dead-lettered"]
+    k170["170 a rebalance re-reads: apply once"]
     k89["89 bounded metric labels, seconds"]
     k90["90 a timeout and a bounded retry, with tower"]
     k95["95 optimistic lock: no lost update"]
@@ -284,6 +285,9 @@ flowchart TD
   k15 --> k96
   k22 --> k96
   k62 --> k96
+  k50 --> k170
+  k73 --> k170
+  k96 --> k170
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -351,7 +355,7 @@ flowchart TD
   class k57 serde
   class k69,k71 io
   class k73 concurrency
-  class k96 events
+  class k96,k170 events
   class k89 observability
   class k90,k97 resilience
   class k91 cli
@@ -463,6 +467,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [96 events: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | advanced | Bounded attempts per message, then publish to a dead-letter topic and commit: a poison message can't block its partition, and a failed DLQ publish doesn't commit. | 15, 22, 62 |
+| [170 events: a rebalance that applies a payment twice](katas/events/170-advanced-kafka-rebalance-double-processing) | advanced | After a rebalance the new owner reads from the last commit, so uncommitted work arrives again: apply idempotently, keyed by a business id or (partition, offset), stored with the effect. A member beyond the partition count gets nothing. | 50, 73, 96 |
 | [95 db: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | advanced | A version in the UPDATE's WHERE makes read-modify-write a compare-and-set; rows_affected() == 1 or it's a conflict to retry or return. | 19, 50, 51 |
 | [89 observability: bounded labels, durations in seconds](katas/observability/89-advanced-metrics-bounded-labels) | advanced | A label value comes from a small enum, never an id; durations go in a histogram in seconds, named `_seconds`. | 33, 72 |
 | [90 resilience: a timeout and a bounded retry, with tower](katas/resilience/90-advanced-tower-timeout-retry) | advanced | Give each attempt a deadline and retry only transient errors, a bounded number of times with growing waits, using `ServiceBuilder`, `timeout` and a `retry::Policy`. | 22, 40, 50 |
