@@ -60,6 +60,7 @@ flowchart TD
     k87["87 rust_decimal: a named rounding per use"]
     k168["168 rust_decimal: scale and checked ops"]
     k167["167 OnceLock and LazyLock, no crate"]
+    k171["171 a lock released by its owner only"]
     k68["68 accidentally not Send"]
     k93["93 one task per connection"]
     k94["94 framing, not one read"]
@@ -288,6 +289,8 @@ flowchart TD
   k50 --> k170
   k73 --> k170
   k96 --> k170
+  k39 --> k171
+  k51 --> k171
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -332,6 +335,7 @@ flowchart TD
   classDef events fill:#ffe082,stroke:#ff8f00,color:#000
   classDef projectstructure fill:#dcedc8,stroke:#33691e,color:#000
   classDef statics fill:#cfd8dc,stroke:#263238,color:#000
+  classDef cache fill:#b3e5fc,stroke:#0277bd,color:#000
 
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
@@ -374,11 +378,12 @@ flowchart TD
   class k34,k74 collections
   class k104 projectstructure
   class k167 statics
+  class k171 cache
   class k33 enums
   class k32 strings
 ```
 
-Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · events honey · project-structure moss · statics steel · capstone gold.
+Colours: ownership red · lifetimes orange · errors yellow · api-design green · traits teal · async blue · db purple · security grey · websockets cyan · grpc pink · unsafe dark · money olive · iterators brown · collections indigo · enums lime · strings amber · macros violet · atomics rust · threads jade · generics sky · drop slate · closures lavender · testing coral · quotes peach · state-machines plum · credit forest · rayon orange-cream · serde sand · io navy · concurrency pine · smart-pointers taupe · routing azure · batching tangerine · por butter · latency navy · observability teal-mist · resilience orchid · cli mauve · net mocha · events honey · project-structure moss · statics steel · cache ice · capstone gold.
 
 | Kata | Level | Concept | Needs first |
 |---|---|---|---|
@@ -439,6 +444,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [87 money: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | intermediate | Money is a `Decimal` parsed from the string. Every rounding names its strategy (half-up for fees, half-to-even for settlement) and overflow is an error. | 42, 46, 70 |
 | [168 money: rust_decimal scale and checked ops](katas/money/168-intermediate-rust-decimal-scale-and-checked-ops) | intermediate | A Decimal is a value plus a scale: 1.5 == 1.50 but each prints its own. Round with a named strategy, then format to exactly 4 places; checked_add and checked_mul turn overflow into an error; amounts cross JSON as strings, never through f64. | 42, 70, 87 |
 | [167 statics: OnceLock and LazyLock, no crate](katas/statics/167-intermediate-std-oncelock-lazylock-no-crate) | intermediate | A process-wide value is built once on first use: LazyLock for a table that can't fail to build, OnceLock for a setting set once (by the first set or the first read). No static mut, no flag, no unsafe, no once_cell; fallible init (get_or_try_init) is still unstable, so that case still needs the crate. | 07, 41 |
+| [171 cache: a lock released by its owner only](katas/cache/171-intermediate-redis-lock-release-wrong-owner) | intermediate | SET NX PX with a new token on every acquire; release is one compare-and-delete (DELEX IFEQ or a Lua script), so a holder whose TTL ran out can't free the next holder's lock. A TTL lock still needs a fencing token to stop a paused holder's late write. | 39, 51 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |
