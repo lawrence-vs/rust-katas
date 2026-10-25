@@ -19,6 +19,7 @@ flowchart TD
     k124["124 let underscore swallows the error"]
     k91["91 clap derive, not hand-parsed args"]
     k92["92 a secret that never reaches Debug"]
+    k180["180 logic in a lib, a thin main"]
   end
   subgraph L2 [Intermediate]
     k02["02 moving out of a Vec"]
@@ -136,6 +137,7 @@ flowchart TD
   k07 --> k91
   k33 --> k91
   k07 --> k92
+  k07 --> k180
   k10 --> k92
   k35 --> k36
   k08 --> k09
@@ -400,7 +402,7 @@ flowchart TD
   class k35 iterators
   class k36,k53,k161,k162,k163 testing
   class k34,k74 collections
-  class k104 projectstructure
+  class k104,k180 projectstructure
   class k167 statics
   class k171,k172,k173 cache
   class k33 enums
@@ -425,6 +427,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [36 testing: test the edges](katas/testing/36-beginner-test-the-edges) | beginner | Edges (empty, overflow, rounding) go in a table of cases; `#[should_panic(expected = "...")]` checks the panic is the promised one, not any panic. | 07, 35 |
 | [91 cli: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | beginner | Arguments as a `#[derive(Parser)]` struct with typed fields, defaults and range/enum validation; tests call `try_parse_from`, never `env::args`. | 07, 33 |
 | [92 security: a secret that never reaches Debug](katas/security/92-beginner-secrecy-no-leak) | beginner | A key in a String is one {:?} away from a log; SecretString redacts it in Debug, and expose_secret() marks the one place it's read. | 07, 10 |
+| [180 project-structure: logic in a lib, a thin main](katas/project-structure/180-beginner-lib-plus-thin-bin-logic-in-main) | beginner | A package builds one lib and any number of bins; logic in `lib.rs` can be used by tests, doctests and other bins, while `main.rs` only parses args, calls the lib, maps the result to an exit code and prints errors to stderr. | 07 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
 | [05 ownership: take, don't clone](katas/ownership/05-intermediate-take-dont-clone) | intermediate | Behind `&mut self`, `Option::take` moves a field out and leaves `None`: a move on purpose, not a clone. | 02 |
