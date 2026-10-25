@@ -1,0 +1,10 @@
+[package]
+name = "kata-project-structure-182"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[workspace]
+members = ["refactored"]
+default-members = [".", "refactored"]

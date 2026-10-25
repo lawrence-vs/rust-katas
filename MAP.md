@@ -51,6 +51,7 @@ flowchart TD
     k74["74 sparse ids: a map, not a Vec"]
     k104["104 overflow checks differ by profile"]
     k181["181 a mod tree where everything is pub"]
+    k182["182 a pub use facade hides the module layout"]
     k56["56 rayon inside async"]
     k57["57 untrusted JSON into checked newtypes"]
     k69["69 stream, don't slurp"]
@@ -405,7 +406,7 @@ flowchart TD
   class k35 iterators
   class k36,k53,k161,k162,k163 testing
   class k34,k74 collections
-  class k104,k180,k181 projectstructure
+  class k104,k180,k181,k182 projectstructure
   class k167 statics
   class k171,k172,k173 cache
   class k33 enums
@@ -462,6 +463,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
 | [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | — |
 | [181 project-structure: a mod tree where everything is pub](katas/project-structure/181-intermediate-mod-tree-and-pub-crate-privacy) | intermediate | Privacy is per module: private fields behind a checking constructor, `pub(super)` for a parent-only helper, `pub(crate)` for a crate-wide one; `unreachable_pub` flags a `pub` nobody outside can reach. | 10, 53 |
+| [182 project-structure: a pub use facade hides the module layout](katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout) | intermediate | Callers that import deep module paths break on every move; a private module tree behind a flat `pub use` facade (renamed with `as`, plus a small prelude) keeps the public paths the same through a refactor. | — |
 | [56 rayon: rayon inside async](katas/rayon/56-intermediate-rayon-inside-async) | intermediate | `par_iter` blocks its caller until rayon finishes; from async code hand the work to `spawn_blocking` or `rayon::spawn` + `oneshot` and await it. | 17, 41 |
 | [57 serde: untrusted JSON](katas/serde/57-intermediate-untrusted-json) | intermediate | Strict wire type with deny_unknown_fields, then try_from into newtypes: a negative, zero, fractional or misspelt order is an error naming the field, never an Order. | 10, 42, 53 |
 | [69 io: stream, don't slurp](katas/io/69-intermediate-stream-dont-slurp) | intermediate | Pass the reader to csv and fold record by record; never read the file into a String or collect the rows. | 08, 35 |
