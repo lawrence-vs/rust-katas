@@ -1,18 +1,19 @@
 # 168 money (intermediate): rust_decimal scale and checked ops
 
-**Concept:** A `Decimal` is a value plus a scale, so `1.5 == 1.50` while each prints its own scale. Output fixes the scale on purpose: round with a named strategy, then format to 4 places. `+` and `*` panic on overflow, so money uses `checked_add` and `checked_mul`. Amounts cross JSON as strings, never numbers.
+**Concept:** A `Decimal` is a value plus a scale, so `1.5 == 1.50` while each prints its own scale. Output fixes the scale on purpose: round with a named strategy, then make the printed places exactly 4, and check that your way of printing holds for the largest values too, since `Display` with a precision can panic. `+` and `*` panic on overflow, so money uses `checked_add` and `checked_mul`. Amounts cross JSON as strings, never numbers.
 **Source:** [rust_decimal docs](https://docs.rs/rust_decimal/1.43.0/rust_decimal/) (`Decimal::scale`, `normalize`, `rescale`, `round_dp_with_strategy`, `checked_add`, `checked_mul`, `Display`, module `rust_decimal::serde::str`); katas 42, 70 and 87
 **Fails with:** `1.5 prints as 1.5000` (the other tests also fail)
 **Vault:** your note on scale versus value
 
 ## Task
-Make `cargo test` pass without changing `tests/` or `Cargo.toml`, and keep the public API. Banned in `src/`: `f32`, `f64`, `from_f64`, `unwrap`, `expect`, `panic!`, `saturating_`, `wrapping_`, a bare `round_dp(`, `#[allow(...)]`, and a hand-written string pad (`push('0')`, `repeat`).
+Make `cargo test` pass without changing `tests/` or `Cargo.toml`, and keep the public API. Banned in `src/`: `f32`, `f64`, `from_f64`, `unwrap`, `expect`, `panic!`, `saturating_`, `wrapping_`, a bare `round_dp(`, `#[allow(...)]`, and a padding loop, `push('0')` or `repeat`. Zero-padding with format width or fill (such as `{:0<4}`) is allowed.
 
 ## Before you fix it
 1. What do `d("1.5").scale()` and `d("1.50").scale()` return? Is `d("1.5") == d("1.50")`?
 2. Predict `format!("{:.4}", d("0.12346"))`, then check it.
 3. Predict what `rescale(4)` does to `Decimal::MAX`.
 4. Which panic message does the starting `statement_total` hit?
+5. Predict `format!("{:.4}", Decimal::MAX)`, then run it. Does it return or panic, and what limit does that point to?
 
 ## Answer in the PR
 1. Scale versus value: why are `1.5` and `1.50` equal but printed differently?
@@ -36,7 +37,7 @@ In a review, check:
 - `to_string()` on money output.
 - `+`, `*` or `sum()` on `Decimal`.
 - A `Decimal` field without a string serde attribute.
-- `{:.N}` without a rounding step before it.
+- `{:.N}` on money: is there a rounding step before it, and has it been run on `Decimal::MAX`?
 
 ## Related concepts
 
