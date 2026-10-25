@@ -1,0 +1,14 @@
+syntax = "proto3";
+package statement;
+
+service Statement {
+  rpc Watch (WatchRequest) returns (stream Entry);
+}
+
+message WatchRequest {
+  string account_id = 1;
+}
+
+message Entry {
+  uint64 seq = 1;
+}

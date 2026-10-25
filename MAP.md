@@ -45,6 +45,7 @@ flowchart TD
     k59["59 a shared Mutex inside par_iter"]
     k164["164 a parallel reduce that disagrees with the loop"]
     k165["165 a status code per domain error"]
+    k166["166 a server stream that outlives its client"]
     k74["74 sparse ids: a map, not a Vec"]
     k104["104 overflow checks differ by profile"]
     k56["56 rayon inside async"]
@@ -219,6 +220,8 @@ flowchart TD
   k42 --> k164
   k08 --> k165
   k26 --> k165
+  k26 --> k166
+  k27 --> k166
   k10 --> k57
   k42 --> k57
   k53 --> k57
@@ -333,7 +336,7 @@ flowchart TD
   class k19,k20,k61,k95 db
   class k21,k22,k23,k92 security
   class k24,k25,k52 websockets
-  class k26,k27,k165 grpc
+  class k26,k27,k165,k166 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
   class k42,k46,k70,k87,k168 money
@@ -441,6 +444,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [25 websockets: a lagging client](katas/websockets/25-advanced-lagging-client) | advanced | `broadcast` reports `Lagged(n)` for a slow receiver; treating it as `Closed` silently drops the client. | 24, 21 |
 | [26 grpc: generate, don't hand-write](katas/grpc/26-advanced-generate-dont-hand-write) | advanced | Generate protobuf and gRPC stubs from the `.proto` at build time so they can't drift. | 17 |
 | [27 grpc: a deadline on a stream](katas/grpc/27-advanced-deadline-on-a-stream) | advanced | A client deadline turns a stalled server stream into `DeadlineExceeded`. | 26, 22 |
+| [166 grpc: a server stream that outlives its client](katas/grpc/166-advanced-tonic-server-stream-client-drop-cancels) | advanced | A server stream is a producer plus a channel: an unbounded one grows for a slow client, and the producer keeps running after the client leaves. A bounded channel pushes back, and a closed receiver (a failed send) tells the producer to stop. | 26, 27 |
 | [43 atomics: Relaxed is not enough](katas/atomics/43-advanced-relaxed-is-not-enough) | advanced | A Relaxed flag orders nothing; a Release store read by an Acquire load makes the data written before it visible. | 17, 41 |
 | [44 macros: `macro_rules!`, not copy-paste](katas/macros/44-advanced-macro-rules-not-copy-paste) | advanced | Five pasted impls drift apart; one exported `macro_rules!` writes the impl once, with `$crate` paths so any crate can call it. | 10, 42 |
 | [48 routing: a multi-hop route](katas/routing/48-advanced-multi-hop-route) | advanced | Price a route one hop at a time in whole atoms: round each fill down, charge each fee up on it, check each minimum on what arrives; take the route that pays the client most, ties to direct. | 46 |
