@@ -1,7 +1,7 @@
 # 172 cache (intermediate): a rate limiter whose counter loses its TTL
 
 **Concept:** INCR then EXPIRE, sent as two commands, can leave a counter with no TTL, and that user is blocked forever. A fixed window that restarts when its key expires lets about 2× the limit through at the boundary. Set the TTL in the same step as the first INCR, and count requests against a sliding window.
-**Source:** Redis docs, INCR, "Pattern: Rate limiter" (https://redis.io/docs/latest/commands/incr/) and PEXPIRE (https://redis.io/docs/latest/commands/pexpire/); kata 171. No Readwise highlight was available to the builder.
+**Source:** Redis docs, INCR, "Pattern: Rate limiter" (https://redis.io/docs/latest/commands/incr/) and PEXPIRE (https://redis.io/docs/latest/commands/pexpire/); Cloudflare blog, "How we built rate limiting capable of scaling to millions of domains" (2017, https://blog.cloudflare.com/counting-things-a-lot-of-different-things/); kata 171. No Readwise highlight was available to the builder.
 **Fails with:** `a rate-limit counter was left with no TTL`
 **Vault:** your note on rate limiting and atomic Redis commands
 
@@ -30,12 +30,13 @@ The limiter must follow these rules:
 ## Think further
 1. The real commands: `INCR rl:user-1:12345`, `PEXPIRE key 120000`, `PEXPIRE key ms NX` (Redis 7.0+), `MULTI`/`EXEC`, `EVAL`/`EVALSHA`, and `TIME`. Which `Store` method is each?
 2. The sliding-window log with `ZADD`, `ZREMRANGEBYSCORE` and `ZCARD`: exact, at the cost of memory per request.
-3. The `redis` crate's `redis::Script` (check `invoke` on docs.rs; it needs the `script` feature). Drop anything you can't confirm.
+3. The `redis` crate's `redis::Script` (check `invoke` on docs.rs; it needs the `script` feature).
 4. Clock source: Redis `TIME` vs each app server's clock.
 5. See the sd-katas card on rate limiters.
 
 ## In the wild
 - The Redis INCR rate-limiter pattern
+- Cloudflare's sliding-window counter post
 - The `governor` crate (GCRA)
 - The `redis-cell` module
 - `tower::limit::RateLimit`

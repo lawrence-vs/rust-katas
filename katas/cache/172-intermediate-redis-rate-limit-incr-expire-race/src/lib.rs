@@ -132,6 +132,7 @@ pub enum Decision {
     Limited,
 }
 
+/// CLUE: A refused request: should it count against the next window?
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Limit {
     pub max: u32,
