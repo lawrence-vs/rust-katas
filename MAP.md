@@ -56,6 +56,7 @@ flowchart TD
     k88["88 thiserror in the library, anyhow in the binary"]
     k105["105 an error source chain"]
     k87["87 rust_decimal: a named rounding per use"]
+    k168["168 rust_decimal: scale and checked ops"]
     k68["68 accidentally not Send"]
     k93["93 one task per connection"]
     k94["94 framing, not one read"]
@@ -238,6 +239,9 @@ flowchart TD
   k42 --> k87
   k46 --> k87
   k70 --> k87
+  k42 --> k168
+  k70 --> k168
+  k87 --> k168
   k17 --> k73
   k21 --> k73
   k41 --> k73
@@ -328,7 +332,7 @@ flowchart TD
   class k26,k27,k165 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
-  class k42,k46,k70,k87 money
+  class k42,k46,k70,k87,k168 money
   class k47 quotes
   class k48 routing
   class k49 batching
@@ -418,6 +422,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [88 errors: thiserror in the library, anyhow in the binary](katas/errors/88-intermediate-thiserror-lib-anyhow-bin) | intermediate | A library returns a thiserror enum callers can match, with causes kept as source(); only the binary uses anyhow, adding context so the error shows the file and the whole cause chain. | 08, 71, 72 |
 | [105 errors: an error source chain](katas/errors/105-intermediate-error-source-chain) | intermediate | A wrapper error returns its cause from `source()` and names the stream that failed, so a caller walks the chain and `downcast_ref`s to the `io::Error`. | 08, 71 |
 | [87 money: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | intermediate | Money is a `Decimal` parsed from the string. Every rounding names its strategy (half-up for fees, half-to-even for settlement) and overflow is an error. | 42, 46, 70 |
+| [168 money: rust_decimal scale and checked ops](katas/money/168-intermediate-rust-decimal-scale-and-checked-ops) | intermediate | A Decimal is a value plus a scale: 1.5 == 1.50 but each prints its own. Round with a named strategy, then format to exactly 4 places; checked_add and checked_mul turn overflow into an error; amounts cross JSON as strings, never through f64. | 42, 70, 87 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
 | [09 errors: `Option` loses the why](katas/errors/09-advanced-option-loses-why) | advanced | `None` says something failed, not what; an error enum names it and keeps its `source()`. | 08 |

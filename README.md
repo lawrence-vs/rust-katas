@@ -157,3 +157,4 @@ Kata links go live as each kata merges.
 | testing | [162 advanced: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | mutants.rs (cargo-mutants); own design (a transfer fee threshold) |
 | testing | [163 advanced: a parser that never panics on garbage](katas/testing/163-advanced-fuzz-parser-never-panics) | rust-fuzz book (cargo-fuzz); own design (a record parser) |
 | rayon | [164 intermediate: a parallel reduce that disagrees with the loop](katas/rayon/164-intermediate-parallel-reduce-order-differs-from-sequential) | rayon docs (ParallelIterator fold, reduce, try_reduce; ThreadPoolBuilder::num_threads); katas 42, 59 |
+| money | [168 intermediate: rust_decimal scale and checked ops](katas/money/168-intermediate-rust-decimal-scale-and-checked-ops) | rust_decimal docs (scale, normalize, rescale, Display precision, checked_add, checked_mul, serde::str); katas 70, 87 |
