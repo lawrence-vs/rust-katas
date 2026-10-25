@@ -62,6 +62,7 @@ flowchart TD
     k167["167 OnceLock and LazyLock, no crate"]
     k171["171 a lock released by its owner only"]
     k172["172 a rate limiter whose counter loses its TTL"]
+    k178["178 readiness flips before the SIGTERM drain"]
     k176["176 a hash ring: adding a node moves few keys"]
     k68["68 accidentally not Send"]
     k93["93 one task per connection"]
@@ -301,6 +302,8 @@ flowchart TD
   k97 --> k172
   k95 --> k173
   k172 --> k173
+  k17 --> k178
+  k58 --> k178
   k90 --> k177
   k97 --> k177
   k73 --> k176
@@ -359,7 +362,7 @@ flowchart TD
   class k07,k08,k09,k72,k88,k105,k123,k124 errors
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
-  class k16,k17,k18,k58,k65,k66,k68 async
+  class k16,k17,k18,k58,k65,k66,k68,k178 async
   class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
   class k24,k25,k52 websockets
@@ -463,6 +466,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [167 statics: OnceLock and LazyLock, no crate](katas/statics/167-intermediate-std-oncelock-lazylock-no-crate) | intermediate | A process-wide value is built once on first use: LazyLock for a table that can't fail to build, OnceLock for a setting set once (by the first set or the first read). No static mut, no flag, no unsafe, no once_cell; fallible init (get_or_try_init) is still unstable, so that case still needs the crate. | 07, 41 |
 | [171 cache: a lock released by its owner only](katas/cache/171-intermediate-redis-lock-release-wrong-owner) | intermediate | SET NX PX with a new token on every acquire; release is one compare-and-delete (DELEX IFEQ or a Lua script), so a holder whose TTL ran out can't free the next holder's lock. A TTL lock still needs a fencing token to stop a paused holder's late write. | 39, 51 |
 | [172 cache: a rate limiter whose counter loses its TTL](katas/cache/172-intermediate-redis-rate-limit-incr-expire-race) | intermediate | INCR then EXPIRE in two steps can leave a counter with no TTL and block a user forever; a window that restarts on expiry lets ~2x the limit through at the boundary. The TTL goes on in the same step as the first INCR, and the limit is checked against a sliding-window counter. | 97, 171 |
+| [178 async: readiness flips before the SIGTERM drain](katas/async/178-intermediate-readiness-flips-before-sigterm-drain) | intermediate | On SIGTERM readiness goes false first while the service keeps serving for a grace delay the load balancer needs to notice; then it stops accepting, drains in-flight requests and exits inside the kill deadline counted from SIGTERM. Liveness stays true throughout. | 17, 58 |
 | [176 concurrency: a hash ring where adding a node moves few keys](katas/concurrency/176-intermediate-consistent-hash-ring-moves-few-keys) | intermediate | `hash(key) % n` moves about n/(n+1) of keys when a node joins; a hash ring with many points per node moves only the ~1/(n+1) the new node takes, keeps loads within a bound, and still leaves one hot key on one node. | 73 |
 | [03 lifetimes: a struct outliving its reference](katas/lifetimes/03-advanced-struct-outlives-reference) | advanced | A lifetime on a struct is the compiler proving it can't outlive what it borrows. | 01 |
 | [06 lifetimes: one lifetime too many](katas/lifetimes/06-advanced-one-lifetime-too-many) | advanced | One `'a` on two references ties the output to the shorter-lived input; give each source its own lifetime. | 03 |
