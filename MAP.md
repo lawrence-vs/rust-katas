@@ -19,6 +19,7 @@ flowchart TD
     k124["124 let underscore swallows the error"]
     k91["91 clap derive, not hand-parsed args"]
     k92["92 a secret that never reaches Debug"]
+    k185["185 test crates in dev-dependencies, versions pinned"]
     k180["180 logic in a lib, a thin main"]
   end
   subgraph L2 [Intermediate]
@@ -309,6 +310,7 @@ flowchart TD
   k97 --> k172
   k95 --> k173
   k172 --> k173
+  k185 --> k104
   k10 --> k184
   k87 --> k184
   k105 --> k184
@@ -412,7 +414,7 @@ flowchart TD
   class k35 iterators
   class k36,k53,k161,k162,k163 testing
   class k34,k74 collections
-  class k104,k180,k181,k182,k183,k184 projectstructure
+  class k104,k180,k181,k182,k183,k184,k185 projectstructure
   class k167 statics
   class k171,k172,k173 cache
   class k33 enums
@@ -437,6 +439,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [36 testing: test the edges](katas/testing/36-beginner-test-the-edges) | beginner | Edges (empty, overflow, rounding) go in a table of cases; `#[should_panic(expected = "...")]` checks the panic is the promised one, not any panic. | 07, 35 |
 | [91 cli: clap derive, not hand-parsed args](katas/cli/91-beginner-clap-derive) | beginner | Arguments as a `#[derive(Parser)]` struct with typed fields, defaults and range/enum validation; tests call `try_parse_from`, never `env::args`. | 07, 33 |
 | [92 security: a secret that never reaches Debug](katas/security/92-beginner-secrecy-no-leak) | beginner | A key in a String is one {:?} away from a log; SecretString redacts it in Debug, and expose_secret() marks the one place it's read. | 07, 10 |
+| [185 project-structure: dependency hygiene, dev vs normal and pins](katas/project-structure/185-beginner-dependency-hygiene-dev-vs-normal-and-pins) | beginner | Test-only crates go in [dev-dependencies], every version is caret-bounded or pinned (never `*`), every dependency is used by src/, and a binary commits its Cargo.lock. | — |
 | [180 project-structure: logic in a lib, a thin main](katas/project-structure/180-beginner-lib-plus-thin-bin-logic-in-main) | beginner | A package builds one lib and any number of bins; logic in `lib.rs` can be used by tests, doctests and other bins, while `main.rs` only parses args, calls the lib, maps the result to an exit code and prints errors to stderr. | 07 |
 | [02 ownership: moving out of a Vec](katas/ownership/02-intermediate-move-out-of-vec) | intermediate | A `Vec` owns its elements, so you can't move one out through an index. | 01 |
 | [04 ownership: borrow, don't take](katas/ownership/04-intermediate-borrow-dont-take) | intermediate | A function that only reads data should borrow it, not take the `Vec`. | 02 |
@@ -467,7 +470,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [165 grpc: a status code per domain error](katas/grpc/165-intermediate-tonic-status-code-mapping) | intermediate | One exhaustive From<DomainError> for Status gives each error its own code (InvalidArgument, NotFound, AlreadyExists, FailedPrecondition, Unavailable) and a safe message; detail stays in server logs, and the code tells the client whether to retry. | 08, 26 |
 | [169 grpc: an old field number reused by a new field](katas/grpc/169-intermediate-protobuf-schema-evolution-field-numbers) | intermediate | A field number is the wire identity: a removed field's number and name are reserved, never reused, and a new field gets a new number. Old readers skip unknown fields, and `optional` tells "the sender never said" from an explicit 0. | 26 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
-| [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | — |
+| [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | 185 |
 | [181 project-structure: a mod tree where everything is pub](katas/project-structure/181-intermediate-mod-tree-and-pub-crate-privacy) | intermediate | Privacy is per module: private fields behind a checking constructor, `pub(super)` for a parent-only helper, `pub(crate)` for a crate-wide one; `unreachable_pub` flags a `pub` nobody outside can reach. | 10, 53 |
 | [182 project-structure: a pub use facade hides the module layout](katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout) | intermediate | Callers that import deep module paths break on every move; a private module tree behind a flat `pub use` facade (renamed with `as`, plus a small prelude) keeps the public paths the same through a refactor. | — |
 | [183 project-structure: Cargo features are additive](katas/project-structure/183-intermediate-cargo-features-are-additive) | intermediate | Cargo turns on the union of every crate's features, so a feature only adds: it never changes `slug` or removes `slugs_csv`; `default = []` keeps heavy crates opt-in, and `dep:` stops an optional crate from becoming a feature. | 104 |
