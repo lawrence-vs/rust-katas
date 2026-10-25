@@ -91,6 +91,7 @@ flowchart TD
     k58["58 graceful shutdown: signal, drain, join"]
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
+    k175["175 replay is deterministic"]
     k73["73 shard by key, keep order"]
     k97["97 a circuit breaker, not a retry storm"]
     k96["96 a poison message, dead-lettered"]
@@ -300,6 +301,8 @@ flowchart TD
   k172 --> k173
   k61 --> k174
   k95 --> k174
+  k50 --> k175
+  k62 --> k175
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -362,7 +365,7 @@ flowchart TD
   class k47 quotes
   class k48 routing
   class k49 batching
-  class k50,k62 statemachines
+  class k50,k62,k175 statemachines
   class k51 credit
   class k56,k59,k164 rayon
   class k57 serde
@@ -481,6 +484,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [55 latency: a config snapshot, not a read per quote](katas/latency/55-advanced-config-snapshot) | advanced | Load config once into an `Arc` snapshot; quotes clone the `Arc` and never touch the store, `reload` swaps it in one step, and a failed reload keeps the last good config. | 15, 18, 41 |
 | [61 db: a transactional outbox](katas/db/61-advanced-transactional-outbox) | advanced | One transaction writes the state change, a dedupe row and an outbox row; a separate publisher drains it, so a crash loses nothing and a redelivery changes nothing (at-least-once). | 19, 50, 09 |
 | [62 state-machines: out-of-order and duplicate events](katas/state-machines/62-advanced-out-of-order-events) | advanced | A per-order version ignores stale and duplicate messages, buffers early ones up to a bound, and a bad transition is an error, not a panic; a proptest shuffles and duplicates a valid stream. | 50, 52, 53 |
+| [175 state-machines: replaying the log gives a different state](katas/state-machines/175-advanced-event-replay-is-deterministic) | advanced | State is a fold over the log: apply reads only the state and the event (no clock, no RNG), skips a seen version and refuses a gap, so a replay, or a snapshot at N plus the tail, gives the same bytes. | 50, 62 |
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [96 events: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | advanced | Bounded attempts per message, then publish to a dead-letter topic and commit: a poison message can't block its partition, and a failed DLQ publish doesn't commit. | 15, 22, 62 |
 | [170 events: a rebalance that applies a payment twice](katas/events/170-advanced-kafka-rebalance-double-processing) | advanced | After a rebalance the new owner reads from the last commit, so uncommitted work arrives again: apply idempotently, keyed by a business id or (partition, offset), stored with the effect. A member beyond the partition count gets nothing. | 50, 73, 96 |
