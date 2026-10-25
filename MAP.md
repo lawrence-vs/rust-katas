@@ -99,6 +99,7 @@ flowchart TD
     k89["89 bounded metric labels, seconds"]
     k90["90 a timeout and a bounded retry, with tower"]
     k95["95 optimistic lock: no lost update"]
+    k174["174 idempotency key and payment: one transaction"]
     k54["54 a Merkle sum tree"]
     k63["63 a generic method behind dyn"]
     k64["64 a sealed trait and a non_exhaustive enum"]
@@ -297,6 +298,8 @@ flowchart TD
   k97 --> k172
   k95 --> k173
   k172 --> k173
+  k61 --> k174
+  k95 --> k174
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -349,7 +352,7 @@ flowchart TD
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
   class k16,k17,k18,k58,k65,k66,k68 async
-  class k19,k20,k61,k95 db
+  class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
   class k24,k25,k52 websockets
   class k26,k27,k165,k166,k169 grpc
@@ -483,6 +486,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [170 events: a rebalance that applies a payment twice](katas/events/170-advanced-kafka-rebalance-double-processing) | advanced | After a rebalance the new owner reads from the last commit, so uncommitted work arrives again: apply idempotently, keyed by a business id or (partition, offset), stored with the effect. A member beyond the partition count gets nothing. | 50, 73, 96 |
 | [95 db: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | advanced | A version in the UPDATE's WHERE makes read-modify-write a compare-and-set; rows_affected() == 1 or it's a conflict to retry or return. | 19, 50, 51 |
 | [173 cache: a slow reader writes a stale row back after the delete](katas/cache/173-advanced-cache-aside-stale-write-after-delete) | advanced | In cache-aside a reader that loaded before a write can SET its old row after the writer's DEL; a versioned set-if-newer in one step from both reader and writer keeps the newest row, and a TTL on every entry bounds what slips through (an expiry between write and fill). | 95, 172 |
+| [174 db: an idempotency key written apart from the payment it guards](katas/db/174-advanced-atomic-idempotency-key-with-business-write) | advanced | The key row, the debit and the payment row commit in one transaction with a primary key on the key; a crash at any statement leaves all or nothing, and a retry returns the stored receipt instead of paying again. | 61, 95 |
 | [89 observability: bounded labels, durations in seconds](katas/observability/89-advanced-metrics-bounded-labels) | advanced | A label value comes from a small enum, never an id; durations go in a histogram in seconds, named `_seconds`. | 33, 72 |
 | [90 resilience: a timeout and a bounded retry, with tower](katas/resilience/90-advanced-tower-timeout-retry) | advanced | Give each attempt a deadline and retry only transient errors, a bounded number of times with growing waits, using `ServiceBuilder`, `timeout` and a `retry::Policy`. | 22, 40, 50 |
 | [97 resilience: a circuit breaker, not a retry storm](katas/resilience/97-advanced-circuit-breaker) | advanced | After N consecutive failures, fail fast without calling the dependency; after a cool-down read from an injected clock, let one trial through. | 15, 22 |
