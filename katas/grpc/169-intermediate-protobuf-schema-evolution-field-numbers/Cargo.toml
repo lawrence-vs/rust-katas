@@ -1,0 +1,15 @@
+[package]
+name = "kata-grpc-169"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+prost = "=0.14.4"
+
+[dev-dependencies]
+prost-types = "=0.14.4"
+protox = "=0.9.1"
+
+[build-dependencies]
+protox = "=0.9.1"
+tonic-prost-build = "=0.14.6"
