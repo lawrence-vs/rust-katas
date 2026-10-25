@@ -27,18 +27,18 @@ Make `cargo test` pass by changing only `src/lib.rs`. Don't change the tests, `C
 5. What does a lower or higher `consecutive_failures` trade off?
 
 ## Think further
-1. Envoy outlier detection: `consecutive_5xx`, `interval`, `base_ejection_time`, `max_ejection_time`, `max_ejection_percent`, and how the ejection multiplier goes back down over time. Map each to a `Config` field, after checking each on envoyproxy.io at build time.
-2. Envoy's panic threshold (`healthy_panic_threshold`): below it, traffic goes to every host.
+1. Envoy outlier detection: `consecutive_5xx`, `interval`, `base_ejection_time`, `max_ejection_time`, `max_ejection_percent`. Map each to a `Config` field. Envoy ejects for `base_ejection_time` times the number of ejections so far (linear, capped at `max_ejection_time`), where this kata doubles. Envoy also lowers that multiplier each `interval` a host stays healthy.
+2. Envoy's panic threshold (`healthy_panic_threshold`, default 50%): when the share of healthy hosts falls below it, Envoy stops filtering by health and sends traffic to all hosts. Compare it with `max_ejected_percent`, which stops ejecting instead.
 3. Active health checks (a probe on a timer) vs passive ones (watching real traffic, as here).
-4. Kubernetes readiness probes, and how a Service drops a pod that isn't ready (`readinessProbe`, `failureThreshold`, `successThreshold`). Check the field names on kubernetes.io.
+4. Kubernetes readiness probes, and how a Service drops a pod that isn't ready (`readinessProbe`, `failureThreshold`, `successThreshold`).
 5. Many threads sharing one balancer: where the lock goes.
 6. See the sd-katas card on load balancing.
 
 ## In the wild
 - Envoy outlier detection
-- NGINX `max_fails`/`fail_timeout` on `upstream` servers (check them in the NGINX docs)
-- HAProxy `observe layer7` with `error-limit` and `on-error`
-- gRPC client-side load balancing (`round_robin`, outlier detection)
+- NGINX `max_fails`/`fail_timeout` on `upstream` servers (defaults 1 and 10s)
+- HAProxy `observe layer7` with `error-limit` and `on-error` (needs health checks on)
+- gRPC xDS outlier detection (gRFC A50): an `outlier_detection` policy wrapping a child such as `round_robin`
 
 In a review, check:
 - an ejection with no end
