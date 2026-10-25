@@ -28,5 +28,10 @@ Each item passes or fails. Report every item, with a one-line reason for each fa
 - [ ] Where the README asks for the other fix's cost, the answer names a concrete cost (an allocation, who owns what, how long a borrow lives).
 - [ ] Answers are the author's own words: the reviewer doesn't rewrite them, but asks a question when an answer is wrong or vague.
 
+## 5. New kata PRs only (skip for fix PRs)
+- [ ] The kata's README has a `## Related concepts` section, or the line `None: no close siblings.`
+- [ ] Each sibling has a one-sentence definition, its main use case and a snippet of at most 5 lines, and there are at most 4 siblings.
+- [ ] No snippet gives away the kata's fix.
+
 ## Verdict
-Approve only when every item passes. Otherwise request changes, listing the failed items by number (e.g. "2.4: `Box::leak` makes the string `'static`; which variable should own it instead?"). Hint at the rule; don't give the fix.
+Approve only when every item that applies passes. Otherwise request changes, listing the failed items by number (e.g. "2.4: `Box::leak` makes the string `'static`; which variable should own it instead?"). Hint at the rule; don't give the fix.
