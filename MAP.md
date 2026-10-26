@@ -72,6 +72,7 @@ flowchart TD
     k68["68 accidentally not Send"]
     k93["93 one task per connection"]
     k94["94 framing, not one read"]
+    k194["194 a hold not released on cancel"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -334,6 +335,10 @@ flowchart TD
   k95 --> k174
   k50 --> k175
   k62 --> k175
+  k11 --> k194
+  k42 --> k194
+  k51 --> k194
+  k53 --> k194
   k50 --> k190
   k57 --> k190
   k92 --> k190
@@ -399,7 +404,7 @@ flowchart TD
   class k47 quotes
   class k48 routing
   class k49 batching
-  class k50,k62,k175 statemachines
+  class k50,k62,k175,k194 statemachines
   class k51 credit
   class k56,k59,k164 rayon
   class k57,k190 serde
@@ -470,6 +475,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
 | [161 testing: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | intermediate | Hand-picked cases test each operation alone; a proptest over random sequences of reserve, release and spend finds the order that breaks `total == free + reserved` and shrinks it to the shortest one. | 36, 53 |
+| [194 state-machines: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | intermediate | A buy holds price × quantity; each fill moves only its cost from held to spent, a cancel gives back only what the order still holds, and a market buy's leftover budget comes back when it runs out, so available + reserved + spent never changes. | 11, 42, 51, 53 |
 | [162 testing: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | advanced | A mutant is your code with one small change; a test that fails on it kills it. Every line can run while a `>=` to `>` change survives, so a threshold needs a case exactly on it. | 36, 161 |
 | [163 testing: a parser that never panics on garbage](katas/testing/163-advanced-fuzz-parser-never-panics) | advanced | A parser of untrusted bytes returns a typed error for truncated rows, NUL, invalid UTF-8 and huge fields; a seeded generator of hostile bytes finds every `unwrap` and index that panics, and cargo-fuzz does the same with coverage guidance. | 23, 161 |
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
