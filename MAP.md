@@ -103,6 +103,7 @@ flowchart TD
     k97["97 a circuit breaker, not a retry storm"]
     k96["96 a poison message, dead-lettered"]
     k170["170 a rebalance re-reads: apply once"]
+    k193["193 k-way merge: watermark, idle, late"]
     k173["173 cache-aside: a stale row written back"]
     k179["179 a cache key that ignores the tenant"]
     k177["177 a load balancer: eject, probe, recover"]
@@ -305,6 +306,9 @@ flowchart TD
   k50 --> k170
   k73 --> k170
   k96 --> k170
+  k52 --> k193
+  k62 --> k193
+  k73 --> k193
   k39 --> k171
   k51 --> k171
   k171 --> k172
@@ -401,7 +405,7 @@ flowchart TD
   class k57,k190 serde
   class k69,k71 io
   class k73,k176 concurrency
-  class k96,k170 events
+  class k96,k170,k193 events
   class k89 observability
   class k90,k97,k177 resilience
   class k91 cli
@@ -527,6 +531,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [96 events: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | advanced | Bounded attempts per message, then publish to a dead-letter topic and commit: a poison message can't block its partition, and a failed DLQ publish doesn't commit. | 15, 22, 62 |
 | [170 events: a rebalance that applies a payment twice](katas/events/170-advanced-kafka-rebalance-double-processing) | advanced | After a rebalance the new owner reads from the last commit, so uncommitted work arrives again: apply idempotently, keyed by a business id or (partition, offset), stored with the effect. A member beyond the partition count gets nothing. | 50, 73, 96 |
+| [193 events: a k-way merge with a watermark](katas/events/193-advanced-k-way-merge-with-watermark) | advanced | A min-heap emits several ordered streams as one feed, by (timestamp, id), only up to the watermark (slowest stream minus lateness); an idle marker unblocks a quiet stream, and an event behind the emitted position goes to a counted late output. | 52, 62, 73 |
 | [95 db: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | advanced | A version in the UPDATE's WHERE makes read-modify-write a compare-and-set; rows_affected() == 1 or it's a conflict to retry or return. | 19, 50, 51 |
 | [173 cache: a slow reader writes a stale row back after the delete](katas/cache/173-advanced-cache-aside-stale-write-after-delete) | advanced | In cache-aside a reader that loaded before a write can SET its old row after the writer's DEL; a versioned set-if-newer in one step from both reader and writer keeps the newest row, and a TTL on every entry bounds what slips through (an expiry between write and fill). | 95, 172 |
 | [174 db: an idempotency key written apart from the payment it guards](katas/db/174-advanced-atomic-idempotency-key-with-business-write) | advanced | The key row, the debit and the payment row commit in one transaction with a primary key on the key; a crash at any statement leaves all or nothing, and a retry returns the stored receipt instead of paying again. | 61, 95 |

@@ -135,6 +135,7 @@ Kata links go live as each kata merges.
 | concurrency | [176 intermediate: a hash ring where adding a node moves few keys](katas/concurrency/176-intermediate-consistent-hash-ring-moves-few-keys) | Karger et al., "Consistent Hashing and Random Trees" (STOC 1997); DeCandia et al., "Dynamo" (SOSP 2007), section 4.2; kata 73 |
 | events | [96 advanced: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | Apache Kafka consumer docs (offsets, error handling); rdkafka docs |
 | events | [170 advanced: a rebalance that applies a payment twice](katas/events/170-advanced-kafka-rebalance-double-processing) | Apache Kafka docs (delivery semantics, consumer groups); rdkafka docs; kata 96 |
+| events | [193 advanced: a k-way merge with a watermark](katas/events/193-advanced-k-way-merge-with-watermark) | "The Dataflow Model" (VLDB 2015); Apache Flink watermark docs; std BinaryHeap docs; katas 52, 62, 73 |
 | money | [70 intermediate: parse a decimal string](katas/money/70-intermediate-parse-decimal-string) | The Rust Book ch. 9; std str::parse / FromStr docs; own design (exchange price feeds) |
 | money | [87 intermediate: rust_decimal rounding](katas/money/87-intermediate-rust-decimal-rounding) | rust_decimal docs (RoundingStrategy, checked_mul, FromStr); own design (fee and settlement rounding) |
 | io | [71 intermediate: Read and Write, not a path](katas/io/71-intermediate-generic-read-write-for-tests) | Rust API Guidelines, C-RW-VALUE; std::io docs |
