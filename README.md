@@ -176,3 +176,4 @@ Kata links go live as each kata merges.
 | csv | [187 intermediate: a comma inside quotes](katas/csv/187-intermediate-quoted-comma) | RFC 4180 (CSV quoting); kata 72 |
 | matching | [188 intermediate: a buy takes the cheapest ask first](katas/matching/188-intermediate-buy-takes-cheapest-ask) | std `BTreeMap` docs; own design (exchange price-time priority); kata 45 |
 | async | [189 intermediate: two awaits run one after the other](katas/async/189-intermediate-sequential-awaits-not-parallel) | tokio `join!` docs; Tokio tutorial, spawning; kata 17 |
+| serde | [190 advanced: an idempotency fingerprint over canonical JSON](katas/serde/190-advanced-canonical-json-fingerprint) | RFC 8259 §4 and §6; RFC 8785 (JCS); serde_json feature docs (arbitrary_precision); IETF Idempotency-Key header draft; kata 50 |
