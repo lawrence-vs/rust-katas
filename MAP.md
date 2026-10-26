@@ -50,6 +50,7 @@ flowchart TD
     k166["166 a server stream that outlives its client"]
     k169["169 an old field number reused by a new field"]
     k74["74 sparse ids: a map, not a Vec"]
+    k203["203 a recursive DFS overflows the stack"]
     k104["104 overflow checks differ by profile"]
     k183["183 Cargo features are additive"]
     k181["181 a mod tree where everything is pub"]
@@ -139,6 +140,8 @@ flowchart TD
   k01 --> k32
   k01 --> k34
   k34 --> k74
+  k35 --> k203
+  k74 --> k203
   k01 --> k35
   k03 --> k06
   k07 --> k08
@@ -434,7 +437,7 @@ flowchart TD
   class k38 smartpointers
   class k35 iterators
   class k36,k53,k161,k162,k163 testing
-  class k34,k74 collections
+  class k34,k74,k203 collections
   class k104,k180,k181,k182,k183,k184,k185 projectstructure
   class k167 statics
   class k171,k172,k173 cache
@@ -493,6 +496,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [165 grpc: a status code per domain error](katas/grpc/165-intermediate-tonic-status-code-mapping) | intermediate | One exhaustive From<DomainError> for Status gives each error its own code (InvalidArgument, NotFound, AlreadyExists, FailedPrecondition, Unavailable) and a safe message; detail stays in server logs, and the code tells the client whether to retry. | 08, 26 |
 | [169 grpc: an old field number reused by a new field](katas/grpc/169-intermediate-protobuf-schema-evolution-field-numbers) | intermediate | A field number is the wire identity: a removed field's number and name are reserved, never reused, and a new field gets a new number. Old readers skip unknown fields, and `optional` tells "the sender never said" from an explicit 0. | 26 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
+| [203 collections: a recursive DFS overflows the stack](katas/collections/203-intermediate-recursive-dfs-overflows-the-stack) | intermediate | One stack frame per level overflows a thread's fixed stack on a long path; an explicit Vec stack with a Vec<bool> visited set does the same O(V + E) walk on the heap, in the same preorder. | 35, 74 |
 | [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | 185 |
 | [181 project-structure: a mod tree where everything is pub](katas/project-structure/181-intermediate-mod-tree-and-pub-crate-privacy) | intermediate | Privacy is per module: private fields behind a checking constructor, `pub(super)` for a parent-only helper, `pub(crate)` for a crate-wide one; `unreachable_pub` flags a `pub` nobody outside can reach. | 10, 53 |
 | [182 project-structure: a pub use facade hides the module layout](katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout) | intermediate | Callers that import deep module paths break on every move; a private module tree behind a flat `pub use` facade (renamed with `as`, plus a small prelude) keeps the public paths the same through a refactor. | — |
