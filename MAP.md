@@ -74,6 +74,7 @@ flowchart TD
     k93["93 one task per connection"]
     k94["94 framing, not one read"]
     k194["194 a hold not released on cancel"]
+    k205["205 a knapsack loop that counts an item twice"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -231,6 +232,7 @@ flowchart TD
   k10 --> k53
   k42 --> k53
   k36 --> k161
+  k36 --> k205
   k53 --> k161
   k36 --> k162
   k161 --> k162
@@ -436,7 +438,7 @@ flowchart TD
   class k37 closures
   class k38 smartpointers
   class k35 iterators
-  class k36,k53,k161,k162,k163 testing
+  class k36,k53,k161,k162,k163,k205 testing
   class k34,k74,k203 collections
   class k104,k180,k181,k182,k183,k184,k185 projectstructure
   class k167 statics
@@ -490,6 +492,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [194 state-machines: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | intermediate | A buy holds price × quantity; each fill moves only its cost from held to spent, a cancel gives back only what the order still holds, and a market buy's leftover budget comes back when it runs out, so available + reserved + spent never changes. | 11, 42, 51, 53 |
 | [162 testing: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | advanced | A mutant is your code with one small change; a test that fails on it kills it. Every line can run while a `>=` to `>` change survives, so a threshold needs a case exactly on it. | 36, 161 |
 | [163 testing: a parser that never panics on garbage](katas/testing/163-advanced-fuzz-parser-never-panics) | advanced | A parser of untrusted bytes returns a typed error for truncated rows, NUL, invalid UTF-8 and huge fields; a seeded generator of hostile bytes finds every `unwrap` and index that panics, and cargo-fuzz does the same with coverage guidance. | 23, 161 |
+| [205 testing: a knapsack loop that counts an item twice](katas/testing/205-intermediate-knapsack-loop-direction) | intermediate | A one-row DP table is 0/1 only if the inner loop runs capacity downward; table cases where the unbounded answer differs, plus empty, capacity 0 and too-heavy items, catch it. | 36 |
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
 | [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [164 rayon: a parallel reduce that disagrees with the loop](katas/rayon/164-intermediate-parallel-reduce-order-differs-from-sequential) | intermediate | A fold identity that isn't neutral is added once per piece, and a non-associative combine changes with the split; compare against a sequential oracle on several thread counts, sum exact integer cents in a wider type, and collect in order before joining. | 59, 42 |
