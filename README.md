@@ -184,3 +184,6 @@ Kata links go live as each kata merges.
 | serde | [190 advanced: an idempotency fingerprint over canonical JSON](katas/serde/190-advanced-canonical-json-fingerprint) | RFC 8259 §4 and §6; RFC 8785 (JCS); serde_json feature docs (arbitrary_precision); IETF Idempotency-Key header draft; kata 50 |
 | state-machines | [201 advanced: an amend keeps its place in the queue](katas/state-machines/201-advanced-amend-keeps-queue-priority) | std `BTreeMap` and `VecDeque` docs; own design (exchange price-time priority); katas 45, 12 |
 | websockets | [202 advanced: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | own design (exchange market-data fan-out); std `VecDeque` docs; katas 25, 52 |
+| serde | [190 intermediate: `default` hides a missing field](katas/serde/190-intermediate-default-hides-missing-field) | serde field attributes, `default`; kata 57 |
+| events | [191 intermediate: a redelivered event applies once](katas/events/191-intermediate-redelivered-event-applies-once) | Apache Kafka delivery semantics; kata 174 |
+| rayon | [192 intermediate: par_sort_unstable reorders equal keys](katas/rayon/192-intermediate-par-sort-unstable-reorders-ties) | rayon `ParallelSliceMut` docs; kata 164 |
