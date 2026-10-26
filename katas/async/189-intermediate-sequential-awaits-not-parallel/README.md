@@ -21,5 +21,5 @@ Make `cargo test` pass without changing the test. Keep it on one task: no `tokio
 - **`JoinSet`:** a set of spawned tasks you can await as they finish. Use it when the count is not known up front.
 
 ```rust
-let (a, b) = tokio::join!(fut_a, fut_b);
+let handle = tokio::spawn(fut_a);
 ```
