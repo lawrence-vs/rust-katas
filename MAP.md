@@ -93,6 +93,7 @@ flowchart TD
     k49["49 a batch with a remainder"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
+    k202["202 conflation drops trades"]
     k67["67 two locks taken in opposite orders"]
     k65["65 a frame lost to select!"]
     k55["55 a config snapshot, not a read per quote"]
@@ -216,6 +217,10 @@ flowchart TD
   k09 --> k61
   k50 --> k62
   k52 --> k62
+  k21 --> k202
+  k24 --> k202
+  k25 --> k202
+  k52 --> k202
   k53 --> k62
   k41 --> k51
   k42 --> k51
@@ -399,7 +404,7 @@ flowchart TD
   class k16,k17,k18,k58,k65,k66,k68,k178 async
   class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
-  class k24,k25,k52 websockets
+  class k24,k25,k52,k202 websockets
   class k26,k27,k165,k166,k169,k179 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
@@ -530,6 +535,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [49 batching: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | advanced | One provider call per pair per flush; a short fill goes oldest order first and the remainder goes back to the front of the queue, with no overflow. | 34, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
+| [202 websockets: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | advanced | Conflate state, never events: book updates latest-wins per (symbol, side, price) with their own seq, trades always delivered, and a full buffer becomes a resnapshot marker, not a silent gap. | 25, 52, 24, 21 |
 | [67 threads: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | advanced | Two locks in opposite orders deadlock; one lock order, one lock, or one owner thread makes it impossible, and each operation stays one step. | 39, 41, 51 |
 | [65 async: a frame lost to select!](katas/async/65-advanced-select-cancellation-safety) | advanced | `select!` drops the losing future; a frame read must keep its half-read bytes outside it (a buffered reader over cancel-safe `read`) or survive the loop. | 18, 22 |
 | [64 api-design: a sealed trait and a non_exhaustive enum](katas/api-design/64-advanced-sealed-and-non-exhaustive) | advanced | `#[non_exhaustive]` makes other crates keep a `_` arm and a private supertrait stops foreign impls, so adding a variant or method isn't breaking. | 12, 14, 33 |

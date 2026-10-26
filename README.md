@@ -180,3 +180,4 @@ Kata links go live as each kata merges.
 | state-machines | [194 intermediate: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | own design (exchange reserve-then-settle); std u64 checked_* docs; katas 42, 51, 53 |
 | serde | [190 advanced: an idempotency fingerprint over canonical JSON](katas/serde/190-advanced-canonical-json-fingerprint) | RFC 8259 §4 and §6; RFC 8785 (JCS); serde_json feature docs (arbitrary_precision); IETF Idempotency-Key header draft; kata 50 |
 | state-machines | [201 advanced: an amend keeps its place in the queue](katas/state-machines/201-advanced-amend-keeps-queue-priority) | std `BTreeMap` and `VecDeque` docs; own design (exchange price-time priority); katas 45, 12 |
+| websockets | [202 advanced: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | own design (exchange market-data fan-out); std `VecDeque` docs; katas 25, 52 |
