@@ -172,3 +172,7 @@ Kata links go live as each kata merges.
 | project-structure | [182 intermediate: a pub use facade hides the module layout](katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout) | The Rust Book ch. 7 (`use`, `pub use`) and ch. 14 "Exporting a Convenient Public API"; rustdoc book, "Re-exports"; kata 64 |
 | project-structure | [183 intermediate: Cargo features are additive](katas/project-structure/183-intermediate-cargo-features-are-additive) | The Cargo Book, "Features" (feature unification, optional dependencies, dep:); kata 104 |
 | project-structure | [184 advanced: another crate's type in your public API](katas/project-structure/184-advanced-external-crate-type-leaks-into-public-api) | Rust API Guidelines C-STABLE; dtolnay semver-trick; kata 87 |
+| lifetimes | [186 intermediate: two references in, one out](katas/lifetimes/186-intermediate-two-refs-one-out) | The Rust Reference, lifetime elision; kata 6 |
+| csv | [187 intermediate: a comma inside quotes](katas/csv/187-intermediate-quoted-comma) | RFC 4180 (CSV quoting); kata 72 |
+| matching | [188 intermediate: a buy takes the cheapest ask first](katas/matching/188-intermediate-buy-takes-cheapest-ask) | std `BTreeMap` docs; own design (exchange price-time priority); kata 45 |
+| async | [189 intermediate: two awaits run one after the other](katas/async/189-intermediate-sequential-awaits-not-parallel) | tokio `join!` docs; Tokio tutorial, spawning; kata 17 |
