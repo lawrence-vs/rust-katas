@@ -1,4 +1,4 @@
-use kata_serde_190::{FingerprintError, MAX_DEPTH, canonical_json, fingerprint};
+use kata_serde_196::{FingerprintError, MAX_DEPTH, canonical_json, fingerprint};
 use sha2::{Digest, Sha256};
 
 fn canon(body: &str) -> Result<String, FingerprintError> {
