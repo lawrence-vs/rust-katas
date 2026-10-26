@@ -100,6 +100,7 @@ flowchart TD
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k175["175 replay is deterministic"]
+    k201["201 an amend keeps its place in the queue"]
     k73["73 shard by key, keep order"]
     k97["97 a circuit breaker, not a retry storm"]
     k96["96 a poison message, dead-lettered"]
@@ -335,6 +336,8 @@ flowchart TD
   k95 --> k174
   k50 --> k175
   k62 --> k175
+  k45 --> k201
+  k12 --> k201
   k11 --> k194
   k42 --> k194
   k51 --> k194
@@ -404,7 +407,7 @@ flowchart TD
   class k47 quotes
   class k48 routing
   class k49 batching
-  class k50,k62,k175,k194 statemachines
+  class k50,k62,k175,k194,k201 statemachines
   class k51 credit
   class k56,k59,k164 rayon
   class k57,k190 serde
@@ -474,6 +477,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [47 quotes: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | intermediate | A quote carries its deadline and reference mid; accept rejects it when expired (checked first) or when the market drifted past tolerance, with no overflow. | 46 |
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
+| [201 state-machines: an amend keeps its place in the queue](katas/state-machines/201-advanced-amend-keeps-queue-priority) | advanced | Price-time priority: a smaller amend keeps its place, a bigger one or a new price goes to the back with a new sequence number, and a rejected command changes nothing. | 45, 12 |
 | [161 testing: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | intermediate | Hand-picked cases test each operation alone; a proptest over random sequences of reserve, release and spend finds the order that breaks `total == free + reserved` and shrinks it to the shortest one. | 36, 53 |
 | [194 state-machines: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | intermediate | A buy holds price × quantity; each fill moves only its cost from held to spent, a cancel gives back only what the order still holds, and a market buy's leftover budget comes back when it runs out, so available + reserved + spent never changes. | 11, 42, 51, 53 |
 | [162 testing: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | advanced | A mutant is your code with one small change; a test that fails on it kills it. Every line can run while a `>=` to `>` change survives, so a threshold needs a case exactly on it. | 36, 161 |
