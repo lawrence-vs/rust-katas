@@ -190,6 +190,6 @@ Kata links go live as each kata merges.
 | serde | [190 intermediate: `default` hides a missing field](katas/serde/190-intermediate-default-hides-missing-field) | serde field attributes, `default`; kata 57 |
 | events | [191 intermediate: a redelivered event applies once](katas/events/191-intermediate-redelivered-event-applies-once) | Apache Kafka delivery semantics; kata 174 |
 | rayon | [192 intermediate: par_sort_unstable reorders equal keys](katas/rayon/192-intermediate-par-sort-unstable-reorders-ties) | rayon `ParallelSliceMut` docs; kata 164 |
-| strings | [193 intermediate: a slice that splits a UTF-8 character](katas/strings/193-intermediate-slice-splits-utf8-char) | std `str::is_char_boundary` docs; The Rust Book ch. 8; kata 32 |
-| collections | [194 intermediate: f64 is not Eq or Hash](katas/collections/194-intermediate-f64-not-hashable) | std `Eq` docs; Rust Reference, derive; kata 10 |
-| collections | [195 intermediate: BinaryHeap pops the greatest first](katas/collections/195-intermediate-binaryheap-is-max-first) | std `BinaryHeap` and `cmp::Reverse` docs; kata 188 |
+| strings | [209 intermediate: a slice that splits a UTF-8 character](katas/strings/209-intermediate-slice-splits-utf8-char) | std `str::is_char_boundary` docs; The Rust Book ch. 8; kata 32 |
+| collections | [210 intermediate: f64 is not Eq or Hash](katas/collections/210-intermediate-f64-not-hashable) | std `Eq` docs; Rust Reference, derive; kata 10 |
+| collections | [211 intermediate: BinaryHeap pops the greatest first](katas/collections/211-intermediate-binaryheap-is-max-first) | std `BinaryHeap` and `cmp::Reverse` docs; kata 188 |

@@ -1,4 +1,4 @@
-# 195 intermediate: BinaryHeap pops the greatest first
+# 211 intermediate: BinaryHeap pops the greatest first
 
 **Concept:** `BinaryHeap` is a max-heap: `pop` returns the largest element. A priority queue for "lowest first" needs the order reversed, with `std::cmp::Reverse` or an explicit ordering. Pick the direction from the rule, not from the default.
 **Source:** std `BinaryHeap` docs, https://doc.rust-lang.org/std/collections/struct.BinaryHeap.html (max-heap, `Reverse` for min-heap); std `cmp::Reverse` docs, https://doc.rust-lang.org/std/cmp/struct.Reverse.html

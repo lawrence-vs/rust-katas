@@ -1,4 +1,4 @@
-# 194 intermediate: f64 is not Eq or Hash
+# 210 intermediate: f64 is not Eq or Hash
 
 **Concept:** `HashSet` needs `Eq` and `Hash` on its element. `f64` is only `PartialEq`, because `NaN != NaN` breaks reflexivity, so `f64` can't be `Eq` or `Hash`. Money and prices should be integer ticks, which are exact and hashable.
 **Source:** std `f64` and `Eq` docs, https://doc.rust-lang.org/std/cmp/trait.Eq.html; Rust Reference, "Traits" (derive); own design (exchange price ticks)

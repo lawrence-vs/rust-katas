@@ -1,4 +1,4 @@
-# 193 intermediate: a slice that splits a UTF-8 character
+# 209 intermediate: a slice that splits a UTF-8 character
 
 **Concept:** `str` indexing takes byte offsets, and every index must sit on a character boundary. `é` is two bytes, so `&s[..1]` cannot take it whole. Count characters with `chars()`, or check the boundary with `is_char_boundary`.
 **Source:** std `str` docs, indexing and `is_char_boundary`, https://doc.rust-lang.org/std/primitive.str.html#method.is_char_boundary; The Rust Book ch. 8, "Storing UTF-8 Encoded Text with Strings"
