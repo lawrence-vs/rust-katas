@@ -184,3 +184,6 @@ Kata links go live as each kata merges.
 | state-machines | [194 intermediate: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | own design (exchange reserve-then-settle); std u64 checked_* docs; katas 42, 51, 53 |
 | state-machines | [201 advanced: an amend keeps its place in the queue](katas/state-machines/201-advanced-amend-keeps-queue-priority) | std `BTreeMap` and `VecDeque` docs; own design (exchange price-time priority); katas 45, 12 |
 | websockets | [202 advanced: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | own design (exchange market-data fan-out); std `VecDeque` docs; katas 25, 52 |
+| serde | [206 intermediate: `default` hides a missing field](katas/serde/206-intermediate-default-hides-missing-field) | serde field attributes, `default`; kata 57 |
+| events | [207 intermediate: a redelivered event applies once](katas/events/207-intermediate-redelivered-event-applies-once) | Apache Kafka delivery semantics; kata 174 |
+| rayon | [208 intermediate: par_sort_unstable reorders equal keys](katas/rayon/208-intermediate-par-sort-unstable-reorders-ties) | rayon `ParallelSliceMut` docs; kata 164 |
