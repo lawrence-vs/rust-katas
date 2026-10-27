@@ -1,4 +1,4 @@
-# 192 intermediate: par_sort_unstable reorders equal keys
+# 208 intermediate: par_sort_unstable reorders equal keys
 
 **Concept:** rayon has a stable parallel sort (`par_sort_by`) and an unstable one (`par_sort_unstable_by`). The unstable one may swap elements that compare equal. For price-time priority, equal prices must keep arrival order, so the name of the sort is a promise you must read.
 **Source:** rayon `ParallelSliceMut` docs, https://docs.rs/rayon/1.12.0/rayon/slice/trait.ParallelSliceMut.html; std `slice::sort` vs `sort_unstable` docs (same stable/unstable split); own design (exchange order priority)

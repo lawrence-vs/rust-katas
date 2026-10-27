@@ -1,4 +1,4 @@
-# 191 intermediate: a redelivered event applies once
+# 207 intermediate: a redelivered event applies once
 
 **Concept:** Brokers deliver at least once, so a consumer sees duplicates after a retry or a rebalance. Making the handler idempotent means recording which event ids were applied and checking that record before changing state. The check and the write must agree.
 **Source:** Apache Kafka documentation, delivery semantics (at least once), https://kafka.apache.org/documentation/#semantics; own design (exchange account ledger consumer)

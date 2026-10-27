@@ -1,4 +1,4 @@
-use kata_rayon_192::{Order, by_price_desc};
+use kata_rayon_208::{Order, by_price_desc};
 
 #[test]
 fn equal_prices_keep_arrival_order() {

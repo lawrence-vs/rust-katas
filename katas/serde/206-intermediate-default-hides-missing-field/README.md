@@ -1,4 +1,4 @@
-# 190 intermediate: `default` hides a missing field
+# 206 intermediate: `default` hides a missing field
 
 **Concept:** `#[serde(default)]` makes an absent key fall back to the type's default. For untrusted input that turns "the upstream forgot the quantity" into a zero-quantity fill, which looks valid and is a silent bug. Use `default` only where absence is a real, documented case.
 **Source:** serde field attributes, `default`, https://serde.rs/field-attrs.html#default; API Guidelines C-VALIDATE

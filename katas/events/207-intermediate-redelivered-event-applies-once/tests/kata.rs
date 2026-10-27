@@ -1,4 +1,4 @@
-use kata_events_191::{Event, Ledger};
+use kata_events_207::{Event, Ledger};
 
 fn event(id: u64, amount: i64) -> Event {
     Event {
