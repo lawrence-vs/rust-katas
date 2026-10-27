@@ -187,3 +187,6 @@ Kata links go live as each kata merges.
 | serde | [206 intermediate: `default` hides a missing field](katas/serde/206-intermediate-default-hides-missing-field) | serde field attributes, `default`; kata 57 |
 | events | [207 intermediate: a redelivered event applies once](katas/events/207-intermediate-redelivered-event-applies-once) | Apache Kafka delivery semantics; kata 174 |
 | rayon | [208 intermediate: par_sort_unstable reorders equal keys](katas/rayon/208-intermediate-par-sort-unstable-reorders-ties) | rayon `ParallelSliceMut` docs; kata 164 |
+| strings | [209 intermediate: a slice that splits a UTF-8 character](katas/strings/209-intermediate-slice-splits-utf8-char) | std `str::is_char_boundary` docs; The Rust Book ch. 8; kata 32 |
+| collections | [210 intermediate: f64 is not Eq or Hash](katas/collections/210-intermediate-f64-not-hashable) | std `Eq` docs; Rust Reference, derive; kata 10 |
+| collections | [211 intermediate: BinaryHeap pops the greatest first](katas/collections/211-intermediate-binaryheap-is-max-first) | std `BinaryHeap` and `cmp::Reverse` docs; kata 188 |
