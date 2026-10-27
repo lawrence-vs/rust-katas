@@ -1,4 +1,4 @@
-# 190 serde (advanced): an idempotency fingerprint over canonical JSON
+# 196 serde (advanced): an idempotency fingerprint over canonical JSON
 
 **Concept:** An idempotency fingerprint must hash what the request means, not its bytes: one canonical form (keys sorted by UTF-8 bytes, one escape form, no whitespace, numbers exactly as written), duplicate keys and deep nesting refused while parsing, and method, path and body framed so no two requests share bytes.
 **Source:** RFC 8259 §4 (names "SHOULD be unique") and §6 (binary64 is exact only up to 2^53); RFC 8785 (JCS), which sorts by UTF-16 code units, unlike this kata; serde_json feature docs (`arbitrary_precision`); IETF Idempotency-Key header draft (draft-ietf-httpapi-idempotency-key-header); kata 50

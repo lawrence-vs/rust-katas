@@ -122,7 +122,7 @@ flowchart TD
     k162["162 a mutant your tests let live"]
     k163["163 a parser that never panics on garbage"]
     k184["184 a dependency's type in your public API"]
-    k190["190 an idempotency fingerprint over canonical JSON"]
+    k196["196 an idempotency fingerprint over canonical JSON"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -346,15 +346,15 @@ flowchart TD
   k95 --> k174
   k50 --> k175
   k62 --> k175
+  k50 --> k196
+  k57 --> k196
+  k92 --> k196
   k45 --> k201
   k12 --> k201
   k11 --> k194
   k42 --> k194
   k51 --> k194
   k53 --> k194
-  k50 --> k190
-  k57 --> k190
-  k92 --> k190
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -420,7 +420,7 @@ flowchart TD
   class k50,k62,k175,k194,k201 statemachines
   class k51 credit
   class k56,k59,k164 rayon
-  class k57,k190 serde
+  class k57,k196 serde
   class k69,k71 io
   class k73,k176 concurrency
   class k96,k170,k193 events
@@ -565,7 +565,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [177 resilience: a load balancer that ejects, probes and recovers](katas/resilience/177-advanced-lb-health-check-ejection-and-recovery) | advanced | Eject a backend after N failures in a row; each failed probe doubles the ejection up to a cap; a returning backend gets a trial (one request at a time, M successes) before full traffic; never eject more than a set share of the pool. | 90, 97 |
 | [58 async: graceful shutdown](katas/async/58-advanced-graceful-shutdown) | advanced | A pool owns its tasks: shutdown signals them, lets in-flight work finish, joins within a grace period, aborts and counts stragglers, and hands back queued jobs that never started. | 17, 18, 22 |
 | [54 por: a Merkle sum tree](katas/por/54-advanced-merkle-sum-tree) | advanced | Sums are checked and hashed into every node; each client rebuilds their own leaf and folds a checked path to the published root. | 09, 23, 42 |
-| [190 serde: an idempotency fingerprint over canonical JSON](katas/serde/190-advanced-canonical-json-fingerprint) | advanced | Hash what the request means: keys in UTF-8 byte order, one escape form, no whitespace, numbers exactly as written; a duplicate key or nesting deeper than 32 is a typed error raised while parsing, and method, path and body are length-prefixed. | 50, 57, 92 |
+| [196 serde: an idempotency fingerprint over canonical JSON](katas/serde/196-advanced-canonical-json-fingerprint) | advanced | Hash what the request means: keys in UTF-8 byte order, one escape form, no whitespace, numbers exactly as written; a duplicate key or nesting deeper than 32 is a typed error raised while parsing, and method, path and body are length-prefixed. | 50, 57, 92 |
 | [28 unsafe: unsafe to dodge the borrow checker](katas/unsafe/28-expert-unsafe-to-dodge-the-checker) | expert | `unsafe` switches the checking off, not the rules: a reference into a Vec dangles after `push`. | 02, 03 |
 | [29 unsafe: a safe API over raw pointers](katas/unsafe/29-expert-safe-api-over-raw-pointers) | expert | Keep raw pointers private behind safe, bounds-checked methods and free them in `Drop`. | 28 |
 | [30 unsafe: a dangling CString across FFI](katas/unsafe/30-expert-dangling-cstring) | expert | `CString::new(s)?.as_ptr()` points into a dropped temporary; bind the `CString` first. | 28 |

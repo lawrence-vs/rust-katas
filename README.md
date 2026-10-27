@@ -180,16 +180,13 @@ Kata links go live as each kata merges.
 | csv | [187 intermediate: a comma inside quotes](katas/csv/187-intermediate-quoted-comma) | RFC 4180 (CSV quoting); kata 72 |
 | matching | [188 intermediate: a buy takes the cheapest ask first](katas/matching/188-intermediate-buy-takes-cheapest-ask) | std `BTreeMap` docs; own design (exchange price-time priority); kata 45 |
 | async | [189 intermediate: two awaits run one after the other](katas/async/189-intermediate-sequential-awaits-not-parallel) | tokio `join!` docs; Tokio tutorial, spawning; kata 17 |
+| serde | [196 advanced: an idempotency fingerprint over canonical JSON](katas/serde/196-advanced-canonical-json-fingerprint) | RFC 8259 §4 and §6; RFC 8785 (JCS); serde_json feature docs (arbitrary_precision); IETF Idempotency-Key header draft; kata 50 |
 | state-machines | [194 intermediate: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | own design (exchange reserve-then-settle); std u64 checked_* docs; katas 42, 51, 53 |
-| serde | [190 advanced: an idempotency fingerprint over canonical JSON](katas/serde/190-advanced-canonical-json-fingerprint) | RFC 8259 §4 and §6; RFC 8785 (JCS); serde_json feature docs (arbitrary_precision); IETF Idempotency-Key header draft; kata 50 |
 | state-machines | [201 advanced: an amend keeps its place in the queue](katas/state-machines/201-advanced-amend-keeps-queue-priority) | std `BTreeMap` and `VecDeque` docs; own design (exchange price-time priority); katas 45, 12 |
 | websockets | [202 advanced: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | own design (exchange market-data fan-out); std `VecDeque` docs; katas 25, 52 |
 | serde | [206 intermediate: `default` hides a missing field](katas/serde/206-intermediate-default-hides-missing-field) | serde field attributes, `default`; kata 57 |
 | events | [207 intermediate: a redelivered event applies once](katas/events/207-intermediate-redelivered-event-applies-once) | Apache Kafka delivery semantics; kata 174 |
 | rayon | [208 intermediate: par_sort_unstable reorders equal keys](katas/rayon/208-intermediate-par-sort-unstable-reorders-ties) | rayon `ParallelSliceMut` docs; kata 164 |
-| serde | [190 intermediate: `default` hides a missing field](katas/serde/190-intermediate-default-hides-missing-field) | serde field attributes, `default`; kata 57 |
-| events | [191 intermediate: a redelivered event applies once](katas/events/191-intermediate-redelivered-event-applies-once) | Apache Kafka delivery semantics; kata 174 |
-| rayon | [192 intermediate: par_sort_unstable reorders equal keys](katas/rayon/192-intermediate-par-sort-unstable-reorders-ties) | rayon `ParallelSliceMut` docs; kata 164 |
 | strings | [209 intermediate: a slice that splits a UTF-8 character](katas/strings/209-intermediate-slice-splits-utf8-char) | std `str::is_char_boundary` docs; The Rust Book ch. 8; kata 32 |
 | collections | [210 intermediate: f64 is not Eq or Hash](katas/collections/210-intermediate-f64-not-hashable) | std `Eq` docs; Rust Reference, derive; kata 10 |
 | collections | [211 intermediate: BinaryHeap pops the greatest first](katas/collections/211-intermediate-binaryheap-is-max-first) | std `BinaryHeap` and `cmp::Reverse` docs; kata 188 |
