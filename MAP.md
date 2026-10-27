@@ -50,6 +50,7 @@ flowchart TD
     k166["166 a server stream that outlives its client"]
     k169["169 an old field number reused by a new field"]
     k74["74 sparse ids: a map, not a Vec"]
+    k203["203 a recursive DFS overflows the stack"]
     k104["104 overflow checks differ by profile"]
     k183["183 Cargo features are additive"]
     k181["181 a mod tree where everything is pub"]
@@ -72,6 +73,8 @@ flowchart TD
     k68["68 accidentally not Send"]
     k93["93 one task per connection"]
     k94["94 framing, not one read"]
+    k194["194 a hold not released on cancel"]
+    k205["205 a knapsack loop that counts an item twice"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -92,6 +95,7 @@ flowchart TD
     k49["49 a batch with a remainder"]
     k50["50 an idempotent transfer"]
     k52["52 an order book sequence gap"]
+    k202["202 conflation drops trades"]
     k67["67 two locks taken in opposite orders"]
     k65["65 a frame lost to select!"]
     k55["55 a config snapshot, not a read per quote"]
@@ -99,10 +103,12 @@ flowchart TD
     k61["61 a transactional outbox"]
     k62["62 out-of-order and duplicate events"]
     k175["175 replay is deterministic"]
+    k201["201 an amend keeps its place in the queue"]
     k73["73 shard by key, keep order"]
     k97["97 a circuit breaker, not a retry storm"]
     k96["96 a poison message, dead-lettered"]
     k170["170 a rebalance re-reads: apply once"]
+    k193["193 k-way merge: watermark, idle, late"]
     k173["173 cache-aside: a stale row written back"]
     k179["179 a cache key that ignores the tenant"]
     k177["177 a load balancer: eject, probe, recover"]
@@ -135,6 +141,8 @@ flowchart TD
   k01 --> k32
   k01 --> k34
   k34 --> k74
+  k35 --> k203
+  k74 --> k203
   k01 --> k35
   k03 --> k06
   k07 --> k08
@@ -213,6 +221,10 @@ flowchart TD
   k09 --> k61
   k50 --> k62
   k52 --> k62
+  k21 --> k202
+  k24 --> k202
+  k25 --> k202
+  k52 --> k202
   k53 --> k62
   k41 --> k51
   k42 --> k51
@@ -220,6 +232,7 @@ flowchart TD
   k10 --> k53
   k42 --> k53
   k36 --> k161
+  k36 --> k205
   k53 --> k161
   k36 --> k162
   k161 --> k162
@@ -305,6 +318,9 @@ flowchart TD
   k50 --> k170
   k73 --> k170
   k96 --> k170
+  k52 --> k193
+  k62 --> k193
+  k73 --> k193
   k39 --> k171
   k51 --> k171
   k171 --> k172
@@ -333,6 +349,12 @@ flowchart TD
   k50 --> k196
   k57 --> k196
   k92 --> k196
+  k45 --> k201
+  k12 --> k201
+  k11 --> k194
+  k42 --> k194
+  k51 --> k194
+  k53 --> k194
 
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -387,7 +409,7 @@ flowchart TD
   class k16,k17,k18,k58,k65,k66,k68,k178 async
   class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
-  class k24,k25,k52 websockets
+  class k24,k25,k52,k202 websockets
   class k26,k27,k165,k166,k169,k179 grpc
   class k28,k29,k30 unsafe
   class k31,k45,k60 capstone
@@ -395,13 +417,13 @@ flowchart TD
   class k47 quotes
   class k48 routing
   class k49 batching
-  class k50,k62,k175 statemachines
+  class k50,k62,k175,k194,k201 statemachines
   class k51 credit
   class k56,k59,k164 rayon
   class k57,k196 serde
   class k69,k71 io
   class k73,k176 concurrency
-  class k96,k170 events
+  class k96,k170,k193 events
   class k89 observability
   class k90,k97,k177 resilience
   class k91 cli
@@ -416,8 +438,8 @@ flowchart TD
   class k37 closures
   class k38 smartpointers
   class k35 iterators
-  class k36,k53,k161,k162,k163 testing
-  class k34,k74 collections
+  class k36,k53,k161,k162,k163,k205 testing
+  class k34,k74,k203 collections
   class k104,k180,k181,k182,k183,k184,k185 projectstructure
   class k167 statics
   class k171,k172,k173 cache
@@ -465,15 +487,20 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [47 quotes: a stale quote accepted](katas/quotes/47-intermediate-stale-quote-accepted) | intermediate | A quote carries its deadline and reference mid; accept rejects it when expired (checked first) or when the market drifted past tolerance, with no overflow. | 46 |
 | [51 credit: a credit line overspent](katas/credit/51-intermediate-credit-line-overspend) | intermediate | Check and reserve credit in one atomic step (one lock or one compare-and-exchange); a fill or cancel releases what isn't used. | 41, 42 |
 | [53 testing: a balance that never goes negative](katas/testing/53-intermediate-balance-never-negative) | intermediate | A private field plus a checking `TryFrom` makes a negative balance unrepresentable; a proptest checks every sequence of deposits and withdrawals against a model. | 10, 36, 42 |
+| [201 state-machines: an amend keeps its place in the queue](katas/state-machines/201-advanced-amend-keeps-queue-priority) | advanced | Price-time priority: a smaller amend keeps its place, a bigger one or a new price goes to the back with a new sequence number, and a rejected command changes nothing. | 45, 12 |
 | [161 testing: a wallet invariant that table tests miss](katas/testing/161-intermediate-proptest-wallet-invariant) | intermediate | Hand-picked cases test each operation alone; a proptest over random sequences of reserve, release and spend finds the order that breaks `total == free + reserved` and shrinks it to the shortest one. | 36, 53 |
+| [194 state-machines: a hold not released on cancel](katas/state-machines/194-intermediate-order-hold-not-released-on-cancel) | intermediate | A buy holds price × quantity; each fill moves only its cost from held to spent, a cancel gives back only what the order still holds, and a market buy's leftover budget comes back when it runs out, so available + reserved + spent never changes. | 11, 42, 51, 53 |
 | [162 testing: a mutant your tests let live](katas/testing/162-advanced-cargo-mutants-surviving-mutant) | advanced | A mutant is your code with one small change; a test that fails on it kills it. Every line can run while a `>=` to `>` change survives, so a threshold needs a case exactly on it. | 36, 161 |
 | [163 testing: a parser that never panics on garbage](katas/testing/163-advanced-fuzz-parser-never-panics) | advanced | A parser of untrusted bytes returns a typed error for truncated rows, NUL, invalid UTF-8 and huge fields; a seeded generator of hostile bytes finds every `unwrap` and index that panics, and cargo-fuzz does the same with coverage guidance. | 23, 161 |
+| [205 testing: a knapsack loop that counts an item twice](katas/testing/205-intermediate-knapsack-loop-direction) | intermediate | A one-row DP table is 0/1 only if the inner loop runs capacity downward; table cases where the unbounded answer differs, plus empty, capacity 0 and too-heavy items, catch it. | 36 |
 | [68 async: accidentally not Send](katas/async/68-intermediate-accidentally-not-send) | intermediate | A future is Send only if everything it holds is; an Rc in a spawned task's struct breaks tokio::spawn, so share with Arc. | 16, 17 |
 | [59 rayon: a shared Mutex inside par_iter](katas/rayon/59-intermediate-shared-mutex-in-par-iter) | intermediate | Per-item results come from `map` + `collect`, which keeps input order without a lock; an aggregate comes from `fold`/`reduce`, not a shared `Mutex`. | 35, 41 |
 | [164 rayon: a parallel reduce that disagrees with the loop](katas/rayon/164-intermediate-parallel-reduce-order-differs-from-sequential) | intermediate | A fold identity that isn't neutral is added once per piece, and a non-associative combine changes with the split; compare against a sequential oracle on several thread counts, sum exact integer cents in a wider type, and collect in order before joining. | 59, 42 |
 | [165 grpc: a status code per domain error](katas/grpc/165-intermediate-tonic-status-code-mapping) | intermediate | One exhaustive From<DomainError> for Status gives each error its own code (InvalidArgument, NotFound, AlreadyExists, FailedPrecondition, Unavailable) and a safe message; detail stays in server logs, and the code tells the client whether to retry. | 08, 26 |
 | [169 grpc: an old field number reused by a new field](katas/grpc/169-intermediate-protobuf-schema-evolution-field-numbers) | intermediate | A field number is the wire identity: a removed field's number and name are reserved, never reused, and a new field gets a new number. Old readers skip unknown fields, and `optional` tells "the sender never said" from an explicit 0. | 26 |
 | [74 collections: sparse ids, a map not a Vec](katas/collections/74-intermediate-sparse-ids-memory) | intermediate | Ids indexing a Vec cost memory for every id up to the largest; a HashMap sized with with_capacity costs memory per account. | 34 |
+| [191 collections: Dijkstra needs a min-heap](katas/collections/191-intermediate-dijkstra-max-heap) | intermediate | `BinaryHeap` is a max-heap: wrap entries in `Reverse` for Dijkstra, skip stale entries, and add path weights with `checked_add`. | 34, 74, 104 |
+| [203 collections: a recursive DFS overflows the stack](katas/collections/203-intermediate-recursive-dfs-overflows-the-stack) | intermediate | One stack frame per level overflows a thread's fixed stack on a long path; an explicit Vec stack with a Vec<bool> visited set does the same O(V + E) walk on the heap, in the same preorder. | 35, 74 |
 | [104 project-structure: overflow checks differ by profile](katas/project-structure/104-intermediate-overflow-checks-differ-by-profile) | intermediate | Plain `+` panics in debug and wraps in release, so one input gives two answers; `checked_add` returns the same error in every profile. | 185 |
 | [181 project-structure: a mod tree where everything is pub](katas/project-structure/181-intermediate-mod-tree-and-pub-crate-privacy) | intermediate | Privacy is per module: private fields behind a checking constructor, `pub(super)` for a parent-only helper, `pub(crate)` for a crate-wide one; `unreachable_pub` flags a `pub` nobody outside can reach. | 10, 53 |
 | [182 project-structure: a pub use facade hides the module layout](katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout) | intermediate | Callers that import deep module paths break on every move; a private module tree behind a flat `pub use` facade (renamed with `as`, plus a small prelude) keeps the public paths the same through a refactor. | — |
@@ -516,6 +543,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [49 batching: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | advanced | One provider call per pair per flush; a short fill goes oldest order first and the remainder goes back to the front of the queue, with no overflow. | 34, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
+| [202 websockets: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | advanced | Conflate state, never events: book updates latest-wins per (symbol, side, price) with their own seq, trades always delivered, and a full buffer becomes a resnapshot marker, not a silent gap. | 25, 52, 24, 21 |
 | [67 threads: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | advanced | Two locks in opposite orders deadlock; one lock order, one lock, or one owner thread makes it impossible, and each operation stays one step. | 39, 41, 51 |
 | [65 async: a frame lost to select!](katas/async/65-advanced-select-cancellation-safety) | advanced | `select!` drops the losing future; a frame read must keep its half-read bytes outside it (a buffered reader over cancel-safe `read`) or survive the loop. | 18, 22 |
 | [64 api-design: a sealed trait and a non_exhaustive enum](katas/api-design/64-advanced-sealed-and-non-exhaustive) | advanced | `#[non_exhaustive]` makes other crates keep a `_` arm and a private supertrait stops foreign impls, so adding a variant or method isn't breaking. | 12, 14, 33 |
@@ -527,6 +555,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [73 concurrency: shard by key, keep per-key order](katas/concurrency/73-advanced-shard-by-key-keep-order) | advanced | Route each event to a worker by its key over a bounded channel: one key's events stay on one worker in order, keys run in parallel, and a slow worker pushes back on the producer. | 17, 21, 41 |
 | [96 events: a poison message, dead-lettered](katas/events/96-advanced-poison-message-dead-letter) | advanced | Bounded attempts per message, then publish to a dead-letter topic and commit: a poison message can't block its partition, and a failed DLQ publish doesn't commit. | 15, 22, 62 |
 | [170 events: a rebalance that applies a payment twice](katas/events/170-advanced-kafka-rebalance-double-processing) | advanced | After a rebalance the new owner reads from the last commit, so uncommitted work arrives again: apply idempotently, keyed by a business id or (partition, offset), stored with the effect. A member beyond the partition count gets nothing. | 50, 73, 96 |
+| [193 events: a k-way merge with a watermark](katas/events/193-advanced-k-way-merge-with-watermark) | advanced | A min-heap emits several ordered streams as one feed, by (timestamp, id), only up to the watermark (slowest stream minus lateness); an idle marker unblocks a quiet stream, and an event behind the emitted position goes to a counted late output. | 52, 62, 73 |
 | [95 db: optimistic lock, no lost update](katas/db/95-advanced-optimistic-lock-lost-update) | advanced | A version in the UPDATE's WHERE makes read-modify-write a compare-and-set; rows_affected() == 1 or it's a conflict to retry or return. | 19, 50, 51 |
 | [173 cache: a slow reader writes a stale row back after the delete](katas/cache/173-advanced-cache-aside-stale-write-after-delete) | advanced | In cache-aside a reader that loaded before a write can SET its old row after the writer's DEL; a versioned set-if-newer in one step from both reader and writer keeps the newest row, and a TTL on every entry bounds what slips through (an expiry between write and fill). | 95, 172 |
 | [174 db: an idempotency key written apart from the payment it guards](katas/db/174-advanced-atomic-idempotency-key-with-business-write) | advanced | The key row, the debit and the payment row commit in one transaction with a primary key on the key; a crash at any statement leaves all or nothing, and a retry returns the stored receipt instead of paying again. | 61, 95 |
