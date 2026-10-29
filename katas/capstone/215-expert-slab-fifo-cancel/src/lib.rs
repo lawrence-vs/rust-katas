@@ -101,6 +101,8 @@ impl Book {
     }
 
     /// Remove a resting order, return its remaining qty. Unknown, filled or already cancelled id: Err.
+    ///
+    /// CLUE: A freed slab key is reused by the next order. After a cancel, what must the id index forget, so an old id cannot hit the new owner of the slot?
     pub fn cancel(&mut self, id: OrderId) -> Result<u64, BookError> {
         let unknown = BookError::UnknownOrder(id);
         let &(side, price) = self.index.get(&id).ok_or(unknown)?;
