@@ -16,11 +16,11 @@ Work in order. After each stage, write down your **Observation** (what the test 
 
 1. `stage1_cancel_head_middle_tail_keeps_fifo`: cancelling the head, a middle order and the tail must leave the rest in arrival order.
 2. `stage2_freed_slot_never_cancels_a_stranger`: a slot that is freed and reused must never answer to an old id.
-3. `stage3_cancel_cost_does_not_grow_with_the_level`: 100k orders in one level, cancelled newest first, within 2 seconds.
+3. `stage3_cancel_cost_does_not_grow_with_the_level`: 100k orders in one level, all odd ids cancelled in arrival order and then all even ids, within 2 seconds.
 
 ## Before you fix it
 1. Run `cargo test`. Which stage fails, and what message does it print?
-2. Why does stage 3 cancel in reverse arrival order, and what does that do to a scan from the front?
+2. Stage 3 cancels the odd ids first and the even ids second. Where in the level does each cancelled order sit, and what does a lookup by walking the level cost per cancel?
 3. Besides the `position` scan, what does `VecDeque::remove(i)` cost?
 
 ## Answer in the PR

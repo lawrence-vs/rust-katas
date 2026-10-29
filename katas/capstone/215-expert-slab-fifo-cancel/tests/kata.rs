@@ -88,7 +88,8 @@ fn stage3_cancel_cost_does_not_grow_with_the_level() {
     }
     assert_eq!(book.best_ask(), Some((100, N)));
     let start = Instant::now();
-    for (done, i) in (1..=N).rev().enumerate() {
+    let odds_then_evens = (1..=N).step_by(2).chain((2..=N).step_by(2));
+    for (done, i) in odds_then_evens.enumerate() {
         assert_eq!(book.cancel(OrderId(i)), Ok(1));
         assert!(
             done % 1000 != 999 || start.elapsed() < LIMIT,
