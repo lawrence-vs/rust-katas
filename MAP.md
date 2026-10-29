@@ -131,6 +131,7 @@ flowchart TD
     k31["31 capstone: a concurrent cache"]
     k45["45 capstone: a mini order book"]
     k60["60 capstone: an async feed with parallel depth"]
+    k215["215 capstone: a price level you can cancel from in O(1)"]
     k66["66 a hand-written future that never wakes"]
   end
 
@@ -207,6 +208,9 @@ flowchart TD
   k46 --> k47
   k46 --> k48
   k34 --> k45
+  k45 --> k215
+  k21 --> k215
+  k12 --> k215
   k20 --> k60
   k21 --> k60
   k52 --> k60
@@ -412,7 +416,7 @@ flowchart TD
   class k24,k25,k52,k202 websockets
   class k26,k27,k165,k166,k169,k179 grpc
   class k28,k29,k30 unsafe
-  class k31,k45,k60 capstone
+  class k31,k45,k60,k215 capstone
   class k42,k46,k70,k87,k168 money
   class k47 quotes
   class k48 routing
@@ -573,5 +577,6 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
 | [66 async: a hand-written future that never wakes](katas/async/66-expert-hand-written-future) | expert | `poll` returning `Pending` must store `cx.waker().clone()` (the latest one) so the event can wake it; otherwise the task hangs forever. | 17, 41 |
 | [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
+| [215 capstone: a price level you can cancel from in O(1)](katas/capstone/215-expert-slab-fifo-cancel) | expert | Orders in a `slab::Slab` linked by index with `head`/`tail` on the level: cancel by id unlinks in O(1), frees the slot, and the id index forgets the id so a reused slot is never cancelled by a stale id. | 45, 21, 12 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.
