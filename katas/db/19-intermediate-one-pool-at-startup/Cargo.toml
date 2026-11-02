@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-sqlx = { version = "=0.8.6", default-features = false, features = ["runtime-tokio", "sqlite"] }
-tokio = { version = "=1.53.2", features = ["rt", "macros"] }
+sqlx = { workspace = true, default-features = false, features = ["runtime-tokio", "sqlite"] }
+tokio = { workspace = true, features = ["rt", "macros"] }

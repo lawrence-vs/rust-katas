@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-futures-util = { version = "=0.3.34", default-features = false, features = ["sink", "std"] }
-tokio = { version = "=1.53.2", features = ["rt-multi-thread", "macros", "net", "sync", "time"] }
-tokio-tungstenite = "=0.30.0"
+futures-util = { workspace = true, default-features = false, features = ["sink", "std"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "net", "sync", "time"] }
+tokio-tungstenite = { workspace = true }
