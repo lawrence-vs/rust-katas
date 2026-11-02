@@ -366,7 +366,7 @@ flowchart TD
   k53 --> k194
 
   k181 --> k222
-  k7 --> k223
+  k07 --> k223
   k17 --> k224
   k36 --> k225
   k36 --> k226
@@ -589,11 +589,11 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
 | [66 async: a hand-written future that never wakes](katas/async/66-expert-hand-written-future) | expert | `poll` returning `Pending` must store `cx.waker().clone()` (the latest one) so the event can wake it; otherwise the task hangs forever. | 17, 41 |
 | [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
-| [222 project-structure: project-structure: a pub item that nothing outside can reach](katas/project-structure/222-intermediate-unreachable-pub-leaks-internals) | intermediate | `#![deny(unreachable_pub)]` flags a `pub` item in a private module; make it `pub(crate)`. | 181 |
-| [223 errors: errors: an #[expect] that stopped being true](katas/errors/223-intermediate-stale-expect-expectation) | intermediate | `#[expect]` warns when its lint stops firing; a stale expectation is a lie, so remove it. `#[allow]` never warns. | 7 |
-| [224 testing: testing: a clock advanced without giving the task a turn](katas/testing/224-intermediate-advance-without-yield) | intermediate | Under paused time `advance` wakes timers, but a task runs only when polled; yield between advances. | 17 |
-| [225 testing: testing: a wait that gives up without saying so](katas/testing/225-intermediate-wait-that-returns-silently) | intermediate | A poll helper that runs out of tries panics at the call site instead of returning silently. | 36 |
-| [226 testing: testing: a fake that clones its own record](katas/testing/226-intermediate-fake-clones-its-state) | intermediate | A test double's record is shared (`Arc<Mutex<..>>`), or the test's clone sees nothing. | 36 |
-| [227 api-design: api-design: a public stream, not a public receiver](katas/api-design/227-intermediate-return-a-stream-not-a-receiver) | intermediate | Return `impl Stream` (tokio-stream wrapper) so `StreamExt` applies and the channel stays private. | 14 |
+| [222 project-structure: a pub item that nothing outside can reach](katas/project-structure/222-intermediate-unreachable-pub-leaks-internals) | intermediate | `#![deny(unreachable_pub)]` flags a `pub` item in a private module; make it `pub(crate)`. | 181 |
+| [223 errors: an #[expect] that stopped being true](katas/errors/223-intermediate-stale-expect-expectation) | intermediate | `#[expect]` warns when its lint stops firing; a stale expectation is a lie, so remove it. `#[allow]` never warns. | 07 |
+| [224 testing: a clock advanced without giving the task a turn](katas/testing/224-intermediate-advance-without-yield) | intermediate | Under paused time `advance` wakes timers, but a task runs only when polled; yield between advances. | 17 |
+| [225 testing: a wait that gives up without saying so](katas/testing/225-intermediate-wait-that-returns-silently) | intermediate | A poll helper that runs out of tries panics at the call site instead of returning silently. | 36 |
+| [226 testing: a fake that clones its own record](katas/testing/226-intermediate-fake-clones-its-state) | intermediate | A test double's record is shared (`Arc<Mutex<..>>`), or the test's clone sees nothing. | 36 |
+| [227 api-design: a public stream, not a public receiver](katas/api-design/227-intermediate-return-a-stream-not-a-receiver) | intermediate | Return `impl Stream` (tokio-stream wrapper) so `StreamExt` applies and the channel stays private. | 14 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.
