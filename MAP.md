@@ -75,6 +75,11 @@ flowchart TD
     k94["94 framing, not one read"]
     k194["194 a hold not released on cancel"]
     k205["205 a knapsack loop that counts an item twice"]
+    k228["228 a banned TLS stack in the tree"]
+    k229["229 a property test finds the comma"]
+    k230["230 a snapshot is the contract"]
+    k231["231 a serde rename changes the wire contract"]
+    k232["232 JSON that comes back in another order"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -124,6 +129,7 @@ flowchart TD
     k163["163 a parser that never panics on garbage"]
     k184["184 a dependency's type in your public API"]
     k196["196 an idempotency fingerprint over canonical JSON"]
+    k233["233 one Rust type, two checked contracts"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -359,6 +365,13 @@ flowchart TD
   k51 --> k194
   k53 --> k194
 
+  k185 --> k228
+  k36 --> k229
+  k36 --> k230
+  k57 --> k231
+  k57 --> k232
+  k169 --> k233
+  k231 --> k233
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
   classDef errors fill:#fcf3cf,stroke:#b7950b,color:#000
@@ -407,7 +420,7 @@ flowchart TD
   class k01,k02,k04,k05 ownership
   class k03,k06 lifetimes
   class k07,k08,k09,k72,k88,k105,k123,k124 errors
-  class k10,k11,k12,k64 apidesign
+  class k10,k11,k12,k64,k233 apidesign
   class k13,k14,k15,k63 traits
   class k16,k17,k18,k58,k65,k66,k68,k178 async
   class k19,k20,k61,k95,k174 db
@@ -423,7 +436,7 @@ flowchart TD
   class k50,k62,k175,k194,k201 statemachines
   class k51 credit
   class k56,k59,k164 rayon
-  class k57,k196 serde
+  class k57,k196,k231,k232 serde
   class k69,k71 io
   class k73,k176 concurrency
   class k96,k170,k193 events
@@ -441,9 +454,9 @@ flowchart TD
   class k37 closures
   class k38 smartpointers
   class k35 iterators
-  class k36,k53,k161,k162,k163,k205 testing
+  class k36,k53,k161,k162,k163,k205,k229,k230 testing
   class k34,k74,k203 collections
-  class k104,k180,k181,k182,k183,k184,k185 projectstructure
+  class k104,k180,k181,k182,k183,k184,k185,k228 projectstructure
   class k167 statics
   class k171,k172,k173 cache
   class k33 enums
@@ -577,5 +590,11 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
 | [66 async: a hand-written future that never wakes](katas/async/66-expert-hand-written-future) | expert | `poll` returning `Pending` must store `cx.waker().clone()` (the latest one) so the event can wake it; otherwise the task hangs forever. | 17, 41 |
 | [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
+| [228 project-structure: project-structure: a banned TLS stack in the tree](katas/project-structure/228-intermediate-banned-tls-stack) | intermediate | One TLS stack (rustls); a ban is a rule a check enforces. Here a test stands in for `cargo deny`. | 185 |
+| [229 testing: testing: a property test finds the comma](katas/testing/229-intermediate-proptest-comma-in-value) | intermediate | A round-trip property finds a separator inside a value that a list of examples never tries. | 36 |
+| [230 testing: testing: a snapshot is the contract](katas/testing/230-intermediate-snapshot-is-the-contract) | intermediate | A failing snapshot is a changed contract: fix the code, don't update the `.snap`. | 36 |
+| [231 serde: serde: a serde rename changes the wire contract](katas/serde/231-intermediate-schema-is-the-wire-contract) | intermediate | A serde `rename` changes the JSON key; `JsonSchema` exports it, so review the schema diff. | 57 |
+| [232 serde: serde: JSON that comes back in another order](katas/serde/232-intermediate-json-key-order-feature) | intermediate | `serde_json` sorts keys by default; `preserve_order` keeps arrival order. | 57 |
+| [233 api-design: api-design: one Rust type, two checked contracts](katas/api-design/233-advanced-one-type-two-contracts) | advanced | One type generates the JSON Schema for OpenAPI 3.1 and a checked `.proto`; a test fails when they drift. | 169, 231 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.
