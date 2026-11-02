@@ -1,6 +1,6 @@
 use serde_json::{Value, json};
 
-/// CLUE: the proto file and the agreed wire name say `volume`; what does this attribute emit?
+// CLUE: the proto file and the agreed wire name say `volume`; what does this attribute emit?
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, schemars::JsonSchema)]
 pub struct Order {
     pub symbol: String,
