@@ -39,7 +39,7 @@ Source: `/Users/lawrence/Local/Workspace/Programming/kraken-cli` (shallow clone,
 | 26 | Why `tokio-util` `CancellationToken` and `DropGuard`? | INFERRED: dropping the stream handle cancels the actor automatically, with no explicit stop call. | `connection.rs:100-117` |
 | 27 | Why an MSRV gate, and why `#[allow(deprecated)]` in the mock? | CI checks the declared `rust-version` (`just msrv`). `try_update` needs 1.99+, so the mock allows the deprecation. | root `Cargo.toml`; `justfile`; `ws/mock_transport.rs:83-84` |
 | 28 | Why a doctest tripwire script? | nextest skips doctests, so a stray doctest would silently never run. The script fails the build if one appears. | `justfile:128-167` |
-| 29 | Why `preserve_order` and `raw_value` on serde workspace-wide? | Read the comment in root `Cargo.toml` before answering. Not verified in this review. | root `Cargo.toml` |
+| 29 | Why `preserve_order` and `raw_value` on serde workspace-wide? | `preserve_order`: keyed history relays (ledgers, trades-history, orders) carry the server's newest-first order only in entry order; same-time entries cannot be re-sorted. Hashes and tape digests use typed structs or file bytes, so they are unaffected. `raw_value`: the REST envelope keeps `result` as `&RawValue` and passes it on without re-parsing (reason inferred from usage). | root `Cargo.toml:60-64`; `kraken-rest/src/spot/envelope.rs:10, 17, 45` |
 | 30 | Why `getrandom` for PKCE and OAuth state, not the `rand` crate? | Already in the lockfile via `uuid` and `tempfile`. Reuse over a new dependency. | root `Cargo.toml` comment |
 | 31 | Why `schemars` on command types? | A flag rename cannot silently reshape the MCP tool surface; the schema changes and a snapshot catches it. | root `Cargo.toml` comment |
 | 32 | Why `Box<Error>` inside `ReplyLost`? | A recursive enum needs indirection to have finite size. INFERRED as the reason; standard Rust rule. | `error.rs:46` |
@@ -69,7 +69,19 @@ Checked by grep of `katas/` and `REVIEW.md`. "None" = no kata or rule mentions i
 
 ## Part D: open items
 
-- Q3 and Q10 answers read from code only. Confirm by running the tests or reading the file.
-- Q29 answer not verified: read the root `Cargo.toml` comment.
-- No `watch` channel exists in the workspace; `JoinSet` is used only in `kraken-auth`. Do not claim otherwise in the review.
-- Kata candidates in Part C are proposals. None are built.
+Resolved this round:
+- Q3 re-read: `connection.rs:538-544` confirmed (only a parsed frame resets the idle deadline).
+- Q10 verified: `one_shot_tests` is a child module of `connection` (`connection.rs:952`); `connection_tests` is a sibling declared in `lib.rs` with `#[cfg(test)]`.
+- Q29 verified from the root `Cargo.toml` comment (see table).
+- The "no `watch` channel" note still stands: none in the workspace; `JoinSet` only in `kraken-auth`.
+
+Still open: none in the Q&A.
+
+## Part E: new questions from the kata 233 build
+
+| # | Question | Answer | Ref |
+|---|---|---|---|
+| 35 | Why check `contract/openapi.json` into the repo and test it against the type? | It is the spec a client or server generator builds from, so it must be reviewed as a diff. A test fails when the generated document drifts from the Rust type, the same gate kraken-cli uses for `agents/tool-catalog.json`. | `kraken-cli/crates/kraken-cli/tests/mcp_surface.rs:293`; kata 233 `tests/kata.rs` |
+| 36 | Why did a `///` note on the struct end up in the published schema? | schemars turns doc comments into the schema `description`. Use `//` for notes meant for readers of the source, not the spec. | kata 233 `src/lib.rs`; schemars docs |
+| 37 | Why can OpenAPI not describe the WebSocket feed? | OpenAPI describes request/response over HTTP. Event streams need AsyncAPI, the sibling spec for message-based APIs. | OpenAPI 3.1 spec; AsyncAPI docs |
+
