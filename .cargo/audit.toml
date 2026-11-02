@@ -1,0 +1,5 @@
+# RUSTSEC-2026-0386 (tokio AsyncFd I/O safety): kata 26 is an unsolved kata pinned to tokio 1.53.2.
+# Its Cargo.toml must not change until the kata is solved (CI "changed" check runs its tests).
+# Remove this entry when kata 26 is solved or its pin moves to >= 1.53.3.
+[advisories]
+ignore = ["RUSTSEC-2026-0386"]
