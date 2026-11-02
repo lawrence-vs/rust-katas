@@ -74,7 +74,8 @@ jobs:
           tool: cargo-audit
       - name: RustSec advisories for every kata lockfile
         run: |
-          for lock in katas/*/*/Cargo.lock; do
+          # one workspace lock, plus the katas kept out of it (182 and 185)
+          for lock in Cargo.lock katas/*/*/Cargo.lock; do
             echo "::group::$lock"
             cargo audit --file "$lock"
             echo "::endgroup::"
