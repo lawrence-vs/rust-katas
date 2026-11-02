@@ -190,3 +190,9 @@ Kata links go live as each kata merges.
 | strings | [209 intermediate: a slice that splits a UTF-8 character](katas/strings/209-intermediate-slice-splits-utf8-char) | std `str::is_char_boundary` docs; The Rust Book ch. 8; kata 32 |
 | collections | [210 intermediate: f64 is not Eq or Hash](katas/collections/210-intermediate-f64-not-hashable) | std `Eq` docs; Rust Reference, derive; kata 10 |
 | collections | [211 intermediate: BinaryHeap pops the greatest first](katas/collections/211-intermediate-binaryheap-is-max-first) | std `BinaryHeap` and `cmp::Reverse` docs; kata 188 |
+| project-structure | [222 intermediate: project-structure: a pub item that nothing outside can reach](katas/project-structure/222-intermediate-unreachable-pub-leaks-internals) | kraken-cli root `Cargo.toml` `[workspace.lints.rust]` (MIT); rustc lint listing; kata 181 |
+| errors | [223 intermediate: errors: an #[expect] that stopped being true](katas/errors/223-intermediate-stale-expect-expectation) | kraken-cli root `Cargo.toml` (MIT); Rust Reference lint attributes; RFC 2383; kata 07 |
+| testing | [224 intermediate: testing: a clock advanced without giving the task a turn](katas/testing/224-intermediate-advance-without-yield) | kraken-cli `connection_tests.rs` (MIT); tokio `advance` docs; kata 17 |
+| testing | [225 intermediate: testing: a wait that gives up without saying so](katas/testing/225-intermediate-wait-that-returns-silently) | kraken-cli `mock_transport.rs` (MIT); Rust by Example, unit tests; kata 36 |
+| testing | [226 intermediate: testing: a fake that clones its own record](katas/testing/226-intermediate-fake-clones-its-state) | kraken-cli `mock_transport.rs` (MIT); std `Arc`; kata 36 |
+| api-design | [227 intermediate: api-design: a public stream, not a public receiver](katas/api-design/227-intermediate-return-a-stream-not-a-receiver) | kraken-cli `stream_client.rs` (MIT); tokio-stream docs; kata 14 |
