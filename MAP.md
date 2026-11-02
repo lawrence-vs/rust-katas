@@ -368,10 +368,10 @@ flowchart TD
   k58 --> k216
   k65 --> k216
   k90 --> k217
-  k8 --> k218
+  k08 --> k218
   k17 --> k219
   k68 --> k219
-  k5 --> k220
+  k05 --> k220
   k58 --> k221
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
@@ -591,11 +591,11 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
 | [66 async: a hand-written future that never wakes](katas/async/66-expert-hand-written-future) | expert | `poll` returning `Pending` must store `cx.waker().clone()` (the latest one) so the event can wake it; otherwise the task hangs forever. | 17, 41 |
 | [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
-| [216 async: async: an idle timer that resets only on progress](katas/async/216-advanced-idle-timer-reset-by-progress) | advanced | One timer outside the `select!` loop, reset only when a frame parses; a timeout made per pass never fires while a heartbeat keeps the loop busy. | 58, 65 |
-| [217 resilience: resilience: a backoff capped at every attempt](katas/resilience/217-intermediate-backoff-cap-and-reset) | intermediate | Exponential delay is `min(base * 2^n, max)` for every `n`: clamp the delay, not the exponent, and prove it with a property test. | 90 |
-| [218 errors: errors: a lost reply must not be retried](katas/errors/218-advanced-reply-lost-not-retried) | advanced | Tag each error by phase: before the write is retryable, after it is `ReplyLost`, because the order may already have executed. | 8 |
-| [219 async: async: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | advanced | Hold the async lock across the fetch so concurrent cold callers wait for one fetch; check, drop, fetch, store lets every caller fetch. | 17, 68 |
-| [220 ownership: ownership: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | intermediate | A `match` on a borrow keeps it alive in every arm; finish the borrow (copy out, end it) before calling a `&mut self` method. | 5 |
-| [221 async: async: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | advanced | `let _ =` drops a `DropGuard` at once and cancels the token; keep the guard in the struct that owns the worker. | 58 |
+| [216 async: an idle timer that resets only on progress](katas/async/216-advanced-idle-timer-reset-by-progress) | advanced | One timer outside the `select!` loop, reset only when a frame parses; a timeout made per pass never fires while a heartbeat keeps the loop busy. | 58, 65 |
+| [217 resilience: a backoff capped at every attempt](katas/resilience/217-intermediate-backoff-cap-and-reset) | intermediate | Exponential delay is `min(base * 2^n, max)` for every `n`: clamp the delay, not the exponent, and prove it with a property test. | 90 |
+| [218 errors: a lost reply must not be retried](katas/errors/218-advanced-reply-lost-not-retried) | advanced | Tag each error by phase: before the write is retryable, after it is `ReplyLost`, because the order may already have executed. | 08 |
+| [219 async: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | advanced | Hold the async lock across the fetch so concurrent cold callers wait for one fetch; check, drop, fetch, store lets every caller fetch. | 17, 68 |
+| [220 ownership: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | intermediate | A `match` on a borrow keeps it alive in every arm; finish the borrow (copy out, end it) before calling a `&mut self` method. | 05 |
+| [221 async: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | advanced | `let _ =` drops a `DropGuard` at once and cancels the token; keep the guard in the struct that owns the worker. | 58 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.

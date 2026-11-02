@@ -190,9 +190,9 @@ Kata links go live as each kata merges.
 | strings | [209 intermediate: a slice that splits a UTF-8 character](katas/strings/209-intermediate-slice-splits-utf8-char) | std `str::is_char_boundary` docs; The Rust Book ch. 8; kata 32 |
 | collections | [210 intermediate: f64 is not Eq or Hash](katas/collections/210-intermediate-f64-not-hashable) | std `Eq` docs; Rust Reference, derive; kata 10 |
 | collections | [211 intermediate: BinaryHeap pops the greatest first](katas/collections/211-intermediate-binaryheap-is-max-first) | std `BinaryHeap` and `cmp::Reverse` docs; kata 188 |
-| async | [216 advanced: async: an idle timer that resets only on progress](katas/async/216-advanced-idle-timer-reset-by-progress) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); tokio `time::Sleep` and `select!` docs; kata 65 |
-| resilience | [217 intermediate: resilience: a backoff capped at every attempt](katas/resilience/217-intermediate-backoff-cap-and-reset) | kraken-cli `crates/kraken-ws/src/backoff.rs` (MIT); proptest book; kata 90 |
-| errors | [218 advanced: errors: a lost reply must not be retried](katas/errors/218-advanced-reply-lost-not-retried) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); kraken-core `error.rs`; kata 08 |
-| async | [219 advanced: async: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | kraken-cli `crates/kraken-ws/src/token.rs` (MIT); tokio `Mutex` docs; kata 17 |
-| ownership | [220 intermediate: ownership: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); NLL RFC 2094; kata 05 |
-| async | [221 advanced: async: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); tokio-util `DropGuard` docs; kata 58 |
+| async | [216 advanced: an idle timer that resets only on progress](katas/async/216-advanced-idle-timer-reset-by-progress) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); tokio `time::Sleep` and `select!` docs; kata 65 |
+| resilience | [217 intermediate: a backoff capped at every attempt](katas/resilience/217-intermediate-backoff-cap-and-reset) | kraken-cli `crates/kraken-ws/src/backoff.rs` (MIT); proptest book; kata 90 |
+| errors | [218 advanced: a lost reply must not be retried](katas/errors/218-advanced-reply-lost-not-retried) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); kraken-core `error.rs`; kata 08 |
+| async | [219 advanced: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | kraken-cli `crates/kraken-ws/src/token.rs` (MIT); tokio `Mutex` docs; kata 17 |
+| ownership | [220 intermediate: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); NLL RFC 2094; kata 05 |
+| async | [221 advanced: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); tokio-util `DropGuard` docs; kata 58 |
