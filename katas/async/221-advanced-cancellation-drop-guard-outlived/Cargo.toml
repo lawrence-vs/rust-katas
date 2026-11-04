@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-tokio = { version = "1", features = ["rt", "macros", "time", "sync", "test-util"] }
-tokio-util = "0.7"
+tokio = { workspace = true, features = ["rt", "macros", "time", "sync", "test-util"] }
+tokio-util = { workspace = true }
