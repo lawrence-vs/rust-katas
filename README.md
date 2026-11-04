@@ -196,3 +196,9 @@ Kata links go live as each kata merges.
 | async | [219 advanced: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | kraken-cli `crates/kraken-ws/src/token.rs` (MIT); tokio `Mutex` docs; kata 17 |
 | ownership | [220 intermediate: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); NLL RFC 2094; kata 05 |
 | async | [221 advanced: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | kraken-cli `crates/kraken-ws/src/connection.rs` (MIT); tokio-util `DropGuard` docs; kata 58 |
+| project-structure | [222 intermediate: a pub item that nothing outside can reach](katas/project-structure/222-intermediate-unreachable-pub-leaks-internals) | kraken-cli root `Cargo.toml` `[workspace.lints.rust]` (MIT); rustc lint listing; kata 181 |
+| errors | [223 intermediate: an #[expect] that stopped being true](katas/errors/223-intermediate-stale-expect-expectation) | kraken-cli root `Cargo.toml` (MIT); Rust Reference lint attributes; RFC 2383; kata 07 |
+| testing | [224 intermediate: a clock advanced without giving the task a turn](katas/testing/224-intermediate-advance-without-yield) | kraken-cli `connection_tests.rs` (MIT); tokio `advance` docs; kata 17 |
+| testing | [225 intermediate: a wait that gives up without saying so](katas/testing/225-intermediate-wait-that-returns-silently) | kraken-cli `mock_transport.rs` (MIT); Rust by Example, unit tests; kata 36 |
+| testing | [226 intermediate: a fake that clones its own record](katas/testing/226-intermediate-fake-clones-its-state) | kraken-cli `mock_transport.rs` (MIT); std `Arc`; kata 36 |
+| api-design | [227 intermediate: a public stream, not a public receiver](katas/api-design/227-intermediate-return-a-stream-not-a-receiver) | kraken-cli `stream_client.rs` (MIT); tokio-stream docs; kata 14 |

@@ -77,6 +77,12 @@ flowchart TD
     k205["205 a knapsack loop that counts an item twice"]
     k217["217 a backoff capped at every attempt"]
     k220["220 a match arm that holds the borrow"]
+    k222["222 a pub item that nothing outside can reach"]
+    k223["223 an #[expect] that stopped being true"]
+    k224["224 a clock advanced without giving the task a turn"]
+    k225["225 a wait that gives up without saying so"]
+    k226["226 a fake that clones its own record"]
+    k227["227 a public stream, not a public receiver"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -373,6 +379,12 @@ flowchart TD
   k68 --> k219
   k05 --> k220
   k58 --> k221
+  k181 --> k222
+  k07 --> k223
+  k17 --> k224
+  k36 --> k225
+  k36 --> k226
+  k14 --> k227
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
   classDef errors fill:#fcf3cf,stroke:#b7950b,color:#000
@@ -420,8 +432,8 @@ flowchart TD
 
   class k01,k02,k04,k05,k220 ownership
   class k03,k06 lifetimes
-  class k07,k08,k09,k72,k88,k105,k123,k124,k218 errors
-  class k10,k11,k12,k64 apidesign
+  class k07,k08,k09,k72,k88,k105,k123,k124,k218,k223 errors
+  class k10,k11,k12,k64,k227 apidesign
   class k13,k14,k15,k63 traits
   class k16,k17,k18,k58,k65,k66,k68,k178,k216,k219,k221 async
   class k19,k20,k61,k95,k174 db
@@ -455,9 +467,9 @@ flowchart TD
   class k37 closures
   class k38 smartpointers
   class k35 iterators
-  class k36,k53,k161,k162,k163,k205 testing
+  class k36,k53,k161,k162,k163,k205,k224,k225,k226 testing
   class k34,k74,k203 collections
-  class k104,k180,k181,k182,k183,k184,k185 projectstructure
+  class k104,k180,k181,k182,k183,k184,k185,k222 projectstructure
   class k167 statics
   class k171,k172,k173 cache
   class k33 enums
@@ -597,5 +609,11 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [219 async: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | advanced | Hold the async lock across the fetch so concurrent cold callers wait for one fetch; check, drop, fetch, store lets every caller fetch. | 17, 68 |
 | [220 ownership: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | intermediate | A `match` on a borrow keeps it alive in every arm; finish the borrow (copy out, end it) before calling a `&mut self` method. | 05 |
 | [221 async: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | advanced | `let _ =` drops a `DropGuard` at once and cancels the token; keep the guard in the struct that owns the worker. | 58 |
+| [222 project-structure: a pub item that nothing outside can reach](katas/project-structure/222-intermediate-unreachable-pub-leaks-internals) | intermediate | `#![deny(unreachable_pub)]` flags a `pub` item in a private module; make it `pub(crate)`. | 181 |
+| [223 errors: an #[expect] that stopped being true](katas/errors/223-intermediate-stale-expect-expectation) | intermediate | `#[expect]` warns when its lint stops firing; a stale expectation is a lie, so remove it. `#[allow]` never warns. | 07 |
+| [224 testing: a clock advanced without giving the task a turn](katas/testing/224-intermediate-advance-without-yield) | intermediate | Under paused time `advance` wakes timers, but a task runs only when polled; yield between advances. | 17 |
+| [225 testing: a wait that gives up without saying so](katas/testing/225-intermediate-wait-that-returns-silently) | intermediate | A poll helper that runs out of tries panics at the call site instead of returning silently. | 36 |
+| [226 testing: a fake that clones its own record](katas/testing/226-intermediate-fake-clones-its-state) | intermediate | A test double's record is shared (`Arc<Mutex<..>>`), or the test's clone sees nothing. | 36 |
+| [227 api-design: a public stream, not a public receiver](katas/api-design/227-intermediate-return-a-stream-not-a-receiver) | intermediate | Return `impl Stream` (tokio-stream wrapper) so `StreamExt` applies and the channel stays private. | 14 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.

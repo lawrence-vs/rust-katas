@@ -1014,6 +1014,14 @@ name = "kata-api-design-12"
 version = "0.1.0"
 
 [[package]]
+name = "kata-api-design-227"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+ "tokio-stream",
+]
+
+[[package]]
 name = "kata-api-design-64"
 version = "0.1.0"
 
@@ -1280,6 +1288,10 @@ version = "0.1.0"
 
 [[package]]
 name = "kata-errors-218"
+version = "0.1.0"
+
+[[package]]
+name = "kata-errors-223"
 version = "0.1.0"
 
 [[package]]
@@ -1556,6 +1568,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "kata-project-structure-222"
+version = "0.1.0"
+
+[[package]]
 name = "kata-quotes-47"
 version = "0.1.0"
 
@@ -1733,6 +1749,21 @@ version = "0.1.0"
 
 [[package]]
 name = "kata-testing-205"
+version = "0.1.0"
+
+[[package]]
+name = "kata-testing-224"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
+name = "kata-testing-225"
+version = "0.1.0"
+
+[[package]]
+name = "kata-testing-226"
 version = "0.1.0"
 
 [[package]]
