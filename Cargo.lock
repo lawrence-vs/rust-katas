@@ -1053,6 +1053,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "kata-async-216"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
+name = "kata-async-219"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
+name = "kata-async-221"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+ "tokio-util",
+]
+
+[[package]]
 name = "kata-async-58"
 version = "0.1.0"
 dependencies = [
@@ -1254,6 +1276,10 @@ version = "0.1.0"
 
 [[package]]
 name = "kata-errors-124"
+version = "0.1.0"
+
+[[package]]
+name = "kata-errors-218"
 version = "0.1.0"
 
 [[package]]
@@ -1492,6 +1518,10 @@ name = "kata-ownership-05"
 version = "0.1.0"
 
 [[package]]
+name = "kata-ownership-220"
+version = "0.1.0"
+
+[[package]]
 name = "kata-por-54"
 version = "0.1.0"
 dependencies = [
@@ -1561,6 +1591,13 @@ dependencies = [
 [[package]]
 name = "kata-resilience-177"
 version = "0.1.0"
+
+[[package]]
+name = "kata-resilience-217"
+version = "0.1.0"
+dependencies = [
+ "proptest",
+]
 
 [[package]]
 name = "kata-resilience-90"
