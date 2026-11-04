@@ -4,16 +4,16 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-prost = "=0.14.4"
-tonic = "=0.14.6"
-tonic-prost = "=0.14.6"
+prost = { workspace = true }
+tonic = { workspace = true }
+tonic-prost = { workspace = true }
 
 [dev-dependencies]
-hyper-util = { version = "=0.1.21", features = ["tokio"] }
-tokio = { version = "=1.53.2", features = ["rt-multi-thread", "macros", "io-util"] }
-tokio-stream = "=0.1.19"
-tower = { version = "=0.5.3", features = ["util"] }
+hyper-util = { workspace = true, features = ["tokio"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "io-util"] }
+tokio-stream = { workspace = true }
+tower = { workspace = true, features = ["util"] }
 
 [build-dependencies]
-protox = "=0.9.1"
-tonic-prost-build = "=0.14.6"
+protox = { workspace = true }
+tonic-prost-build = { workspace = true }

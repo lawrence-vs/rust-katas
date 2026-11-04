@@ -6,4 +6,4 @@ edition = "2024"
 [dependencies]
 
 [dev-dependencies]
-tokio = { version = "=1.53.2", features = ["rt", "rt-multi-thread", "macros", "time", "test-util"] }
+tokio = { workspace = true, features = ["rt", "rt-multi-thread", "macros", "time", "test-util"] }
