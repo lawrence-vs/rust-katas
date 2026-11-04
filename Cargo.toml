@@ -5,6 +5,7 @@ members = [
     "katas/api-design/11-intermediate-bool-flags-to-enum",
     "katas/api-design/12-advanced-typestate",
     "katas/api-design/227-intermediate-return-a-stream-not-a-receiver",
+    "katas/api-design/233-advanced-one-type-two-contracts",
     "katas/api-design/64-advanced-sealed-and-non-exhaustive",
     "katas/async/16-beginner-std-guard-across-await",
     "katas/async/17-intermediate-spawn-and-send-results-back",
@@ -111,6 +112,7 @@ members = [
     "katas/security/92-beginner-secrecy-no-leak",
     "katas/serde/196-advanced-canonical-json-fingerprint",
     "katas/serde/206-intermediate-default-hides-missing-field",
+    "katas/serde/231-intermediate-schema-is-the-wire-contract",
     "katas/serde/57-intermediate-untrusted-json",
     "katas/smart-pointers/38-intermediate-rc-refcell-borrow-panic",
     "katas/state-machines/175-advanced-event-replay-is-deterministic",
@@ -129,6 +131,8 @@ members = [
     "katas/testing/224-intermediate-advance-without-yield",
     "katas/testing/225-intermediate-wait-that-returns-silently",
     "katas/testing/226-intermediate-fake-clones-its-state",
+    "katas/testing/229-intermediate-proptest-comma-in-value",
+    "katas/testing/230-intermediate-snapshot-is-the-contract",
     "katas/testing/36-beginner-test-the-edges",
     "katas/testing/53-intermediate-balance-never-negative",
     "katas/threads/41-intermediate-rc-across-threads",
@@ -148,6 +152,8 @@ members = [
 exclude = [
     "katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout",
     "katas/project-structure/185-beginner-dependency-hygiene-dev-vs-normal-and-pins",
+    "katas/project-structure/228-intermediate-banned-tls-stack",
+    "katas/serde/232-intermediate-json-key-order-feature",
 ]
 
 [workspace.dependencies]
@@ -156,6 +162,7 @@ clap = "=4.6.7"
 csv = "=1.4.0"
 futures-util = { version = "=0.3.34", default-features = false }
 hyper-util = "=0.1.21"
+insta = "=1.49.0"
 loom = "=0.7.2"
 metrics = "=0.24.6"
 metrics-util = { version = "=0.20.4", default-features = false }
@@ -165,6 +172,7 @@ prost-types = "=0.14.4"
 protox = "=0.9.1"
 rayon = "=1.12.0"
 rust_decimal = { version = "=1.43.0", default-features = false }
+schemars = "=1.2.3"
 secrecy = "=0.10.3"
 serde = "=1.0.229"
 serde_json = "=1.0.154"

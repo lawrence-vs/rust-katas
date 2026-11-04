@@ -52,7 +52,7 @@ fn openapi_is_3_1() {
 
 #[test]
 fn checked_in_openapi_matches_the_rust_type() {
-    let checked: serde_json::Value =
-        serde_json::from_str(include_str!("../contract/openapi.json")).expect("openapi.json parses");
+    let checked: serde_json::Value = serde_json::from_str(include_str!("../contract/openapi.json"))
+        .expect("openapi.json parses");
     assert_eq!(checked, openapi(), "contract/openapi.json is stale");
 }
