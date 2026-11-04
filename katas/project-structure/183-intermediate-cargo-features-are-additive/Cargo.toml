@@ -9,5 +9,5 @@ unicode = ["unicode-normalization"]
 json = ["serde_json"]
 
 [dependencies]
-serde_json = { version = "=1.0.154", optional = true }
-unicode-normalization = { version = "=0.1.26", optional = true }
+serde_json = { workspace = true, optional = true }
+unicode-normalization = { workspace = true, optional = true }
