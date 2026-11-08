@@ -151,6 +151,7 @@ members = [
     "katas/testing/229-intermediate-proptest-comma-in-value",
     "katas/testing/230-intermediate-snapshot-is-the-contract",
     "katas/unsafe/213-advanced-panic-across-extern-c",
+    "katas/atomics/214-expert-spsc-relaxed-publish",
 ]
 exclude = [
     "katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout",
