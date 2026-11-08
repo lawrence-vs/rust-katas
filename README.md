@@ -202,3 +202,9 @@ Kata links go live as each kata merges.
 | testing | [225 intermediate: a wait that gives up without saying so](katas/testing/225-intermediate-wait-that-returns-silently) | kraken-cli `mock_transport.rs` (MIT); Rust by Example, unit tests; kata 36 |
 | testing | [226 intermediate: a fake that clones its own record](katas/testing/226-intermediate-fake-clones-its-state) | kraken-cli `mock_transport.rs` (MIT); std `Arc`; kata 36 |
 | api-design | [227 intermediate: a public stream, not a public receiver](katas/api-design/227-intermediate-return-a-stream-not-a-receiver) | kraken-cli `stream_client.rs` (MIT); tokio-stream docs; kata 14 |
+| project-structure | [228 intermediate: a banned TLS stack in the tree](katas/project-structure/228-intermediate-banned-tls-stack) | kraken-cli `deny.toml` (MIT); cargo-deny bans docs; kata 185 |
+| testing | [229 intermediate: a property test finds the comma](katas/testing/229-intermediate-proptest-comma-in-value) | kraken-cli `tape.rs`, `decimal_wire.rs` (MIT); proptest book; kata 36 |
+| testing | [230 intermediate: a snapshot is the contract](katas/testing/230-intermediate-snapshot-is-the-contract) | kraken-cli `snapshots.rs` (MIT); insta docs; kata 36 |
+| serde | [231 intermediate: a serde rename changes the wire contract](katas/serde/231-intermediate-schema-is-the-wire-contract) | kraken-cli root `Cargo.toml` comment (MIT); schemars docs; kata 57 |
+| serde | [232 intermediate: JSON that comes back in another order](katas/serde/232-intermediate-json-key-order-feature) | kraken-cli root `Cargo.toml` comment (MIT); serde_json features docs; kata 57 |
+| api-design | [233 advanced: one Rust type, two checked contracts](katas/api-design/233-advanced-one-type-two-contracts) | kraken-cli `agents/tool-catalog.json` + `crates/kraken-cli/tests/mcp_surface.rs:293` (MIT); OpenAPI 3.1; protobuf proto3 guide |

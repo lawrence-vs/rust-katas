@@ -1,0 +1,7 @@
+---
+source: tests/kata.rs
+expression: "kata_testing_227::receipt(\"BTC\", 2, 1250)"
+---
+symbol: BTC
+qty: 2
+total: 25.00
