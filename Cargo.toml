@@ -138,6 +138,18 @@ members = [
     "katas/websockets/24-advanced-split-reads-from-writes",
     "katas/websockets/25-advanced-lagging-client",
     "katas/websockets/52-advanced-orderbook-sequence-gap",
+    "katas/api-design/227-intermediate-return-a-stream-not-a-receiver",
+    "katas/api-design/233-advanced-one-type-two-contracts",
+    "katas/errors/223-intermediate-stale-expect-expectation",
+    "katas/project-structure/222-intermediate-unreachable-pub-leaks-internals",
+    "katas/project-structure/228-intermediate-banned-tls-stack",
+    "katas/serde/231-intermediate-schema-is-the-wire-contract",
+    "katas/serde/232-intermediate-json-key-order-feature",
+    "katas/testing/224-intermediate-advance-without-yield",
+    "katas/testing/225-intermediate-wait-that-returns-silently",
+    "katas/testing/226-intermediate-fake-clones-its-state",
+    "katas/testing/229-intermediate-proptest-comma-in-value",
+    "katas/testing/230-intermediate-snapshot-is-the-contract",
 ]
 exclude = [
     "katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout",
@@ -175,3 +187,5 @@ tonic-prost = "=0.14.6"
 tonic-prost-build = "=0.14.6"
 tower = "=0.5.3"
 unicode-normalization = "=0.1.26"
+insta = "=1.49.0"
+schemars = "=1.2.3"
