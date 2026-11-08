@@ -152,6 +152,7 @@ members = [
     "katas/testing/230-intermediate-snapshot-is-the-contract",
     "katas/unsafe/213-advanced-panic-across-extern-c",
     "katas/atomics/214-expert-spsc-relaxed-publish",
+    "katas/capstone/215-expert-slab-fifo-cancel",
 ]
 exclude = [
     "katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout",
@@ -191,3 +192,4 @@ tower = "=0.5.3"
 unicode-normalization = "=0.1.26"
 insta = "=1.49.0"
 schemars = "=1.2.3"
+slab = "=0.4.12"
