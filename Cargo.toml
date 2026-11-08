@@ -150,6 +150,7 @@ members = [
     "katas/testing/226-intermediate-fake-clones-its-state",
     "katas/testing/229-intermediate-proptest-comma-in-value",
     "katas/testing/230-intermediate-snapshot-is-the-contract",
+    "katas/unsafe/213-advanced-panic-across-extern-c",
 ]
 exclude = [
     "katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout",
