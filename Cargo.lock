@@ -1213,6 +1213,13 @@ name = "kata-cache-173"
 version = "0.1.0"
 
 [[package]]
+name = "kata-capstone-215"
+version = "0.1.0"
+dependencies = [
+ "slab",
+]
+
+[[package]]
 name = "kata-capstone-31"
 version = "0.1.0"
 dependencies = [
