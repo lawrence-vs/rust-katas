@@ -75,9 +75,10 @@ jobs:
       - name: RustSec advisories for every kata lockfile
         run: |
           # one workspace lock, plus the katas kept out of it (182 and 185, when committed)
+          # RUSTSEC-2026-0459: libsqlite3-sys via sqlx =0.8.6 in four db katas; drop the ignore once they move to a newer sqlx
           for lock in $(git ls-files 'Cargo.lock' 'katas/*/*/Cargo.lock'); do
             echo "::group::$lock"
-            cargo audit --file "$lock"
+            cargo audit --file "$lock" --ignore RUSTSEC-2026-0459
             echo "::endgroup::"
           done
 
