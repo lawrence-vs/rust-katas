@@ -27,6 +27,12 @@ Make `cargo test` pass without changing the tests. Keep the `serve` signature. N
 4. Is `Ordering::Relaxed` enough for this counter? What would you need before it guarded other data? (Kata 43.)
 5. `serve` stops, but spawned tasks keep running. How would you wait for them, or tell them to stop?
 
+## Read further
+- **Read:** Tokio tutorial, Spawning, "Accepting sockets" (https://tokio.rs/tokio/tutorial/spawning) and IO (https://tokio.rs/tokio/tutorial/io).
+- **Learn:** one task per connection; why each task must own its data.
+- **Gap:** bounding the number of tasks is not covered.
+- **Next:** `Semaphore` docs; open issue #168 (semaphore-concurrency-limit).
+
 ## In the wild
 - [tokio tutorial: Spawning](https://tokio.rs/tokio/tutorial/spawning): the `'static` bound and why a spawned task owns its data.
 - [mini-redis `server.rs`](https://github.com/tokio-rs/mini-redis/blob/master/src/server.rs): a task per connection, plus a `Semaphore` that caps connections.

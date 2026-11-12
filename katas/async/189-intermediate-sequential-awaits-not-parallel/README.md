@@ -23,3 +23,9 @@ Make `cargo test` pass without changing the test. Keep it on one task: no `tokio
 ```rust
 let handle = tokio::spawn(fut_a);
 ```
+
+## Read further
+- **Read:** `tokio::join!` docs; async book, join (https://rust-lang.github.io/async-book/06_multiple_futures/02_join.html) and concurrency (https://rust-lang.github.io/async-book/part-guide/concurrency.html).
+- **Learn:** sequential `.await`s run one after another; `join!` runs futures concurrently inside one task.
+- **Gap:** `join!` stays on one task and thread, so it is concurrency, not parallelism (check the docs).
+- **Next:** `JoinSet`, kata 17.

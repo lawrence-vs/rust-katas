@@ -24,6 +24,12 @@ Make `cargo test` pass without changing the tests, `settle` or `Cargo.toml`, and
 3. How does `grace` relate to a SIGTERM (`tokio::signal`) and the orchestrator's kill deadline?
 4. `unstarted` lives in memory. What makes it survive a crash (an outbox, kata 61)?
 
+## Read further
+- **Read:** Tokio topics, Graceful shutdown (https://tokio.rs/tokio/topics/shutdown); async book, structured concurrency (https://rust-lang.github.io/async-book/part-reference/structured.html) and cancellation (https://rust-lang.github.io/async-book/part-reference/cancellation.html).
+- **Learn:** detect the signal, tell every task, and wait for them to finish; a task's lifetime should not outlive the scope that owns it.
+- **Gap:** a forgotten `Sender` clone can keep a manager loop alive (issue #387).
+- **Next:** kata 178; `tokio_util` `TaskTracker` and `CancellationToken` docs (check).
+
 ## In the wild
 - [Tokio topics: graceful shutdown](https://tokio.rs/tokio/topics/shutdown): detect the signal, tell every part, wait for them.
 - [tokio `JoinSet`](https://docs.rs/tokio/1.53.2/tokio/task/struct.JoinSet.html): `join_next`, `abort_all`, `shutdown`, and dropping the set aborts its tasks.

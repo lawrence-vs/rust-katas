@@ -22,6 +22,12 @@ Make `cargo test` pass without changing the test or `fetch`. Time is paused in t
 2. Two tasks fetch the same key and the backend changes in between, so they get different values. Which value stays in the map? Does that matter for a tick size? For a price?
 3. Reads far outnumber misses. Would a `RwLock` help when the lock is held for microseconds? What about a sharded map like `DashMap`, and what happens if you keep one of its references across an `.await`?
 
+## Read further
+- **Read:** Tokio tutorial, Shared state, "Mutex sharding" (https://tokio.rs/tokio/tutorial/shared-state).
+- **Learn:** keep the critical section short, shard the map to cut contention, and `std` vs `tokio` Mutex.
+- **Gap:** no measured contention threshold is given.
+- **Next:** kata 16; `tokio::sync::Mutex` docs.
+
 ## In the wild
 - [tokio `Mutex`, "Which kind of mutex should you use?"](https://docs.rs/tokio/1.53.2/tokio/sync/struct.Mutex.html#which-kind-of-mutex-should-you-use): what the async mutex is actually for.
 - [tokio `RwLock`](https://docs.rs/tokio/1.53.2/tokio/sync/struct.RwLock.html): read the fairness note. A queued writer blocks new readers.

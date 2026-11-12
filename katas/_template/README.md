@@ -25,3 +25,9 @@ c.set(c.get() + 1);
 ## Answer in the PR
 1. Why was it a bug, in terms of variables, values and pointers?
 2. Which fix did you pick, and what does the other option cost?
+
+## Read further
+- **Read:** source, exact section and a free link (a Readwise highlight link if there is one).
+- **Learn:** the one idea you can explain after reading.
+- **Gap:** what the source does not say; running the kata is how you find it.
+- **Next:** one step deeper: docs, the library source, or a related kata.

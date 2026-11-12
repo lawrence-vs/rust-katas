@@ -24,6 +24,12 @@ Run the tests and read which reads each failing test made. Read the CLUEs.
 4. A per-line deadline against a whole-connection deadline. (Kata 22.)
 5. After `MaxLineLengthExceeded`, can the stream resume, or should you close it?
 
+## Read further
+- **Read:** Tokio tutorial, Framing (https://tokio.rs/tokio/tutorial/framing) and IO, "Handling EOF" (https://tokio.rs/tokio/tutorial/io).
+- **Learn:** a read returns any number of bytes; buffer until a full frame; `Ok(0)` means EOF.
+- **Gap:** check how the page treats an EOF in the middle of a frame.
+- **Next:** kata 65 (`read_exact` is not cancel-safe); `tokio_util::codec::FramedRead`.
+
 ## In the wild
 - [mini-redis `Connection::read_frame`](https://github.com/tokio-rs/mini-redis/blob/master/src/connection.rs): a buffer that keeps leftover bytes between reads.
 - [`LinesCodec`](https://docs.rs/tokio-util/0.7.20/tokio_util/codec/struct.LinesCodec.html) and [`LengthDelimitedCodec`](https://docs.rs/tokio-util/0.7.20/tokio_util/codec/struct.LengthDelimitedCodec.html).

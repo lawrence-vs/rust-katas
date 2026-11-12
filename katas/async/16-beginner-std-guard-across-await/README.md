@@ -22,6 +22,12 @@ Make `cargo test` pass without changing the test. Keep `std::sync::Mutex`: the c
 2. `lock().unwrap()` panics if the mutex is poisoned. What poisons it, which task would see the panic, and what should `bump_many` do then?
 3. Ten thousand tasks bump one counter. Is `Mutex<u64>` still the right tool? What would `AtomicU64` change, and what would it not give you? (kata 43 goes into orderings)
 
+## Read further
+- **Read:** Tokio tutorial, Shared state, "Holding a MutexGuard across an .await" (https://tokio.rs/tokio/tutorial/shared-state); async book, sync (https://rust-lang.github.io/async-book/part-guide/sync.html).
+- **Learn:** why a `std` `MutexGuard` is `!Send`, why holding it over `.await` blocks the worker, and the two fixes (end the guard's scope first, or restructure).
+- **Gap:** the tutorial gives no measured threshold for when a `std` Mutex is fine.
+- **Next:** kata 18; the `tokio::sync::Mutex` docs (when it is worth its cost).
+
 ## In the wild
 - [tokio `Mutex`, "Which kind of mutex should you use?"](https://docs.rs/tokio/1.53.2/tokio/sync/struct.Mutex.html#which-kind-of-mutex-should-you-use): tokio's own advice on std versus async locks.
 - [std `MutexGuard`](https://doc.rust-lang.org/std/sync/struct.MutexGuard.html): check "Auto Trait Implementations" for `!Send`. That is where this kata's compile error comes from.

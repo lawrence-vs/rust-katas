@@ -25,6 +25,12 @@ Make `cargo test` pass without changing the tests or `run`'s signature. Keep bot
 4. A reader task that owns the socket and sends frames over a channel: what does that cost in shutdown (kata 58)?
 5. `select!` on `&mut fut` vs a fresh future each turn.
 
+## Read further
+- **Read:** Tokio tutorial, Select (https://tokio.rs/tokio/tutorial/select); `tokio::select!` docs, "Cancellation safety"; async book, cancellation (https://rust-lang.github.io/async-book/part-reference/cancellation.html).
+- **Learn:** `select!` drops the losing futures; which APIs are cancel-safe and which lose buffered state.
+- **Gap:** the tutorial does not mention `fuse`; re-polling a finished future panics (issue #388).
+- **Next:** kata 66; `read_exact` vs `FramedRead`.
+
 ## In the wild
 - [tokio `select!`](https://docs.rs/tokio/1.53.2/tokio/macro.select.html), "Cancellation safety": which methods are safe to drop and retry.
 - [`AsyncReadExt::read_exact`](https://docs.rs/tokio/1.53.2/tokio/io/trait.AsyncReadExt.html#method.read_exact): documented as not cancellation safe.

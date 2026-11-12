@@ -33,6 +33,7 @@ Each item passes or fails. Report every item, with a one-line reason for each fa
 - [ ] The kata's README has a `## Related concepts` section, or the line `None: no close siblings.`
 - [ ] Each sibling has a one-sentence definition, its main use case and a snippet of at most 5 lines, and there are at most 4 siblings.
 - [ ] No snippet gives away the kata's fix.
+- [ ] The README has a `## Read further` section with Read, Learn, Gap and Next, and the Read link opens a real page.
 
 ## Verdict
 Approve only when every item that applies passes. Otherwise request changes, listing the failed items by number (e.g. "2.4: `Box::leak` makes the string `'static`; which variable should own it instead?"). Hint at the rule; don't give the fix.
