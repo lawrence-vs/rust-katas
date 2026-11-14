@@ -22,6 +22,12 @@ Make `cargo test` pass without changing the test. No `Mutex` and no `Arc`.
 2. `words` has a million entries. How many tasks run at once, and what does each one cost? Where would you put a limit? (kata 21)
 3. The caller gives up halfway (a `timeout` around `word_lengths`, or the request is dropped). Do the spawned tasks stop? Would the answer change if they lived in a `JoinSet`?
 
+## Read further
+- **Read:** Tokio tutorial, Spawning (https://tokio.rs/tokio/tutorial/spawning) and Channels (https://tokio.rs/tokio/tutorial/channels), "Receive responses".
+- **Learn:** `spawn` returns a `JoinHandle`; a `mpsc` command channel with a `oneshot` reply; why the task must be `'static`.
+- **Gap:** the tutorial does not say how to size the channel.
+- **Next:** issue #386 (`'static` and `move`), `JoinSet` docs.
+
 ## In the wild
 - [tokio `spawn`](https://docs.rs/tokio/1.53.2/tokio/task/fn.spawn.html): read the bounds on `F`. `'static` is the reason a task can't borrow the caller's locals.
 - [Tokio tutorial, Spawning](https://tokio.rs/tokio/tutorial/spawning): the sections on the `'static` bound and the `Send` bound.

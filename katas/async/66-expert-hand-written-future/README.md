@@ -25,6 +25,12 @@ Make `cargo test` pass without changing the tests. Std only in `src/`; no `unwra
 4. Why is `Confirmed` `Unpin`, and what would change if it were not?
 5. What does `AtomicWaker` do that a mutex around an `Option<Waker>` does not?
 
+## Read further
+- **Read:** Futures Explained in 200 Lines of Rust (free book, in Reader), "Waker and Context" and the executor; async book, execution (https://rust-lang.github.io/async-book/02_execution/03_wakeups.html, https://rust-lang.github.io/async-book/02_execution/04_executor.html).
+- **Learn:** `poll`, `Pending` plus a registered waker, and an executor that re-polls only after `wake()`.
+- **Gap:** neither source shows a bug from a stale waker (issue #384) or the wake-before-park race.
+- **Next:** Futures Explained, `block_on` with `thread::park`.
+
 ## In the wild
 - [tokio `sync::oneshot`](https://docs.rs/tokio/1.53.2/tokio/sync/oneshot/index.html): the production version of this kata.
 - [futures `AtomicWaker`](https://docs.rs/futures/0.3.31/futures/task/struct.AtomicWaker.html): a lock-free slot for the latest waker.

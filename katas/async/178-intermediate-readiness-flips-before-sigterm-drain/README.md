@@ -46,6 +46,12 @@ The shutdown must follow these rules:
 4. Real SIGTERM in `main`: `tokio::signal::unix::signal(SignalKind::terminate())` (tokio `signal` feature). Why is it a future passed into `run` here?
 5. See the sd-katas card on load balancing and health checks.
 
+## Read further
+- **Read:** Kubernetes pod lifecycle (see Source above); Tokio topics, Graceful shutdown (https://tokio.rs/tokio/topics/shutdown).
+- **Learn:** fail readiness first, then drain in-flight work, then exit.
+- **Gap:** the Tokio page does not cover probes or load balancers.
+- **Next:** kata 58.
+
 ## In the wild
 - Kubernetes "Termination of Pods": preStop, SIGTERM, grace period, SIGKILL.
 - Kubernetes probes: readiness removes a pod from Service endpoints, and a failed liveness probe restarts the container.

@@ -21,6 +21,12 @@ Which value does the error say is not `Send`, and is it noted as "captured" or "
 2. `tokio::task::LocalSet` and `spawn_local`: when is a `!Send` future fine?
 3. How do you assert `Send` at compile time in a library's own tests?
 
+## Read further
+- **Read:** Tokio tutorial, Spawning, the `Send` bound (https://tokio.rs/tokio/tutorial/spawning); async book, `Send` approximation (https://rust-lang.github.io/async-book/07_workarounds/03_send_approximation.html).
+- **Learn:** what makes a future `!Send`: values held across an `.await`; how to scope them so the future is `Send`.
+- **Gap:** check the page for nested-future error messages; the kata is where you read one.
+- **Next:** issue #386 (`'static`), kata 16.
+
 ## In the wild
 - [std `Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html): scroll to "Auto Trait Implementations" and find `!Send`.
 - [std `Send`](https://doc.rust-lang.org/std/marker/trait.Send.html): what an auto trait is and when a type gets it.
