@@ -1231,6 +1231,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "kata-async-234"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
 name = "kata-async-58"
 version = "0.1.0"
 dependencies = [
