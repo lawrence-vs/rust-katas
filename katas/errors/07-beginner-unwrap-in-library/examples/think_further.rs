@@ -33,7 +33,9 @@ fn main() -> Result<(), ParseIntError> {
     println!("{:?}", "127.0.0.1:80x".parse::<SocketAddr>().is_err());
 
     // Think further 3: the flag's error becomes a message and exit code 1 here.
-    let flag = std::env::args().nth(1).unwrap_or_else(|| "8080".to_string());
+    let flag = std::env::args()
+        .nth(1)
+        .unwrap_or_else(|| "8080".to_string());
     let port = parse_port(&flag)?;
     println!("listening on {port}");
     Ok(())

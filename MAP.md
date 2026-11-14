@@ -75,6 +75,8 @@ flowchart TD
     k94["94 framing, not one read"]
     k194["194 a hold not released on cancel"]
     k205["205 a knapsack loop that counts an item twice"]
+    k217["217 a backoff capped at every attempt"]
+    k220["220 a match arm that holds the borrow"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -94,6 +96,7 @@ flowchart TD
     k48["48 a multi-hop route"]
     k49["49 a batch with a remainder"]
     k50["50 an idempotent transfer"]
+    k212["212 a statig state machine that refuses cancel after shipping"]
     k52["52 an order book sequence gap"]
     k202["202 conflation drops trades"]
     k67["67 two locks taken in opposite orders"]
@@ -123,6 +126,10 @@ flowchart TD
     k163["163 a parser that never panics on garbage"]
     k184["184 a dependency's type in your public API"]
     k196["196 an idempotency fingerprint over canonical JSON"]
+    k216["216 an idle timer that resets only on progress"]
+    k218["218 a lost reply must not be retried"]
+    k219["219 a token cache that fetches once"]
+    k221["221 a drop guard that cancels its worker too early"]
   end
   subgraph L4 [Expert]
     k28["28 unsafe to dodge the borrow checker"]
@@ -213,6 +220,8 @@ flowchart TD
   k10 --> k60
   k12 --> k50
   k33 --> k50
+  k12 --> k212
+  k33 --> k212
   k47 --> k50
   k25 --> k52
   k50 --> k52
@@ -356,6 +365,14 @@ flowchart TD
   k51 --> k194
   k53 --> k194
 
+  k58 --> k216
+  k65 --> k216
+  k90 --> k217
+  k08 --> k218
+  k17 --> k219
+  k68 --> k219
+  k05 --> k220
+  k58 --> k221
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
   classDef errors fill:#fcf3cf,stroke:#b7950b,color:#000
@@ -401,12 +418,12 @@ flowchart TD
   classDef statics fill:#cfd8dc,stroke:#263238,color:#000
   classDef cache fill:#b3e5fc,stroke:#0277bd,color:#000
 
-  class k01,k02,k04,k05 ownership
+  class k01,k02,k04,k05,k220 ownership
   class k03,k06 lifetimes
-  class k07,k08,k09,k72,k88,k105,k123,k124 errors
+  class k07,k08,k09,k72,k88,k105,k123,k124,k218 errors
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
-  class k16,k17,k18,k58,k65,k66,k68,k178 async
+  class k16,k17,k18,k58,k65,k66,k68,k178,k216,k219,k221 async
   class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
   class k24,k25,k52,k202 websockets
@@ -425,7 +442,7 @@ flowchart TD
   class k73,k176 concurrency
   class k96,k170,k193 events
   class k89 observability
-  class k90,k97,k177 resilience
+  class k90,k97,k177,k217 resilience
   class k91 cli
   class k93,k94 net
   class k54 por
@@ -542,6 +559,7 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [48 routing: a multi-hop route](katas/routing/48-advanced-multi-hop-route) | advanced | Price a route one hop at a time in whole atoms: round each fill down, charge each fee up on it, check each minimum on what arrives; take the route that pays the client most, ties to direct. | 46 |
 | [49 batching: a batch with a remainder](katas/batching/49-advanced-batch-with-remainder) | advanced | One provider call per pair per flush; a short fill goes oldest order first and the remainder goes back to the front of the queue, with no overflow. | 34, 42 |
 | [50 state-machines: an idempotent transfer](katas/state-machines/50-advanced-idempotent-transfer) | advanced | One enum state per idempotency key: a timeout is Unknown, a retry or replayed event returns the current state and never sends twice, and final states don't flip. | 12, 33, 47 |
+| [212 state-machines: a statig order state machine](katas/state-machines/212-intermediate-statig-order-state-machine) | intermediate | A state machine crate only refuses an event if the state says so: `Handled` keeps the state, `Transition` moves it. A shipped order that falls through to `Transition` on cancel is a bug no compiler reports. | 12, 33 |
 | [52 websockets: an order book sequence gap](katas/websockets/52-advanced-orderbook-sequence-gap) | advanced | A book is a snapshot plus every delta in order: a gap drops the book and resyncs from a new snapshot, stale deltas are ignored, and a snapshot behind the stream isn't served. | 25, 50 |
 | [202 websockets: conflation drops trades](katas/websockets/202-advanced-conflation-drops-trades) | advanced | Conflate state, never events: book updates latest-wins per (symbol, side, price) with their own seq, trades always delivered, and a full buffer becomes a resnapshot marker, not a silent gap. | 25, 52, 24, 21 |
 | [67 threads: two locks taken in opposite orders](katas/threads/67-advanced-lock-ordering-deadlock) | advanced | Two locks in opposite orders deadlock; one lock order, one lock, or one owner thread makes it impossible, and each operation stays one step. | 39, 41, 51 |
@@ -573,5 +591,11 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [45 capstone: a mini order book](katas/capstone/45-expert-mini-order-book) | expert | Price levels in a `BTreeMap`, FIFO per level, whole-tick prices: best price first, partial fills rest, cancels drop empty levels. | 42, 34 |
 | [66 async: a hand-written future that never wakes](katas/async/66-expert-hand-written-future) | expert | `poll` returning `Pending` must store `cx.waker().clone()` (the latest one) so the event can wake it; otherwise the task hangs forever. | 17, 41 |
 | [60 capstone: an async feed with parallel depth](katas/capstone/60-expert-async-feed-parallel-depth) | expert | Validate JSON into typed values at the edge, bound the queue, run rayon off the runtime with spawn_blocking, and drain before shutdown. | 10, 20, 21, 52 |
+| [216 async: an idle timer that resets only on progress](katas/async/216-advanced-idle-timer-reset-by-progress) | advanced | One timer outside the `select!` loop, reset only when a frame parses; a timeout made per pass never fires while a heartbeat keeps the loop busy. | 58, 65 |
+| [217 resilience: a backoff capped at every attempt](katas/resilience/217-intermediate-backoff-cap-and-reset) | intermediate | Exponential delay is `min(base * 2^n, max)` for every `n`: clamp the delay, not the exponent, and prove it with a property test. | 90 |
+| [218 errors: a lost reply must not be retried](katas/errors/218-advanced-reply-lost-not-retried) | advanced | Tag each error by phase: before the write is retryable, after it is `ReplyLost`, because the order may already have executed. | 08 |
+| [219 async: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | advanced | Hold the async lock across the fetch so concurrent cold callers wait for one fetch; check, drop, fetch, store lets every caller fetch. | 17, 68 |
+| [220 ownership: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | intermediate | A `match` on a borrow keeps it alive in every arm; finish the borrow (copy out, end it) before calling a `&mut self` method. | 05 |
+| [221 async: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | advanced | `let _ =` drops a `DropGuard` at once and cancels the token; keep the guard in the struct that owns the worker. | 58 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.

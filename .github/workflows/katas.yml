@@ -13,7 +13,7 @@ jobs:
           components: clippy, rustfmt
       - name: Test the katas this PR changes
         run: |
-          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^katas/[^/]+/[^/]+/(src/|tests/|Cargo\.toml$)' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
+          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^katas/[^/]+/[^/]+/(src/|tests/)|^katas/project-structure/(182|185)-[^/]+/Cargo\.toml$' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
           [ -z "$dirs" ] && { echo "no kata changed"; exit 0; }
           for d in $dirs; do
             echo "::group::$d"
@@ -47,7 +47,7 @@ jobs:
           components: miri
       - name: Miri on the unsafe katas this PR changes
         run: |
-          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^katas/[^/]+/[^/]+/(src/|tests/|Cargo\.toml$)' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
+          dirs=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^katas/[^/]+/[^/]+/(src/|tests/)|^katas/project-structure/(182|185)-[^/]+/Cargo\.toml$' | grep -v '^katas/_template/' | cut -d/ -f1-3 | sort -u)
           for d in $dirs; do
             grep -q '^miri = true' "$d/Cargo.toml" || continue
             echo "::group::$d"
@@ -74,9 +74,11 @@ jobs:
           tool: cargo-audit
       - name: RustSec advisories for every kata lockfile
         run: |
-          for lock in katas/*/*/Cargo.lock; do
+          # one workspace lock, plus the katas kept out of it (182 and 185, when committed)
+          # RUSTSEC-2026-0459: libsqlite3-sys via sqlx =0.8.6 in four db katas; drop the ignore once they move to a newer sqlx
+          for lock in $(git ls-files 'Cargo.lock' 'katas/*/*/Cargo.lock'); do
             echo "::group::$lock"
-            cargo audit --file "$lock"
+            cargo audit --file "$lock" --ignore RUSTSEC-2026-0459
             echo "::endgroup::"
           done
 
