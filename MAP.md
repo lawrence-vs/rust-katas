@@ -77,6 +77,7 @@ flowchart TD
     k205["205 a knapsack loop that counts an item twice"]
     k217["217 a backoff capped at every attempt"]
     k220["220 a match arm that holds the borrow"]
+    k234["234 a future that is built but never awaited"]
   end
   subgraph L3 [Advanced]
     k03["03 a struct outliving its reference"]
@@ -373,6 +374,7 @@ flowchart TD
   k68 --> k219
   k05 --> k220
   k58 --> k221
+  k234 --> k66
   classDef ownership fill:#fde2e2,stroke:#c0392b,color:#000
   classDef lifetimes fill:#fdebd0,stroke:#d35400,color:#000
   classDef errors fill:#fcf3cf,stroke:#b7950b,color:#000
@@ -423,7 +425,7 @@ flowchart TD
   class k07,k08,k09,k72,k88,k105,k123,k124,k218 errors
   class k10,k11,k12,k64 apidesign
   class k13,k14,k15,k63 traits
-  class k16,k17,k18,k58,k65,k66,k68,k178,k216,k219,k221 async
+  class k16,k17,k18,k58,k65,k66,k68,k178,k216,k219,k221,k234 async
   class k19,k20,k61,k95,k174 db
   class k21,k22,k23,k92 security
   class k24,k25,k52,k202 websockets
@@ -597,5 +599,6 @@ Colours: ownership red · lifetimes orange · errors yellow · api-design green 
 | [219 async: a token cache that fetches once](katas/async/219-advanced-token-cache-single-flight) | advanced | Hold the async lock across the fetch so concurrent cold callers wait for one fetch; check, drop, fetch, store lets every caller fetch. | 17, 68 |
 | [220 ownership: a match arm that holds the borrow](katas/ownership/220-intermediate-match-holds-the-borrow) | intermediate | A `match` on a borrow keeps it alive in every arm; finish the borrow (copy out, end it) before calling a `&mut self` method. | 05 |
 | [221 async: a drop guard that cancels its worker too early](katas/async/221-advanced-cancellation-drop-guard-outlived) | advanced | `let _ =` drops a `DropGuard` at once and cancels the token; keep the guard in the struct that owns the worker. | 58 |
+| [234 async: a future that is built but never awaited](katas/async/234-intermediate-lazy-future-does-nothing) | intermediate | Calling an `async fn` only builds a future; nothing runs until it is polled, and a dropped future never ran. | 66, 189 |
 
 A new kata adds one node, its arrows, its `class` line entry and one row here.

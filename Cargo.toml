@@ -154,6 +154,7 @@ members = [
     "katas/atomics/214-expert-spsc-relaxed-publish",
     "katas/capstone/215-expert-slab-fifo-cancel",
     "katas/unsafe/215-intermediate-cxx-source-not-built",
+    "katas/async/234-intermediate-lazy-future-does-nothing",
 ]
 exclude = [
     "katas/project-structure/182-intermediate-pub-use-facade-hides-module-layout",
